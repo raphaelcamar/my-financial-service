@@ -6,7 +6,8 @@
     "build": "babel src --extensions \" .js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "test": "jest",
     "dev": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/server.ts",
-    "start": "node dist/server.js"
+    "start": "node dist/server.js",
+    "generate": "node scripts/index.js"
   },
   "author": "",
   "license": "ISC",
@@ -33,6 +34,7 @@
     "@babel/node": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
+    "@types/cors": "^2.8.12",
     "@types/jest": "^27.0.3",
     "babel-plugin-module-resolver": "^4.1.0",
     "cors": "^2.8.5",
