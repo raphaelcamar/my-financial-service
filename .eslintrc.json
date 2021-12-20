@@ -18,5 +18,10 @@
     "rules": {
         "linebreak-style": ["error", "windows"],
         "import/prefer-default-export": "off",
+        "class-methods-use-this": "off",
+        "array-callback-return": "off",
+        "import/no-unresolved": "off",
+        "import/extensions": "off",
+        "constructor-super": "off"
     }
 }
