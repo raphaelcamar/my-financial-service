@@ -1,4 +1,4 @@
-import { User } from 'src/user/domain';
+import { User } from '@user/domain';
 import { UserRepository } from '@user/data/protocols';
 import { InternalError } from '@user/data/errors';
 

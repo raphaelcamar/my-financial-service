@@ -4,7 +4,10 @@ export type User = {
   lastname: String
   email: String
   password: String,
-  tokenId?: String,
+  token: {
+    token: string;
+    expires_in: Date;
+  }
   createdAt?: Date,
   Updatedt?: Date
 }

@@ -1,3 +1,3 @@
 export * from './credentials-error';
-export * from './not-found-error';
+export * from './user-not-found';
 export * from './internal-error';

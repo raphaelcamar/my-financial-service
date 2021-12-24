@@ -4,4 +4,6 @@ import { User } from '@user/domain';
 export type UserRepository = {
   findById: (id: number) => Promise<User>
   createUser: (user: User) => Promise<User>;
+  verifyAccessCredentials: (email: string, password: string) => Promise<User | null>;
+  updateJWToken: (user: User, token: string) => Promise<any>
 }

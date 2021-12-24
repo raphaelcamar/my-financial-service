@@ -6,7 +6,10 @@ const UserSchema = new Schema({
   lastname: { type: String, required: true, default: null },
   email: { type: String, required: true, default: null },
   password: { type: String, required: true, default: null },
-  tokenId: { type: String, default: null },
+  token: {
+    tokenId: { type: String, required: false },
+    expires_in: { type: Date, required: false },
+  },
 }, {
   timestamps: true,
 });
