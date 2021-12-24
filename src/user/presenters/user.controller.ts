@@ -1,9 +1,8 @@
-import { UserRepositoryData } from '@user/infra';
+import { UserRepositoryData, CryptoRepositoryData } from '@user/infra';
 import { Request, Response } from 'express';
 import { FindById, CreateUser, VerifyAccessCredentials } from '@user/data/use-cases';
 import { CreateJWToken } from '@user/data/use-cases/create-jwt-token';
 import { NotFoundUserError } from '@user/data';
-import { CryptoRepositoryData } from '@user/infra/crypto.repository.data';
 
 export class UserController {
   async findById(req: Request, res: Response) {
@@ -20,7 +19,8 @@ export class UserController {
   async create(req: Request, res: Response) {
     try {
       const userRepositoryData = new UserRepositoryData();
-      const useCase = new CreateUser(req.body, userRepositoryData);
+      const cryptoRepositoryData = new CryptoRepositoryData();
+      const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData);
       await useCase.createUser();
       res.json('Created!');
     } catch (err: any) {
@@ -35,8 +35,13 @@ export class UserController {
     try {
       const userRepositoryData = new UserRepositoryData();
       const cryptoRepositoryData = new CryptoRepositoryData();
-      const useCase = new VerifyAccessCredentials(email, password, userRepositoryData);
-      const user = await useCase.verifyAccessCredentials(); // user logado com suas infos
+      const useCase = new VerifyAccessCredentials(
+        email,
+        password,
+        userRepositoryData,
+        cryptoRepositoryData,
+      );
+      const user = await useCase.verifyAccessCredentials();
       if (!user) {
         throw new NotFoundUserError();
       }
@@ -52,11 +57,8 @@ export class UserController {
     }
   }
 
-  // async update(req: Request, res: Response):Promise<any> {
-  //   try {
-
-  //   } catch (err) {
-
-  //   }
-  // }
+  async update(req: Request, res: Response):Promise<any> {
+    const { headers } = req;
+    const token = headers.authorization?.replace('Bearer ', '');
+  }
 }

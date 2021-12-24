@@ -22,6 +22,7 @@
         "array-callback-return": "off",
         "import/no-unresolved": "off",
         "import/extensions": "off",
-        "constructor-super": "off"
+        "constructor-super": "off",
+        "no-underscore-dangle": "off"
     }
 }

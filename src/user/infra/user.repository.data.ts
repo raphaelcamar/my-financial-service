@@ -12,7 +12,15 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async findById(id: number) {
-    const result = await UserSchema.findById(id);
+    const result = await UserSchema.findById(id).lean();
+    return result;
+  }
+
+  async verifyUserEmail(email: string) {
+    const result = await UserSchema.findOne({
+      email,
+    });
+
     return result;
   }
 
@@ -20,13 +28,17 @@ export class UserRepositoryData implements UserRepository {
     const result = await UserSchema.findOne({
       password,
       email,
-    });
+    }).lean();
 
     return result;
   }
 
   async updateJWToken(user: User, token: string) {
-    const result = await UserSchema.updateOne({ _id: user.id }, { token }, { new: true });
+    const result = await UserSchema.findByIdAndUpdate(
+      { _id: user._id },
+      { token },
+      { new: true },
+    ).lean();
     return result;
   }
 }

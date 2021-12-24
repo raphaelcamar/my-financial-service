@@ -1,4 +1,4 @@
-import { UserRepository } from '@user/data/protocols';
+import { UserRepository, CryptoRepository } from '@user/data/protocols';
 import { User } from '@user/domain';
 import { CredentialsError } from '../errors/credentials-error';
 
@@ -9,14 +9,24 @@ export class VerifyAccessCredentials {
 
   private password;
 
-  constructor(email: string, password: string, userRepository: UserRepository) {
+  private cryptoRepository;
+
+  constructor(
+    email: string,
+    password: string,
+    userRepository: UserRepository,
+    cryptoRepository: CryptoRepository,
+  ) {
     this.userRepository = userRepository;
     this.email = email;
     this.password = password;
+    this.cryptoRepository = cryptoRepository;
   }
 
   async verifyAccessCredentials(): Promise<User> {
-    const result = await this.userRepository.verifyAccessCredentials(this.email, this.password);
+    const encrypt = this.cryptoRepository.encryptPassword(this.password);
+
+    const result = await this.userRepository.verifyAccessCredentials(this.email, encrypt);
 
     if (!result) {
       throw new CredentialsError();

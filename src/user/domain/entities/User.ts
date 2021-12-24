@@ -1,9 +1,9 @@
 export type User = {
-  id?: Number,
-  name: String,
-  lastname: String
-  email: String
-  password: String,
+  _id?: Number,
+  name: string,
+  lastname: string
+  email: string
+  password: string,
   token: {
     token: string;
     expires_in: Date;

@@ -6,4 +6,5 @@ export type UserRepository = {
   createUser: (user: User) => Promise<User>;
   verifyAccessCredentials: (email: string, password: string) => Promise<User | null>;
   updateJWToken: (user: User, token: string) => Promise<any>
+  verifyUserEmail: (email: string) => Promise<User | null>
 }
