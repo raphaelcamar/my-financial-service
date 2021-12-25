@@ -1,22 +1,12 @@
 import { UserRepositoryData, CryptoRepositoryData } from '@user/infra';
 import { Request, Response } from 'express';
-import { FindById, CreateUser, VerifyAccessCredentials } from '@user/data/use-cases';
+import { CreateUser, VerifyAccessCredentials } from '@user/data/use-cases';
 import { CreateJWToken } from '@user/data/use-cases/create-jwt-token';
 import { NotFoundUserError } from '@user/data';
+import { HttpExceptionFilter } from '@user/presenters';
 
 export class UserController {
-  async findById(req: Request, res: Response) {
-    try {
-      const userRepositoryData = new UserRepositoryData();
-      const useCase = new FindById(req.params.id, userRepositoryData);
-      const result = useCase.findById();
-      res.status(200).json(result);
-    } catch (err: any) {
-      res.status(err.status).json(err.message);
-    }
-  }
-
-  async create(req: Request, res: Response) {
+  async create(req: Request, res: Response): Promise<void> {
     try {
       const userRepositoryData = new UserRepositoryData();
       const cryptoRepositoryData = new CryptoRepositoryData();
@@ -24,12 +14,13 @@ export class UserController {
       await useCase.createUser();
       res.json('Created!');
     } catch (err: any) {
-      res.status(402).json(err.message);
+      const status = new HttpExceptionFilter(err).getStatusResponse();
+      console.error(err.stack);
+      res.status(status).json({ message: err.message, status });
     }
   }
 
-  // TODO: criar middleware para criptografar os dados sensiveis
-  async login(req: Request, res: Response): Promise<any> {
+  async login(req: Request, res: Response): Promise<void> {
     const { email, password } = req.body;
 
     try {
@@ -51,14 +42,11 @@ export class UserController {
 
       const result = await userRepositoryData.updateJWToken(user, token);
 
-      return res.status(201).json({ auth: true, user: result });
+      res.status(201).json({ auth: true, user: result });
     } catch (err: any) {
-      return res.status(500).json(err.message);
+      console.error(err.stack);
+      const status = new HttpExceptionFilter(err).getStatusResponse();
+      res.status(status).json({ message: err.message });
     }
-  }
-
-  async update(req: Request, res: Response):Promise<any> {
-    const { headers } = req;
-    const token = headers.authorization?.replace('Bearer ', '');
   }
 }
