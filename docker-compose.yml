@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  financial-service:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: base
+    volumes:
+      - ./src:/home/node/app/src
+    container_name: financial-service
+    expose:
+      - '4000'
+    ports:
+      - '4000:4000'
+    depends_on:
+      - financial-mongo
+    command: npm run dev
+  financial-mongo:
+    image: mongo
+    container_name: mongodb
+    volumes:
+      - /home/node/database:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped

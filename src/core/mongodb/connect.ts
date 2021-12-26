@@ -1,6 +1,6 @@
-import mongoose, { Mongoose } from 'mongoose';
+import mongoose from 'mongoose';
 
-const url = 'mongodb://localhost:27017/FinancialControl';
+const url = 'mongodb://financial-mongo:27017/FinancialControl';
 
 export class MongoConnection {
   private mongoClient: any = null;
