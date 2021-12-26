@@ -1,6 +1,6 @@
 import { UserRepositoryData, CryptoRepositoryData } from '@user/infra';
 import { Request, Response } from 'express';
-import { CreateUser, VerifyAccessCredentials } from '@user/data/use-cases';
+import { CreateUser, VerifyAccessCredentials, Update } from '@user/data/use-cases';
 import { CreateJWToken } from '@user/data/use-cases/create-jwt-token';
 import { NotFoundUserError } from '@user/data';
 import { HttpExceptionFilter } from '@user/presenters';
@@ -11,8 +11,8 @@ export class UserController {
       const userRepositoryData = new UserRepositoryData();
       const cryptoRepositoryData = new CryptoRepositoryData();
       const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData);
-      await useCase.createUser();
-      res.json('Created!');
+      await useCase.execute();
+      res.status(201).json({ status: 201, message: 'User created' });
     } catch (err: any) {
       const status = new HttpExceptionFilter(err).getStatusResponse();
       console.error(err.stack);
@@ -32,7 +32,7 @@ export class UserController {
         userRepositoryData,
         cryptoRepositoryData,
       );
-      const user = await useCase.verifyAccessCredentials();
+      const user = await useCase.execute();
       if (!user) {
         throw new NotFoundUserError();
       }
@@ -47,6 +47,19 @@ export class UserController {
       console.error(err.stack);
       const status = new HttpExceptionFilter(err).getStatusResponse();
       res.status(status).json({ message: err.message });
+    }
+  }
+
+  async update(req: Request, res: Response) {
+    try {
+      console.log(req.id);
+      const userRepositoryData = new UserRepositoryData();
+      const cryptoRepositoryData = new CryptoRepositoryData();
+      const useCase = new Update(userRepositoryData, cryptoRepositoryData);
+      useCase.execute();
+      res.status(201).json({ dsa: 'assd' });
+    } catch (err: any) {
+      res.status(500).json({ err });
     }
   }
 }

@@ -16,7 +16,7 @@ export class CryptoRepositoryData implements CryptoRepository {
     };
 
     const token = await Jwt.sign(payload, SECRET_KEY, {
-      expiresIn: 86400,
+      expiresIn: 60,
     });
 
     return token;

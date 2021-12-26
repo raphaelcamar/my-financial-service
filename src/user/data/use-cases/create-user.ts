@@ -15,7 +15,7 @@ export class CreateUser {
     this.cryptoRepository = cryptoRepository;
   }
 
-  async createUser(): Promise<User> {
+  async execute(): Promise<User> {
     const existsEmail = await this.userRepository.verifyUserEmail(this.user.email);
 
     if (existsEmail) {

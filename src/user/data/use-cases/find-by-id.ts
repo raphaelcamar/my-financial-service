@@ -11,7 +11,7 @@ export class FindById {
     this.userRepository = userRepository;
   }
 
-  async findById() {
+  async execute() {
     const result = await this.userRepository.findById(this.id);
     if (!result) throw new NotFoundUserError();
     return result;

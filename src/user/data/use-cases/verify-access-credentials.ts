@@ -23,7 +23,7 @@ export class VerifyAccessCredentials {
     this.cryptoRepository = cryptoRepository;
   }
 
-  async verifyAccessCredentials(): Promise<User> {
+  async execute(): Promise<User> {
     const encrypt = this.cryptoRepository.encryptPassword(this.password);
 
     const result = await this.userRepository.verifyAccessCredentials(this.email, encrypt);

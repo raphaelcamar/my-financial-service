@@ -2,7 +2,7 @@ import express, { urlencoded, json } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import SubscribeRoute from '@user/infra/routes';
-import { MongoConnection } from './core/mongodb/connect';
+import { MongoConnection } from '@core/mongodb/connect';
 
 const app = express();
 dotenv.config();

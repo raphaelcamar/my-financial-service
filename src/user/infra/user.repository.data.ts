@@ -4,8 +4,6 @@ import { User as UserSchema } from './db/schemas';
 
 export class UserRepositoryData implements UserRepository {
   async createUser(user: User) {
-    // Fazer validação do usuário
-    // gerar jwt
     const userSchema = new UserSchema(user);
     const result = await userSchema.save();
     return result;
@@ -39,6 +37,12 @@ export class UserRepositoryData implements UserRepository {
       { token },
       { new: true },
     ).lean();
+    return result;
+  }
+
+  async update() {
+    const result = await UserSchema.find({}).lean();
+
     return result;
   }
 }
