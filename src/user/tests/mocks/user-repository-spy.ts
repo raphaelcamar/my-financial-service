@@ -1,28 +1,30 @@
 import { UserRepository } from '@user/data';
 import { User } from '@user/domain';
 
-export class UserRepositoryMock implements UserRepository {
+export class UserRepositorySpy implements UserRepository {
   async findById(id: number): Promise<User> {
-    return new Promise(() => {});
+    const user: User = null;
+    return user;
   }
 
   async createUser(user:User): Promise<User> {
-    return new Promise(() => {});
+    return user;
   }
 
   async verifyAccessCredentials(email: string, password: string): Promise<User | null> {
-    return new Promise(() => {});
+    const user: User = null;
+    return user;
   }
 
   async updateJWToken(user: User, token: string): Promise<any> {
-    return new Promise(() => {});
+    return user;
   }
 
   async verifyUserEmail(email): Promise<User | null> {
-    return new Promise(() => {});
+    return email === 'teste@email.com' ? email : null;
   }
 
   async update(): Promise<any[] | null> {
-    return new Promise(() => {});
+    return null;
   }
 }

@@ -13,7 +13,7 @@ export class UserController {
       const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData);
       await useCase.execute();
       res.status(201).json({ status: 201, message: 'User created' });
-    } catch (err: any) {
+    } catch (err) {
       const status = new HttpExceptionFilter(err).getStatusResponse();
       console.error(err.stack);
       res.status(status).json({ message: err.message, status });
@@ -43,7 +43,7 @@ export class UserController {
       const result = await userRepositoryData.updateJWToken(user, token);
 
       res.status(201).json({ auth: true, user: result });
-    } catch (err: any) {
+    } catch (err) {
       console.error(err);
       const status = new HttpExceptionFilter(err).getStatusResponse();
       res.status(status).json({ message: err.message });
@@ -57,7 +57,7 @@ export class UserController {
       const useCase = new Update(userRepositoryData, cryptoRepositoryData);
       useCase.execute();
       res.status(201).json({ verified: true });
-    } catch (err: any) {
+    } catch (err) {
       res.status(500).json({ err });
     }
   }

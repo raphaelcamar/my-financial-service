@@ -1,1 +1,1 @@
-export * from './user-repository-mock';
+export * from './user-repository-spy';
