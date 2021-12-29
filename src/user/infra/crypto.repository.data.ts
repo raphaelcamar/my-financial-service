@@ -3,9 +3,9 @@ import { User } from '@user/domain';
 import Jwt from 'jsonwebtoken';
 import CryptoJS from 'crypto-js';
 
-const SECRET_KEY = 'SHA256:B6XlIhfqGIAcTKLVgydOIkLCUnTQxKHDuASWA65UTFU rapha@DESKTOP-8PNJN6R';
-
 export class CryptoRepositoryData implements CryptoRepository {
+  private token_jwt = String(process.env.JWT_SECRET_TOKEN);
+
   async encryptJwt(user: User) {
     const payload = {
       id: user?._id,
@@ -15,15 +15,15 @@ export class CryptoRepositoryData implements CryptoRepository {
       password: user?.password,
     };
 
-    const token = await Jwt.sign(payload, SECRET_KEY, {
-      expiresIn: 60,
+    const token = await Jwt.sign(payload, this.token_jwt, {
+      expiresIn: 86400,
     });
 
     return token;
   }
 
   encryptPassword(password: string) {
-    const hash = CryptoJS.HmacSHA256(password, SECRET_KEY);
+    const hash = CryptoJS.HmacSHA256(password, this.token_jwt);
     const hashBASE64 = CryptoJS.enc.Base64.stringify(hash);
     return hashBASE64;
   }

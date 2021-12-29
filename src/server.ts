@@ -1,13 +1,13 @@
 import express, { urlencoded, json } from 'express';
 import cors from 'cors';
-import dotenv from 'dotenv';
+import { config } from 'dotenv';
 import SubscribeRoute from '@user/infra/routes';
 import { MongoConnection } from '@core/mongodb/connect';
 
 const app = express();
-dotenv.config();
 const port = 4000;
 
+config();
 const mongo = new MongoConnection();
 mongo.createConnection();
 

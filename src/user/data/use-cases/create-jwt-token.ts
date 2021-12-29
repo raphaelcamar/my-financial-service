@@ -5,15 +5,15 @@ import { User } from '@user/domain/entities/';
 export class CreateJWToken {
   private user;
 
-  private userRepository;
+  private cryptoRepository;
 
-  constructor(user: User, userRepository: CryptoRepository) {
+  constructor(user: User, cryptoRepository: CryptoRepository) {
     this.user = user;
-    this.userRepository = userRepository;
+    this.cryptoRepository = cryptoRepository;
   }
 
   async execute() {
-    const token = await this.userRepository.encryptJwt(this.user);
+    const token = await this.cryptoRepository.encryptJwt(this.user);
     return token;
   }
 }

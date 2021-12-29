@@ -14,8 +14,8 @@ module.exports = {
   plugins: [
     ['module-resolver', {
       alias: {
-
-        '@config': './src/modules',
+        '@user': './src/user',
+        '@core': './src/core',
       }
     }]
   ],

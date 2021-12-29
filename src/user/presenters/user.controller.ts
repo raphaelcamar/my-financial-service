@@ -44,7 +44,7 @@ export class UserController {
 
       res.status(201).json({ auth: true, user: result });
     } catch (err: any) {
-      console.error(err.stack);
+      console.error(err);
       const status = new HttpExceptionFilter(err).getStatusResponse();
       res.status(status).json({ message: err.message });
     }
@@ -52,12 +52,11 @@ export class UserController {
 
   async update(req: Request, res: Response) {
     try {
-      console.log(req.id);
       const userRepositoryData = new UserRepositoryData();
       const cryptoRepositoryData = new CryptoRepositoryData();
       const useCase = new Update(userRepositoryData, cryptoRepositoryData);
       useCase.execute();
-      res.status(201).json({ dsa: 'assd' });
+      res.status(201).json({ verified: true });
     } catch (err: any) {
       res.status(500).json({ err });
     }
