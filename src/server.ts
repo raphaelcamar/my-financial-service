@@ -1,7 +1,7 @@
 import express, { urlencoded, json } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import SubscribeRoute from '@user/infra/routes';
+import SubscribeRoute from '@user/presenters/routes';
 import { MongoConnection } from '@core/mongodb/connect';
 
 const app = express();
@@ -14,7 +14,7 @@ mongo.createConnection();
 app.use(json({ }));
 app.use(urlencoded({ extended: true }));
 app.use(cors({
-  origin: 'http://localhost:4000',
+  origin: 'http://localhost:8080',
   optionsSuccessStatus: 200,
 }));
 

@@ -1,4 +1,4 @@
-import { CreateUser, EmailAlreadyExistsError } from '@user/data';
+import { CreateUser } from '@user/data';
 import { CryptoRepositoryData } from '@user/infra';
 import { User } from '@user/domain/entities';
 import { UserRepositorySpy } from '@user/tests/mocks/user-repository-spy';
@@ -28,7 +28,7 @@ describe('CreateUser', () => {
     expect(result).toBeTruthy();
   });
 
-  it('should not create a user and throw EmailAlreadyExistsError', async () => {
+  it('should not be able to create a user and throw EmailAlreadyExistsError', async () => {
     const sutUser = makeSutUser();
     const user = { ...sutUser, email: 'teste@email.com' };
     const userRepositorySpy = new UserRepositorySpy();
