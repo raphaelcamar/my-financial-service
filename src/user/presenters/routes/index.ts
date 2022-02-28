@@ -1,6 +1,6 @@
 import { Express } from 'express';
 import { UserController } from '@user/presenters/user.controller';
-import { VerifyAccessTokenMiddleware } from '@user/presenters/middlewares';
+import { VerifyAccessTokenMiddleware } from '@core/presenters/middlewares';
 
 const userController = new UserController();
 const middlewareToken = new VerifyAccessTokenMiddleware();

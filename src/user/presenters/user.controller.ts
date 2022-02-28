@@ -42,7 +42,7 @@ export class UserController {
 
       const result = await userRepositoryData.updateJWToken(user, token);
 
-      res.status(201).json({ auth: true, user: result });
+      res.status(201).json({ user: result });
     } catch (err) {
       console.error(err);
       const status = new HttpExceptionFilter(err).getStatusResponse();
