@@ -1,7 +1,8 @@
 import express, { urlencoded, json } from 'express';
 import cors from 'cors';
 import { config } from 'dotenv';
-import SubscribeRoute from '@user/presenters/routes';
+import UserRoute from '@user/presenters/routes';
+import TransactionRoute from '@transaction/presenters/routes';
 import { MongoConnection } from '@core/mongodb/connect';
 
 const app = express();
@@ -24,4 +25,5 @@ app.get('/', (req, res) => {
   res.status(200).json({ message: 'Hello Docker!' });
 });
 
-SubscribeRoute(app);
+UserRoute(app);
+TransactionRoute(app);

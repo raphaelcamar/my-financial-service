@@ -12,5 +12,5 @@ export interface Transaction {
   type: TypeTransaction
   updatedAt?: Date
   value: string
-  topic: 'FOOD' | 'PUBLIC_TRANSPORTATION' | 'HEALTH' | 'OTHER'
+  topic: 'FOOD' | 'TRANSPORT' | 'HEALTH' | 'OTHER'
 }
