@@ -1,19 +1,19 @@
-import { CryptoRepository } from '@user/data/protocols';
+import { CryptoRepository } from "@user/data/protocols"
 
-import { User } from '@user/domain/entities/';
+import { User } from "@user/domain/entities/"
 
 export class CreateJWToken {
-  private user;
+  private user
 
-  private cryptoRepository;
+  private cryptoRepository
 
   constructor(user: User, cryptoRepository: CryptoRepository) {
-    this.user = user;
-    this.cryptoRepository = cryptoRepository;
+    this.user = user
+    this.cryptoRepository = cryptoRepository
   }
 
   async execute() {
-    const token = await this.cryptoRepository.encryptJwt(this.user);
-    return token;
+    const token = await this.cryptoRepository.encryptJwt(this.user)
+    return token
   }
 }

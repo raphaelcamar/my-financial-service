@@ -1,1 +1,1 @@
-export * from './transaction.validation';
+export * from "./transaction.validation"

@@ -1,10 +1,10 @@
-import { CryptoRepository } from '@user/data';
-import { User } from '@user/domain';
-import Jwt from 'jsonwebtoken';
-import CryptoJS from 'crypto-js';
+import { CryptoRepository } from "@user/data"
+import { User } from "@user/domain"
+import Jwt from "jsonwebtoken"
+import CryptoJS from "crypto-js"
 
 export class CryptoRepositoryData implements CryptoRepository {
-  private token_jwt = String(process.env.JWT_SECRET_TOKEN);
+  private token_jwt = String(process.env.JWT_SECRET_TOKEN)
 
   async encryptJwt(user: User) {
     const payload = {
@@ -13,18 +13,18 @@ export class CryptoRepositoryData implements CryptoRepository {
       lastname: user?.lastname,
       email: user?.email,
       password: user?.password,
-    };
+    }
 
     const token = await Jwt.sign(payload, this.token_jwt, {
       expiresIn: 86400,
-    });
+    })
 
-    return token;
+    return token
   }
 
   encryptPassword(password: string) {
-    const hash = CryptoJS.HmacSHA256(password, this.token_jwt);
-    const hashBASE64 = CryptoJS.enc.Base64.stringify(hash);
-    return hashBASE64;
+    const hash = CryptoJS.HmacSHA256(password, this.token_jwt)
+    const hashBASE64 = CryptoJS.enc.Base64.stringify(hash)
+    return hashBASE64
   }
 }

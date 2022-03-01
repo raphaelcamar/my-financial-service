@@ -1,6 +1,6 @@
-import { Recurrent } from './recurrent';
+import { Recurrent } from "./recurrent"
 
-export type TypeTransaction = 'ENTRANCE'| 'SPENT' | 'CURRENT'
+export type TypeTransaction = "ENTRANCE" | "SPENT" | "CURRENT"
 
 export interface Transaction {
   _id?: string
@@ -12,5 +12,5 @@ export interface Transaction {
   type: TypeTransaction
   updatedAt?: Date
   value: string
-  topic: 'FOOD' | 'TRANSPORT' | 'HEALTH' | 'OTHER'
+  topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
 }

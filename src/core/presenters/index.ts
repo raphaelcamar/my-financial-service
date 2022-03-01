@@ -1,1 +1,1 @@
-export * from './middlewares';
+export * from "./middlewares"

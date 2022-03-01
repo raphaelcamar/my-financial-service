@@ -1,2 +1,2 @@
-export * from './db';
-export * from './transaction.repository.data';
+export * from "./db"
+export * from "./transaction.repository.data"

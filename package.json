@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel src --extensions \" .js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "test": "jest",
-    "lint": "eslint --fix --ext *.ts --color",
+    "lint": "eslint . --ext .ts --fix-dry-run",
     "dev": " ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/server.ts",
     "start": "node dist/server.js",
     "generate": "node scripts/index.js"

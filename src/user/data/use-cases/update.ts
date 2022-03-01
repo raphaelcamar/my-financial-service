@@ -1,19 +1,16 @@
-import { UserRepository, CryptoRepository } from '@user/data/protocols';
+import { UserRepository, CryptoRepository } from "@user/data/protocols"
 
 export class Update {
-  private userRepository;
+  private userRepository
 
-  private cryptoRepository;
+  private cryptoRepository
 
-  constructor(
-    userRepository: UserRepository,
-    cryptoRepository: CryptoRepository,
-  ) {
-    this.cryptoRepository = cryptoRepository;
-    this.userRepository = userRepository;
+  constructor(userRepository: UserRepository, cryptoRepository: CryptoRepository) {
+    this.cryptoRepository = cryptoRepository
+    this.userRepository = userRepository
   }
 
   async execute() {
-    await this.userRepository.update();
+    await this.userRepository.update()
   }
 }
