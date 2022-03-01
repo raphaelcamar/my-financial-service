@@ -2,8 +2,7 @@ export interface Recurrent {
   _id?: string
   expired?: boolean
   createdAt?: Date
-  endOfRecurrence: Date | 'INDETERMINED'
-  recurrenceDate: Date
+  endOfRecurrence: Date
+  recurrenceDay: number
   updatedAt?: Date
-  value: number
 }
