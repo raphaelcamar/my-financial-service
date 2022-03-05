@@ -5,4 +5,5 @@ export interface Recurrent {
   endOfRecurrence: Date
   recurrenceDay: number
   updatedAt?: Date
+  type: string
 }

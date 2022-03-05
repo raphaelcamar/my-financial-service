@@ -1,6 +1,5 @@
-// TODO
-export interface Reminder {
-  _id?: string
-  createdAt?: Date
-  updatedAt?: Date
+import { Transaction } from "./transaction"
+
+export interface Reminder extends Transaction {
+  isCancelled?: boolean
 }
