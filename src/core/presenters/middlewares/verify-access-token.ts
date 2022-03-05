@@ -9,9 +9,10 @@ export class VerifyAccessTokenMiddleware {
       if (err) {
         console.error(err)
         res.status(402).json({ message: "Token expired!" })
+      } else {
+        req.userId = decoded?.id
+        next()
       }
-      req.userId = decoded?.id
-      next()
     })
   }
 }

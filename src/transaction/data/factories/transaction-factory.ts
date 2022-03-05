@@ -12,8 +12,7 @@ export class TransactionFactory {
   ) {}
 
   execute(): UseCase<Reminder | Transaction> {
-    const value = compareDesc(this.transaction.billedAt, new Date())
-
+    const value = compareDesc(new Date(this.transaction.billedAt), new Date())
     return value === -1
       ? new CreateReminder({ ...this.transaction, isCancelled: false }, this.reminderRepository)
       : new CreateTransaction(this.transaction, this.transactionRepository)
