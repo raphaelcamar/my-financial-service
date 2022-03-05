@@ -1,6 +1,7 @@
 import { User } from "@user/domain"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
-import { InternalError, EmailAlreadyExistsError } from "@user/data/errors"
+import { EmailAlreadyExistsError } from "@user/data/errors"
+import { UnexpectedError } from "@core/data"
 
 export class CreateUser {
   private user
@@ -27,7 +28,7 @@ export class CreateUser {
     this.user.password = passwordEncrypted
 
     const result = await this.userRepository.createUser(this.user)
-    if (!result) throw new InternalError()
+    if (!result) throw new UnexpectedError()
     return result
   }
 }

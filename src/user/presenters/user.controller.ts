@@ -2,7 +2,6 @@ import { UserRepositoryData, CryptoRepositoryData } from "@user/infra"
 import { Request, Response } from "express"
 import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-cases"
 import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
-import { NotFoundUserError } from "@user/data"
 import { HttpExceptionFilter } from "@user/presenters"
 
 export class UserController {
@@ -12,11 +11,10 @@ export class UserController {
       const cryptoRepositoryData = new CryptoRepositoryData()
       const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData)
       await useCase.execute()
-      res.status(201).json({ status: 201, message: "User created" })
+      res.status(201).json({ message: "User created" })
     } catch (err) {
-      const status = new HttpExceptionFilter(err).getStatusResponse()
       console.error(err.stack)
-      res.status(status).json({ message: err.message, status })
+      res.status(err.status).json({ message: err.message })
     }
   }
 
@@ -33,9 +31,7 @@ export class UserController {
         cryptoRepositoryData
       )
       const user = await useCase.execute()
-      if (!user) {
-        throw new NotFoundUserError()
-      }
+
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
 
       const token = await createToken.execute()
@@ -44,13 +40,12 @@ export class UserController {
 
       res.status(201).json({ user: result })
     } catch (err) {
-      console.error(err)
-
-      const status = new HttpExceptionFilter(err).getStatusResponse()
-      res.status(status).json({ message: err.message })
+      console.log(err)
+      res.status(err.status).json({ message: err.message })
     }
   }
 
+  // TODO: Need to create a update function
   async update(req: Request, res: Response) {
     try {
       const userRepositoryData = new UserRepositoryData()
