@@ -38,7 +38,7 @@ export class UserController {
 
       const result = await userRepositoryData.updateJWToken(user, token)
 
-      res.status(201).json({ user: result })
+      res.status(200).json({ user: result })
     } catch (err) {
       console.log(err)
       res.status(err.status).json({ message: err.message })

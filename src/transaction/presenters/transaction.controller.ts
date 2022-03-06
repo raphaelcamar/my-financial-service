@@ -1,3 +1,4 @@
+import { ValidationError } from "@transaction/data"
 import { TransactionFactory } from "@transaction/data/factories"
 import { Transaction } from "@transaction/domain"
 import { ReminderRepositoryData, TransactionRepositoryData } from "@transaction/infra"
@@ -9,7 +10,11 @@ export class TransactionController {
     const transaction: Transaction = req.body
     try {
       const transactionValidation = new TransactionValidation(transaction)
-      transactionValidation.validate()
+      const error = transactionValidation.validate()
+
+      if (error) {
+        throw new ValidationError(error.message)
+      }
 
       const transactionRepositoryData = new TransactionRepositoryData()
       const reminderRepositoryData = new ReminderRepositoryData()
@@ -26,7 +31,7 @@ export class TransactionController {
 
       res.json(result).status(200)
     } catch (err) {
-      res.json(err).status(err.status)
+      res.status(err.status).json({ message: err.message })
     }
   }
 }
