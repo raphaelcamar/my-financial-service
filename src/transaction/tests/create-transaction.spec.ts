@@ -1,5 +1,6 @@
 import { TransactionFactory } from "@transaction/data/factories"
 import { Transaction } from "@transaction/domain"
+import { TransactionValidation } from "@transaction/presenters/validation"
 import { TransactionRepositorySpy, ReminderRepositorySpy } from "@transaction/tests/mocks"
 
 const makeSut = () => {
@@ -28,17 +29,19 @@ describe("CreateTransaction", () => {
 
     const factory = new TransactionFactory(transaction, transactionRepository, reminderRepository)
 
-    const result = await factory.execute()
+    const useCase = factory.execute()
+    const result = await useCase.execute()
 
     expect(result).not.toHaveProperty("isCancelled")
   })
 
   it("Should not be able to create a transaction and throw ValidationError", async () => {
-    const { transaction, reminderRepository, transactionRepository } = makeSut()
-  })
-})
+    const validator = new TransactionValidation({} as Transaction)
 
-describe("CreateReminder", () => {
+    const result = validator.validate()
+    expect(result.stack.length).toEqual(5)
+  })
+
   it("Should be able to create a reminder", async () => {
     const { transaction, reminderRepository, transactionRepository } = makeSut()
     const year = new Date().getFullYear() + 1
