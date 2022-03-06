@@ -1,16 +1,27 @@
-import { ValidationError } from "@transaction/data"
 import { Transaction } from "@transaction/domain"
 import Joi from "joi"
+
+export interface ValidateResponse {
+  error: string
+  stack: Joi.ValidationErrorItem[]
+}
 
 export class TransactionValidation {
   constructor(private transaction: Transaction) {}
 
-  validate() {
+  validate(): ValidateResponse {
     const result = this.TransactionValidationSchema.validate(this.transaction, {
       allowUnknown: true,
+      abortEarly: false,
     })
 
-    return result?.error || null
+    if (result?.error) {
+      const error = result?.error?.details?.[0]?.message
+      const stack = result?.error?.details
+
+      return { error, stack }
+    }
+    return null
   }
 
   private TransactionValidationSchema = Joi.object({

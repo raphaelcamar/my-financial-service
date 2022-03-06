@@ -11,9 +11,8 @@ export class TransactionController {
     try {
       const transactionValidation = new TransactionValidation(transaction)
       const error = transactionValidation.validate()
-
       if (error) {
-        throw new ValidationError(error.message)
+        throw new ValidationError(error.error, error.stack)
       }
 
       const transactionRepositoryData = new TransactionRepositoryData()
@@ -31,6 +30,10 @@ export class TransactionController {
 
       res.json(result).status(200)
     } catch (err) {
+      if (err instanceof ValidationError) {
+        res.status(err.status).json({ message: err.message, stack: err.stackTrace })
+        return
+      }
       res.status(err.status).json({ message: err.message })
     }
   }

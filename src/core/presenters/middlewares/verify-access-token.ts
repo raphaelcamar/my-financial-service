@@ -7,7 +7,6 @@ export class VerifyAccessTokenMiddleware {
     const token = req.headers.authorization?.replace("Bearer ", "") || ""
     Jwt.verify(token, jwt_token, (err, decoded) => {
       if (err) {
-        console.error(err)
         res.status(402).json({ message: "Token expired!" })
       } else {
         req.userId = decoded?.id

@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import mongoose from "mongoose"
 
 const url = "mongodb://financial-mongo:27017/FinancialControl"

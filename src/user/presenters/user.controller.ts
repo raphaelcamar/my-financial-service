@@ -2,7 +2,6 @@ import { UserRepositoryData, CryptoRepositoryData } from "@user/infra"
 import { Request, Response } from "express"
 import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-cases"
 import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
-import { HttpExceptionFilter } from "@user/presenters"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {
@@ -13,7 +12,6 @@ export class UserController {
       await useCase.execute()
       res.status(201).json({ message: "User created" })
     } catch (err) {
-      console.error(err.stack)
       res.status(err.status).json({ message: err.message })
     }
   }
@@ -40,7 +38,6 @@ export class UserController {
 
       res.status(200).json({ user: result })
     } catch (err) {
-      console.log(err)
       res.status(err.status).json({ message: err.message })
     }
   }
