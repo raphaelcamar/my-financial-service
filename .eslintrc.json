@@ -21,7 +21,6 @@
         "prettier/prettier": ["error", {
             "usePrettierrc": true
 		}],
-        "no-console": "off",
         "linebreak-style": ["error", "windows"],
         "import/prefer-default-export": "off",
         "class-methods-use-this": "off",
