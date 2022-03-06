@@ -8,7 +8,8 @@
     "lint": "eslint . --ext .ts --fix-dry-run",
     "dev": " ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/server.ts",
     "start": "node dist/server.js",
-    "generate": "node scripts/index.js"
+    "generate": "node scripts/index.js",
+    "prepare": "husky install"
   },
   "author": "",
   "license": "ISC",
@@ -29,6 +30,7 @@
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-prettier": "^4.0.0",
     "git-commit-msg-linter": "^4.1.1",
+    "husky": "^7.0.4",
     "jest": "^27.4.5",
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.1",
