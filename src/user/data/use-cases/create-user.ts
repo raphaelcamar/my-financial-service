@@ -4,17 +4,11 @@ import { EmailAlreadyExistsError } from "@user/data/errors"
 import { UnexpectedError } from "@core/data"
 
 export class CreateUser {
-  private user
-
-  private userRepository
-
-  private cryptoRepository
-
-  constructor(user: User, userRepository: UserRepository, cryptoRepository: CryptoRepository) {
-    this.user = user
-    this.userRepository = userRepository
-    this.cryptoRepository = cryptoRepository
-  }
+  constructor(
+    private user: User,
+    private userRepository: UserRepository,
+    private cryptoRepository: CryptoRepository
+  ) {}
 
   async execute(): Promise<User> {
     const existsEmail = await this.userRepository.verifyUserEmail(this.user.email)

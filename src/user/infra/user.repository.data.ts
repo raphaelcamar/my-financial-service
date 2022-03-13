@@ -3,7 +3,7 @@ import { User } from "@user/domain/entities/"
 import { User as UserSchema } from "./db/schemas"
 
 export class UserRepositoryData implements UserRepository {
-  async createUser(user: User) {
+  async createUser(user: User): Promise<User> {
     const userSchema = new UserSchema(user)
     const result = await userSchema.save()
     return result
@@ -14,7 +14,7 @@ export class UserRepositoryData implements UserRepository {
     return result
   }
 
-  async verifyUserEmail(email: string) {
+  async verifyUserEmail(email: string): Promise<User> {
     const result = await UserSchema.findOne({
       email,
     })
@@ -22,7 +22,7 @@ export class UserRepositoryData implements UserRepository {
     return result
   }
 
-  async verifyAccessCredentials(email: string, password: string) {
+  async verifyAccessCredentials(email: string, password: string): Promise<User> {
     const result = await UserSchema.findOne({
       password,
       email,
@@ -31,7 +31,7 @@ export class UserRepositoryData implements UserRepository {
     return result
   }
 
-  async updateJWToken(user: User, token: string) {
+  async updateJWToken(user: User, token: string): Promise<User> {
     const result = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { token },

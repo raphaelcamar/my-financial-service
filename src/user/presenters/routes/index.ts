@@ -6,9 +6,9 @@ const userController = new UserController()
 const middlewareToken = new VerifyAccessTokenMiddleware()
 
 const routes = (app: Express) => {
-  app.post("/user/login", userController.login)
-  app.post("/user/create", userController.create)
-  app.put("/user/update", middlewareToken.verify, userController.update)
+  app.post("/user/login", (req, res) => userController.login(req, res))
+  app.post("/user/create", (req, res) => userController.create(req, res))
+  app.put("/user/update", middlewareToken.verify, (req, res) => userController.update(req, res))
 }
 
 export default routes
