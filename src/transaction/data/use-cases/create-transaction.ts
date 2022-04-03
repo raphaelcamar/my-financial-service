@@ -12,6 +12,9 @@ export class CreateTransaction implements UseCase<Transaction> {
   async execute(): Promise<Transaction> {
     const result = await this.transactionRepository.create(this.transaction)
     if (!result) throw new UnexpectedError()
+
+    delete result.userId
+
     return result
   }
 }

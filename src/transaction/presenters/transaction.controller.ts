@@ -7,7 +7,12 @@ import { TransactionValidation } from "./validation"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
-    const transaction: Transaction = req.body
+    const userId = req?.userId
+    const transaction: Transaction = {
+      ...req.body,
+      userId,
+    }
+
     try {
       const transactionValidation = new TransactionValidation(transaction)
       const error = transactionValidation.validate()
@@ -34,7 +39,9 @@ export class TransactionController {
         res.status(err.status).json({ message: err.message, stack: err.stackTrace })
         return
       }
-      res.status(err.status).json({ message: err.message })
+      res
+        .status(err?.status || 500)
+        .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }
 }

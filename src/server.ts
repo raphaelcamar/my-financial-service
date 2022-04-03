@@ -3,8 +3,8 @@ import express, { urlencoded, json } from "express"
 import cors from "cors"
 import { config } from "dotenv"
 import UserRoute from "@user/presenters/routes"
-import TransactionRoute from "@transaction/presenters/routes"
 import { MongoConnection } from "@core/mongodb/connect"
+import TransactionRoute from "@transaction/presenters/routes"
 
 const app = express()
 const port = 4000
@@ -17,7 +17,7 @@ app.use(json({}))
 app.use(urlencoded({ extended: true }))
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin: "http://localhost:3000",
     optionsSuccessStatus: 200,
   })
 )

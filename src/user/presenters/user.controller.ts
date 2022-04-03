@@ -39,7 +39,7 @@ export class UserController {
 
       delete result.password
 
-      res.status(200).json({ user: result })
+      res.status(200).json(result)
     } catch (err) {
       res.status(err.status).json({ message: err.message })
     }
