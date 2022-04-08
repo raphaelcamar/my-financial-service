@@ -1,5 +1,6 @@
 import { ValidationError } from "@transaction/data"
 import { TransactionFactory } from "@transaction/data/factories"
+import { GetTransactions } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain"
 import { ReminderRepositoryData, TransactionRepositoryData } from "@transaction/infra"
 import { Request, Response } from "express"
@@ -42,6 +43,24 @@ export class TransactionController {
       res
         .status(err?.status || 500)
         .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
+    }
+  }
+
+  async getTransactions(req: Request, res: Response): Promise<void> {
+    const userId = req?.userId
+
+    try {
+      const transactionRepositoryData = new TransactionRepositoryData()
+
+      const useCase = new GetTransactions(userId, transactionRepositoryData)
+
+      const result = await useCase.execute()
+
+      res.json(result).status(200)
+    } catch (error) {
+      res
+        .status(error?.status || 500)
+        .json({ message: error?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }
 }
