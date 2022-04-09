@@ -3,7 +3,7 @@ import { Transaction } from "@transaction/domain"
 
 export class TransactionRepositorySpy implements TransactionRepository {
   async create(transaction: Transaction): Promise<Transaction> {
-    return { ...transaction, createdAt: new Date(), _id: "1234", updatedAt: new Date() }
+    return { ...transaction, createdAt: new Date(), _id: "1234", updatedAt: new Date(), amount: 1 }
   }
 
   // TODO create mock for this guys
@@ -19,6 +19,7 @@ export class TransactionRepositorySpy implements TransactionRepository {
         topic: "FOOD",
         createdAt: new Date(),
         updatedAt: new Date(),
+        amount: 1,
       },
       {
         _id: "624f988a0ef98d1574d389a3",
@@ -30,6 +31,7 @@ export class TransactionRepositorySpy implements TransactionRepository {
         topic: "FOOD",
         createdAt: new Date(),
         updatedAt: new Date(),
+        amount: 1,
       },
       {
         _id: "624f988a0ef98d1574d389a3",
@@ -41,6 +43,7 @@ export class TransactionRepositorySpy implements TransactionRepository {
         topic: "FOOD",
         createdAt: new Date(),
         updatedAt: new Date(),
+        amount: 1,
       },
     ]
   }

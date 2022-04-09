@@ -9,6 +9,6 @@ export interface Transaction {
   type: TypeTransaction
   updatedAt?: Date
   value: number
-  amount: number
+  amount?: number
   topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
 }
