@@ -12,6 +12,7 @@ const TransactionSchema = new Schema(
     anotation: { type: String, required: true, default: null },
     type: { type: String, required: true },
     value: { type: Number, required: true },
+    amount: { type: Number, required: true },
     topic: { type: String, required: true },
   },
   {
