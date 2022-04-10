@@ -1,27 +1,15 @@
+import { UseCase } from "@core/data/protocols"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
 import { User } from "@user/domain"
 import { CredentialsError } from "../errors/credentials-error"
 
-export class VerifyAccessCredentials {
-  private userRepository
-
-  private email
-
-  private password
-
-  private cryptoRepository
-
+export class VerifyAccessCredentials implements UseCase<User> {
   constructor(
-    email: string,
-    password: string,
-    userRepository: UserRepository,
-    cryptoRepository: CryptoRepository
-  ) {
-    this.userRepository = userRepository
-    this.email = email
-    this.password = password
-    this.cryptoRepository = cryptoRepository
-  }
+    private email: string,
+    private password: string,
+    private userRepository: UserRepository,
+    private cryptoRepository: CryptoRepository
+  ) {}
 
   async execute(): Promise<User> {
     const encrypt = this.cryptoRepository.encryptPassword(this.password)

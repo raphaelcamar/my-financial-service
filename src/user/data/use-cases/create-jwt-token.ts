@@ -1,18 +1,12 @@
+import { UseCase } from "@core/data/protocols"
 import { CryptoRepository } from "@user/data/protocols"
 
 import { User } from "@user/domain/entities/"
 
-export class CreateJWToken {
-  private user
+export class CreateJWToken implements UseCase<string> {
+  constructor(private user: User, private cryptoRepository: CryptoRepository) {}
 
-  private cryptoRepository
-
-  constructor(user: User, cryptoRepository: CryptoRepository) {
-    this.user = user
-    this.cryptoRepository = cryptoRepository
-  }
-
-  async execute() {
+  async execute(): Promise<string> {
     const token = await this.cryptoRepository.encryptJwt(this.user)
     return token
   }
