@@ -1,50 +1,25 @@
+import { TransactionBuilder } from "@transaction/builders"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain"
 
 export class TransactionRepositorySpy implements TransactionRepository {
+  public data: Transaction[] = []
+
   async create(transaction: Transaction): Promise<Transaction> {
-    return { ...transaction, createdAt: new Date(), _id: "1234", updatedAt: new Date(), amount: 1 }
+    this.data.push({
+      ...transaction,
+      createdAt: new Date(),
+      _id: "1234",
+      updatedAt: new Date(),
+    })
+    return { ...transaction, createdAt: new Date(), _id: "1234", updatedAt: new Date() }
   }
 
-  // TODO create mock for this guys
   async getTransactions(userId: string): Promise<Transaction[]> {
-    return [
-      {
-        _id: "624f988a0ef98d1574d389a3",
-        userId,
-        billedAt: new Date(),
-        anotation: "Teste",
-        type: "ENTRANCE",
-        value: 32.2,
-        topic: "FOOD",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        amount: 1,
-      },
-      {
-        _id: "624f988a0ef98d1574d389a3",
-        userId,
-        billedAt: new Date(),
-        anotation: "Teste",
-        type: "ENTRANCE",
-        value: 32.2,
-        topic: "FOOD",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        amount: 1,
-      },
-      {
-        _id: "624f988a0ef98d1574d389a3",
-        userId,
-        billedAt: new Date(),
-        anotation: "Teste",
-        type: "ENTRANCE",
-        value: 32.2,
-        topic: "FOOD",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-        amount: 1,
-      },
-    ]
+    return new TransactionBuilder().array(5)
+  }
+
+  async getTransactionsByDate(start: Date, end: Date, limit?: number): Promise<Transaction[]> {
+    return this.data
   }
 }
