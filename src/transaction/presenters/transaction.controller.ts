@@ -23,6 +23,7 @@ export class TransactionController {
 
       const transactionRepositoryData = new TransactionRepositoryData()
       const reminderRepositoryData = new ReminderRepositoryData()
+      const getTransactionUseCase = new GetTransactions(userId, transactionRepositoryData)
 
       const factory = new TransactionFactory(
         transaction,
@@ -32,7 +33,9 @@ export class TransactionController {
 
       const useCase = factory.execute()
 
-      const result = await useCase.execute()
+      await useCase.execute()
+
+      const result = await getTransactionUseCase.execute()
 
       res.json(result).status(200)
     } catch (err) {
