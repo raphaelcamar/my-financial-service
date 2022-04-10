@@ -2,18 +2,11 @@ import { CreateUser } from "@user/data"
 import { CryptoRepositoryData } from "@user/infra"
 import { User } from "@user/domain/entities"
 import { UserRepositorySpy } from "@user/tests/mocks/user-repository-spy"
+import { UserBuilder } from "@user/builders"
 
 const makeSutUser = (): User => {
-  const user: User = {
-    _id: "1",
-    name: "Raphael",
-    lastname: "Santantonio",
-    email: "raphaelcamar@outlook.com",
-    password: "123456",
-    token: "token",
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  }
+  const user: User = new UserBuilder().data
+  console.log(user)
   return user
 }
 
