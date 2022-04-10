@@ -6,7 +6,6 @@ import { UserBuilder } from "@user/builders"
 
 const makeSutUser = (): User => {
   const user: User = new UserBuilder().data
-  console.log(user)
   return user
 }
 
