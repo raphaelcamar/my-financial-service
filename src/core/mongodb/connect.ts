@@ -10,7 +10,7 @@ export class MongoConnection {
   async createConnection() {
     if (!this.mongoClient) {
       console.log("Creating instance")
-      this.mongoClient = await mongoose.connect(local)
+      this.mongoClient = await mongoose.connect(url)
       return this.mongoClient
     }
     console.log("get instance")

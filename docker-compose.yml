@@ -15,12 +15,14 @@ services:
       - '4000:4000'
     depends_on:
       - financial-mongo
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: npm run dev
   financial-mongo:
     image: mongo
-    container_name: mongodb
+    container_name: mongodb-financial
     volumes:
-      - /home/node/database:/data/db
+      - ./data/:/data/db/
     ports:
       - 27017:27017
     restart: unless-stopped
