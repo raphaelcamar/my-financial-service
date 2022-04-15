@@ -45,4 +45,9 @@ export class UserRepositoryData implements UserRepository {
 
     return result
   }
+
+  async verifyAccessToken(token: string): Promise<User> {
+    const result: User = await UserSchema.findOne({ token }).lean()
+    return result
+  }
 }

@@ -15,6 +15,7 @@ export class TransactionController {
     }
 
     try {
+      // TODO pass transactionValidation to the useCase. make validation there
       const transactionValidation = new TransactionValidation(transaction)
       const error = transactionValidation.validate()
       if (error) {

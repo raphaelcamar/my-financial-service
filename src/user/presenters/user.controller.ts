@@ -3,6 +3,7 @@ import { Request, Response } from "express"
 import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-cases"
 import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
 import { User } from "@user/domain"
+import { VerifyAccessToken } from "@user/data/use-cases/verify-access-token"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {
@@ -18,7 +19,7 @@ export class UserController {
 
       res.status(201).json(result)
     } catch (err) {
-      res.status(err.status).json({ message: err.message })
+      res.status(err?.status || 500).json({ message: err?.message || "Algo deu errado" })
     }
   }
 
@@ -41,7 +42,9 @@ export class UserController {
 
       res.status(200).json(result)
     } catch (err) {
-      res.status(err.status).json({ message: err.message })
+      res
+        .status(err?.status || 500)
+        .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }
 
@@ -55,6 +58,28 @@ export class UserController {
       res.status(201).json({ verified: true })
     } catch (err) {
       res.status(500).json({ err })
+    }
+  }
+
+  async verifyAccessToken(req: Request, res: Response) {
+    try {
+      const { token } = req.body || {}
+
+      const userRepositoryData = new UserRepositoryData()
+      const cryptoRepository = new CryptoRepositoryData()
+      const useCase = new VerifyAccessToken(token, userRepositoryData)
+
+      const user = await useCase.execute()
+
+      const result = await this.tokenCreate(user, cryptoRepository, userRepositoryData)
+
+      delete result.password
+
+      res.status(200).json(result)
+    } catch (err) {
+      res
+        .status(err?.status || 500)
+        .json({ message: err?.message || "Algo aconteceu. Tente novamente" })
     }
   }
 

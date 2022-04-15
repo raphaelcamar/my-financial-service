@@ -1,7 +1,6 @@
 import { TransactionRepository } from "@transaction/data"
 import { Transaction } from "@transaction/domain"
 import { Transaction as TransactionSchema } from "@transaction/infra/db/schemas"
-import { format } from "date-fns"
 
 export class TransactionRepositoryData implements TransactionRepository {
   async create(transaction: Transaction): Promise<Transaction> {

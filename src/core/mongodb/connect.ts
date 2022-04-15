@@ -1,19 +1,13 @@
 /* eslint-disable no-console */
 import mongoose from "mongoose"
 
-const url = "mongodb://financial-mongo:27017/FinancialControl"
-const local = "mongodb://localhost:27017/FinancialControl"
-
-export class MongoConnection {
-  private mongoClient: any = null
-
-  async createConnection() {
-    if (!this.mongoClient) {
-      console.log("Creating instance")
-      this.mongoClient = await mongoose.connect(url)
-      return this.mongoClient
-    }
-    console.log("get instance")
-    return this.mongoClient
+export const connect = (uri: string) => {
+  try {
+    mongoose.connect(`mongodb+srv://${uri}/my-financial?retryWrites=true&w=majority`, () =>
+      console.log("Connected!")
+    )
+  } catch (err) {
+    console.error(err)
+    console.log("Could not connect into the database. Try again")
   }
 }

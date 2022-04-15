@@ -10,6 +10,7 @@ export class CreateTransaction implements UseCase<Transaction> {
     private transactionRepository: TransactionRepository
   ) {}
 
+  // TODO separar em pelo menos três funções, com cada função com a sua responsabilidade
   async execute(): Promise<Transaction> {
     const start = startOfMonth(new Date())
     const end = endOfMonth(new Date())

@@ -4,6 +4,7 @@ import { User } from "@user/domain/entities"
 import { UserRepositorySpy } from "@user/tests/mocks/user-repository-spy"
 import { UserBuilder } from "@user/builders"
 
+// TODO Refactor tests
 const makeSutUser = (): User => {
   const user: User = new UserBuilder().data
   return user
