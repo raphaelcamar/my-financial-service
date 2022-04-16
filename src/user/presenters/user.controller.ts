@@ -4,6 +4,7 @@ import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-case
 import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
 import { User } from "@user/domain/entities"
 import { VerifyAccessToken } from "@user/data/use-cases/verify-access-token"
+import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {
@@ -17,9 +18,11 @@ export class UserController {
 
       delete result.password
 
-      res.status(201).json(result)
+      res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
-      res.status(err?.status || 500).json({ message: err?.message || "Algo deu errado" })
+      res
+        .status(err?.status || ErrorStatus.INTERNAL)
+        .json({ message: err?.message || "Algo deu errado" })
     }
   }
 
@@ -40,10 +43,10 @@ export class UserController {
 
       delete result.password
 
-      res.status(200).json(result)
+      res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
       res
-        .status(err?.status || 500)
+        .status(err?.status || ErrorStatus.INTERNAL)
         .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }
@@ -75,10 +78,10 @@ export class UserController {
 
       delete result.password
 
-      res.status(200).json(result)
+      res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
       res
-        .status(err?.status || 500)
+        .status(err?.status || ErrorStatus.INTERNAL)
         .json({ message: err?.message || "Algo aconteceu. Tente novamente" })
     }
   }

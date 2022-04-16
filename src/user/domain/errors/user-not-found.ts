@@ -1,5 +1,7 @@
+import { ErrorStatus } from "@core/domain/entities"
+
 export class NotFoundUserError extends Error {
-  public status = 401
+  public status = ErrorStatus.NOT_FOUND
 
   constructor() {
     super("Usuário não encontrado.")
