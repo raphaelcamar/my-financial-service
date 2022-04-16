@@ -1,4 +1,5 @@
 import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
+import { HttpExceptionHandler } from "@core/presenters/utils"
 import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { ValidationError } from "@transaction/domain/errors"
@@ -29,14 +30,14 @@ export class TransactionController {
       const result = await getTransactionUseCase.execute()
 
       res.json(result).status(SuccessStatus.SUCCESS)
-    } catch (err) {
-      if (err instanceof ValidationError) {
-        res.status(err.status).json({ message: err.message, stack: err.stackTrace })
-        return
-      }
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
       res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
+        .status(httpException.status)
+        .json({ message: httpException.message, stack: error?.stackTrace || [] })
     }
   }
 
@@ -52,9 +53,11 @@ export class TransactionController {
 
       res.json(result).status(SuccessStatus.SUCCESS)
     } catch (error) {
-      res
-        .status(error?.status || ErrorStatus.INTERNAL)
-        .json({ message: error?.message || "Algo aconteceu. Tente novamente mais tarde" })
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
     }
   }
 }

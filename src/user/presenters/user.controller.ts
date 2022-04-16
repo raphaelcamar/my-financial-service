@@ -5,6 +5,7 @@ import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
 import { User } from "@user/domain/entities"
 import { VerifyAccessToken } from "@user/data/use-cases/verify-access-token"
 import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
+import { HttpExceptionHandler } from "@core/presenters/utils"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {
@@ -44,10 +45,12 @@ export class UserController {
       delete result.password
 
       res.status(SuccessStatus.SUCCESS).json(result)
-    } catch (err) {
-      res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
     }
   }
 
@@ -79,10 +82,12 @@ export class UserController {
       delete result.password
 
       res.status(SuccessStatus.SUCCESS).json(result)
-    } catch (err) {
-      res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo aconteceu. Tente novamente" })
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
     }
   }
 
