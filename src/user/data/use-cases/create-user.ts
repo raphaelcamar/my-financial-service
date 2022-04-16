@@ -1,6 +1,6 @@
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
-import { EmailAlreadyExistsError } from "@user/data/errors"
+import { EmailAlreadyExistsError } from "@user/domain/errors"
 import { UnexpectedError } from "@core/domain/errors"
 import { UseCase } from "@core/data/protocols"
 

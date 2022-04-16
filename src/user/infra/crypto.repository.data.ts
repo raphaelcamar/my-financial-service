@@ -1,5 +1,5 @@
 import { CryptoRepository } from "@user/data"
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 import Jwt from "jsonwebtoken"
 import CryptoJS from "crypto-js"
 

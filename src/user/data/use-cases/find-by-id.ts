@@ -1,7 +1,7 @@
 import { UseCase } from "@core/data/protocols"
 import { UserRepository } from "@user/data/protocols/user.repository"
-import { User } from "@user/domain"
-import { NotFoundUserError } from ".."
+import { User } from "@user/domain/entities"
+import { NotFoundUserError } from "@user/domain/errors"
 
 export class FindById implements UseCase<User> {
   constructor(private id: any, private userRepository: UserRepository) {}

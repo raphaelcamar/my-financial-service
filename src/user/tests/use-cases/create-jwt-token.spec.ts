@@ -1,4 +1,3 @@
-import { CreateUser } from "@user/data"
 import { CryptoRepositoryData } from "@user/infra"
 import { User } from "@user/domain/entities"
 import { UserRepositorySpy } from "@user/tests/mocks/user-repository-spy"

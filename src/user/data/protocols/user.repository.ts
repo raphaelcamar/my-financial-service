@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 
 export type UserRepository = {
   findById: (id: number) => Promise<User>

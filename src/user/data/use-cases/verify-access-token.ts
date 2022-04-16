@@ -1,6 +1,6 @@
-import { NotFoundUserError } from "@user/data/errors"
+import { NotFoundUserError } from "@user/domain/errors"
 import { UseCase } from "@core/data/protocols"
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 import { UserRepository } from "@user/data/protocols"
 
 export class VerifyAccessToken implements UseCase<User> {

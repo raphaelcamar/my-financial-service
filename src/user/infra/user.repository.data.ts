@@ -1,5 +1,5 @@
 import { UserRepository } from "@user/data/protocols"
-import { User } from "@user/domain/entities/"
+import { User } from "@user/domain/entities"
 import { User as UserSchema } from "./db/schemas"
 
 export class UserRepositoryData implements UserRepository {

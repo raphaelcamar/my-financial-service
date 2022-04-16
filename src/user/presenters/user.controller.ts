@@ -2,7 +2,7 @@ import { UserRepositoryData, CryptoRepositoryData } from "@user/infra"
 import { Request, Response } from "express"
 import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-cases"
 import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 import { VerifyAccessToken } from "@user/data/use-cases/verify-access-token"
 
 export class UserController {

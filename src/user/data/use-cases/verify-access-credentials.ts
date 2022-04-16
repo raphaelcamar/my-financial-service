@@ -1,7 +1,7 @@
 import { UseCase } from "@core/data/protocols"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
-import { User } from "@user/domain"
-import { CredentialsError } from "../errors/credentials-error"
+import { User } from "@user/domain/entities"
+import { CredentialsError } from "@user/domain/errors"
 
 export class VerifyAccessCredentials implements UseCase<User> {
   constructor(

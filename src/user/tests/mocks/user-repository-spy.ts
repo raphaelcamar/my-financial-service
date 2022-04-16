@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import { UserBuilder } from "@user/builders"
 import { UserRepository } from "@user/data"
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 
 export class UserRepositorySpy implements UserRepository {
   async verifyAccessToken(token: string): Promise<User> {
