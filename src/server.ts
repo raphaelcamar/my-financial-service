@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { connect } from "@core/mongodb/connect"
+import { MongoDbConnection } from "@core/mongodb/connect"
 import express, { urlencoded, json } from "express"
 import cors from "cors"
 import { config } from "dotenv"
@@ -25,7 +25,16 @@ Promise.resolve(config()).then(() => {
     res.status(200).json({ message: "Hello Docker!" })
   })
 
-  connect(process.env.MONGO_DB_URI)
+  const connection = new MongoDbConnection(process.env.MONGO_DB_URI)
+
+  connection.connect()
+
+  process.on("SIGINT", () => {
+    connection.disconnect()
+    console.log("connection closed")
+    process.exit(0)
+  })
+
   UserRoute(app)
   TransactionRoute(app)
 })
