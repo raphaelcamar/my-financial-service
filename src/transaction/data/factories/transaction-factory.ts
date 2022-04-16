@@ -1,5 +1,5 @@
 import { UseCase } from "@core/data/protocols"
-import { Reminder, Transaction } from "@transaction/domain"
+import { Reminder, Transaction } from "@transaction/domain/entities"
 import { compareDesc } from "date-fns"
 import { CreateReminder, CreateTransaction } from "@transaction/data/use-cases"
 import { ReminderRepository, TransactionRepository } from "@transaction/data/protocols"

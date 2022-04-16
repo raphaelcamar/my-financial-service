@@ -1,4 +1,4 @@
-import { Transaction } from "@transaction/domain"
+import { Transaction } from "@transaction/domain/entities"
 import Joi from "joi"
 
 export interface ValidateResponse {

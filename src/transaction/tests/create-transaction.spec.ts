@@ -1,6 +1,6 @@
 import { TransactionBuilder } from "@transaction/builders"
 import { TransactionFactory } from "@transaction/data/factories"
-import { Transaction } from "@transaction/domain"
+import { Transaction } from "@transaction/domain/entities"
 import { TransactionValidation } from "@transaction/presenters/validation"
 import { TransactionRepositorySpy, ReminderRepositorySpy } from "@transaction/tests/mocks"
 

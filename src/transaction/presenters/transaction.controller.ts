@@ -1,8 +1,8 @@
-import { ValidationError } from "@transaction/data"
-import { TransactionFactory } from "@transaction/data/factories"
-import { GetTransactions } from "@transaction/data/use-cases"
-import { Transaction } from "@transaction/domain"
-import { ReminderRepositoryData, TransactionRepositoryData } from "@transaction/infra"
+import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
+import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
+import { Transaction } from "@transaction/domain/entities"
+import { ValidationError } from "@transaction/domain/errors"
+import { TransactionRepositoryData } from "@transaction/infra/repositories"
 import { Request, Response } from "express"
 import { TransactionValidation } from "./validation"
 
@@ -15,37 +15,27 @@ export class TransactionController {
     }
 
     try {
-      // TODO pass transactionValidation to the useCase. make validation there
       const transactionValidation = new TransactionValidation(transaction)
-      const error = transactionValidation.validate()
-      if (error) {
-        throw new ValidationError(error.error, error.stack)
-      }
-
       const transactionRepositoryData = new TransactionRepositoryData()
-      const reminderRepositoryData = new ReminderRepositoryData()
       const getTransactionUseCase = new GetTransactions(userId, transactionRepositoryData)
-
-      const factory = new TransactionFactory(
+      const useCase = new CreateTransaction(
         transaction,
         transactionRepositoryData,
-        reminderRepositoryData
+        transactionValidation
       )
-
-      const useCase = factory.execute()
 
       await useCase.execute()
 
       const result = await getTransactionUseCase.execute()
 
-      res.json(result).status(200)
+      res.json(result).status(SuccessStatus.SUCCESS)
     } catch (err) {
       if (err instanceof ValidationError) {
         res.status(err.status).json({ message: err.message, stack: err.stackTrace })
         return
       }
       res
-        .status(err?.status || 500)
+        .status(err?.status || ErrorStatus.INTERNAL)
         .json({ message: err?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }
@@ -60,10 +50,10 @@ export class TransactionController {
 
       const result = await useCase.execute()
 
-      res.json(result).status(200)
+      res.json(result).status(SuccessStatus.SUCCESS)
     } catch (error) {
       res
-        .status(error?.status || 500)
+        .status(error?.status || ErrorStatus.INTERNAL)
         .json({ message: error?.message || "Algo aconteceu. Tente novamente mais tarde" })
     }
   }

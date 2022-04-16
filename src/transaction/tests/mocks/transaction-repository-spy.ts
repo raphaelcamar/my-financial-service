@@ -1,6 +1,6 @@
 import { TransactionBuilder } from "@transaction/builders"
 import { TransactionRepository } from "@transaction/data/protocols"
-import { Transaction } from "@transaction/domain"
+import { Transaction } from "@transaction/domain/entities"
 
 export class TransactionRepositorySpy implements TransactionRepository {
   public data: Transaction[] = []

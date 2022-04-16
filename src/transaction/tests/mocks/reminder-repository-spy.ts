@@ -1,5 +1,5 @@
 import { ReminderRepository } from "@transaction/data"
-import { Reminder } from "@transaction/domain"
+import { Reminder } from "@transaction/domain/entities"
 
 export class ReminderRepositorySpy implements ReminderRepository {
   async create(reminder: Reminder): Promise<Reminder> {

@@ -1,29 +1,41 @@
-import { Transaction } from "@transaction/domain"
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-multi-assign */
+import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/data/protocols"
-import { UnexpectedError } from "@core/data"
+import { UnexpectedError } from "@core/domain/errors"
 import { endOfMonth, startOfMonth } from "date-fns"
+import { InvalidParamError, ValidationError } from "@transaction/domain/errors"
+import { TransactionValidation } from "@transaction/presenters/validation"
 
 export class CreateTransaction implements UseCase<Transaction> {
   constructor(
     private transaction: Transaction,
-    private transactionRepository: TransactionRepository
+    private transactionRepository: TransactionRepository,
+    private transactionValidation: TransactionValidation
   ) {}
 
-  // TODO separar em pelo menos três funções, com cada função com a sua responsabilidade
   async execute(): Promise<Transaction> {
+    const error = this.transactionValidation.validate()
+
+    if (error) {
+      throw new ValidationError(error.error, error.stack)
+    }
+
     const start = startOfMonth(new Date())
     const end = endOfMonth(new Date())
     const isEntrance = this.transaction.type === "ENTRANCE"
 
+    if (!this.transaction) throw new InvalidParamError()
+
     const [lastTransaction] = await this.transactionRepository.getTransactionsByDate(start, end)
     const amount = lastTransaction?.amount || 0
 
+    const newAmount = this.getSumOrSubtractValue(amount, this.transaction.value, isEntrance)
+
     const transactionAmount = {
       ...this.transaction,
-      amount: isEntrance
-        ? Number(amount || 0) + this.transaction.value
-        : Number(amount || 0) + Number(`-${this.transaction.value}`),
+      amount: newAmount,
     }
 
     const result = await this.transactionRepository.create(transactionAmount)
@@ -33,5 +45,18 @@ export class CreateTransaction implements UseCase<Transaction> {
     delete result.userId
 
     return result
+  }
+
+  private getSumOrSubtractValue(
+    amount: number,
+    transactionValue: number,
+    isEntrance: boolean
+  ): number {
+    if (isEntrance) {
+      return amount + transactionValue
+    }
+
+    const newAmount = (amount -= transactionValue)
+    return newAmount
   }
 }

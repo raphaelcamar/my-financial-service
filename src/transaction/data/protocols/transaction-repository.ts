@@ -1,4 +1,4 @@
-import { Transaction } from "@transaction/domain"
+import { Transaction } from "@transaction/domain/entities"
 
 export type TransactionRepository = {
   create: (transaction: Transaction) => Promise<Transaction>

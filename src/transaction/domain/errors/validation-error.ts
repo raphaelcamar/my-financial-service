@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 export class ValidationError extends Error {
   public status = 400
 
@@ -6,5 +7,7 @@ export class ValidationError extends Error {
   constructor(message: string, stack: any[]) {
     super(message)
     this.stackTrace = stack
+    this.name = "ValidationError"
+    console.error(this.name)
   }
 }

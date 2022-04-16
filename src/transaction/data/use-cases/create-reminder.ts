@@ -1,7 +1,7 @@
-import { Reminder } from "@transaction/domain"
+import { Reminder } from "@transaction/domain/entities"
 import { ReminderRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/data/protocols"
-import { UnexpectedError } from "@core/data"
+import { UnexpectedError } from "@core/domain/errors"
 
 export class CreateReminder implements UseCase<Reminder> {
   constructor(private transaction: Reminder, private reminderRepository: ReminderRepository) {}
