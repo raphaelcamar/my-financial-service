@@ -1,9 +1,13 @@
-import { UserRepositoryData, CryptoRepositoryData } from "@user/infra"
+import { UserRepositoryData, CryptoRepositoryData } from "@user/infra/repositories"
 import { Request, Response } from "express"
-import { CreateUser, VerifyAccessCredentials, Update } from "@user/data/use-cases"
-import { CreateJWToken } from "@user/data/use-cases/create-jwt-token"
+import {
+  CreateUser,
+  VerifyAccessCredentials,
+  Update,
+  CreateJWToken,
+  VerifyAccessToken,
+} from "@user/data/use-cases"
 import { User } from "@user/domain/entities"
-import { VerifyAccessToken } from "@user/data/use-cases/verify-access-token"
 import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
 import { HttpExceptionHandler } from "@core/presenters/utils"
 

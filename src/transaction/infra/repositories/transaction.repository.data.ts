@@ -1,5 +1,5 @@
 import { UnexpectedError } from "@core/domain/errors"
-import { TransactionRepository } from "@transaction/data"
+import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 import { Transaction as TransactionSchema } from "@transaction/infra/db/schemas"
 

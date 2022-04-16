@@ -1,7 +1,7 @@
 import { UseCase } from "@core/data/protocols"
 import { CryptoRepository } from "@user/data/protocols"
 
-import { User } from "@user/domain/entities/"
+import { User } from "@user/domain/entities"
 
 export class CreateJWToken implements UseCase<string> {
   constructor(private user: User, private cryptoRepository: CryptoRepository) {}

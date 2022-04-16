@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { TransactionBuilder } from "@transaction/builders"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"

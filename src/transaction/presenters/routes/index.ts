@@ -1,6 +1,6 @@
 import { Express } from "express"
 import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
-import { TransactionController } from "@transaction/presenters"
+import { TransactionController } from "@transaction/presenters/controllers"
 
 const middlewareToken = new VerifyAccessTokenMiddleware()
 const transactionController = new TransactionController()

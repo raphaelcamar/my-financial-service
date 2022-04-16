@@ -1,5 +1,5 @@
 import { UnexpectedError } from "@core/domain/errors"
-import { ReminderRepository } from "@transaction/data"
+import { ReminderRepository } from "@transaction/data/protocols"
 import { Reminder, Transaction } from "@transaction/domain/entities"
 import { Reminder as ReminderSchema } from "@transaction/infra/db/schemas"
 

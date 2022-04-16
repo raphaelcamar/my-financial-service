@@ -1,5 +1,5 @@
 import { Builder } from "@core/data/protocols"
-import { User } from "@user/domain"
+import { User } from "@user/domain/entities"
 import faker from "@faker-js/faker/locale/pt_BR"
 
 export class UserBuilder implements Builder<User> {

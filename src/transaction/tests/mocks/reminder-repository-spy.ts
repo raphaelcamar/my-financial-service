@@ -1,4 +1,4 @@
-import { ReminderRepository } from "@transaction/data"
+import { ReminderRepository } from "@transaction/data/protocols"
 import { Reminder } from "@transaction/domain/entities"
 
 export class ReminderRepositorySpy implements ReminderRepository {

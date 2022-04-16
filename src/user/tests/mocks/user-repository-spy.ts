@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import { UserBuilder } from "@user/builders"
-import { UserRepository } from "@user/data"
+import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 
 export class UserRepositorySpy implements UserRepository {

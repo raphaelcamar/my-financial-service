@@ -1,11 +1,10 @@
-import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
+import { SuccessStatus } from "@core/domain/entities"
 import { HttpExceptionHandler } from "@core/presenters/utils"
 import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
-import { ValidationError } from "@transaction/domain/errors"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
 import { Request, Response } from "express"
-import { TransactionValidation } from "./validation"
+import { TransactionValidation } from "@transaction/presenters/validation"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {

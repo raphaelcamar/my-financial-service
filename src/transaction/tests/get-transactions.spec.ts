@@ -1,4 +1,4 @@
-import { GetTransactions } from "@transaction/data"
+import { GetTransactions } from "@transaction/data/use-cases"
 import { isEqual } from "date-fns"
 import { TransactionRepositorySpy } from "./mocks"
 

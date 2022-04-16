@@ -1,5 +1,5 @@
 import { Express } from "express"
-import { UserController } from "@user/presenters/user.controller"
+import { UserController } from "@user/presenters/controllers"
 import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
 
 const userController = new UserController()

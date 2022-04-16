@@ -1,5 +1,5 @@
-import { CreateUser } from "@user/data"
-import { CryptoRepositoryData } from "@user/infra"
+import { CreateUser } from "@user/data/use-cases"
+import { CryptoRepositoryData } from "@user/infra/repositories"
 import { User } from "@user/domain/entities"
 import { UserRepositorySpy } from "@user/tests/mocks/user-repository-spy"
 import { UserBuilder } from "@user/builders"
@@ -11,7 +11,7 @@ const makeSutUser = (): User => {
 }
 
 describe("CreateUser", () => {
-  it("should create a user", async () => {
+  it("should be able to create a user", async () => {
     const user = makeSutUser()
     const userRepositorySpy = new UserRepositorySpy()
     const cryptoRepository = new CryptoRepositoryData()

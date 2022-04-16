@@ -1,7 +1,7 @@
 import { UnexpectedError } from "@core/domain/errors"
 import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
-import { User as UserSchema } from "./db/schemas"
+import { User as UserSchema } from "@user/infra/db/schemas"
 
 export class UserRepositoryData implements UserRepository {
   async createUser(user: User): Promise<User> {

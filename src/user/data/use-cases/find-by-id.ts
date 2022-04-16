@@ -1,5 +1,5 @@
 import { UseCase } from "@core/data/protocols"
-import { UserRepository } from "@user/data/protocols/user.repository"
+import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 import { NotFoundUserError } from "@user/domain/errors"
 
