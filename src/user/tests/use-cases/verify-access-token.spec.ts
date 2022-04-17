@@ -1,12 +1,13 @@
+import { UserBuilder } from "@user/builders"
 import { CreateJWToken, CreateUser, VerifyAccessToken } from "@user/data/use-cases"
 import { NotFoundUserError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
 
 describe("Verify access token", () => {
   it("Should be able to search user by token and return user", async () => {
-    const { user, userRepositorySpy, cryptoRepositoryData } = makeSutUser()
+    const { userRepositorySpy, cryptoRepositoryData } = makeSutUser()
 
-    delete user.token
+    const user = new UserBuilder().withoutField(["token"]).data
 
     const useCaseCreate = new CreateUser(user, userRepositorySpy, cryptoRepositoryData)
 
@@ -29,10 +30,11 @@ describe("Verify access token", () => {
   })
 
   it("Should not be able to search user by token and return user", async () => {
-    const { user, userRepositorySpy, cryptoRepositoryData } = makeSutUser()
+    const { userRepositorySpy, cryptoRepositoryData } = makeSutUser()
 
-    const randomToken = user.token
-    delete user.token
+    const randomToken = "randomTokenGenerated"
+
+    const user = new UserBuilder().withoutField(["token"]).data
 
     const useCaseCreate = new CreateUser(user, userRepositorySpy, cryptoRepositoryData)
 

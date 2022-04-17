@@ -1,19 +1,8 @@
 import { Transaction } from "@transaction/domain/entities"
-import { TransactionBuilder } from "@transaction/builders"
 import { CreateTransaction } from "@transaction/data/use-cases"
 import { TransactionValidation } from "@transaction/presenters/validation"
-import { TransactionRepositorySpy, ReminderRepositorySpy } from "@transaction/tests/mocks"
 import { InvalidParamError, ValidationError } from "@transaction/domain/errors"
-
-const makeSut = () => {
-  const transaction = new TransactionBuilder().withoutField(["amount"]).data
-  const transactionRepository = new TransactionRepositorySpy()
-
-  return {
-    transaction,
-    transactionRepository,
-  }
-}
+import { makeSut } from "./base-sut"
 
 describe("Create Transaction", () => {
   it("Should be able to create a transaction", async () => {
@@ -85,7 +74,7 @@ describe("Create Transaction", () => {
   it("should be able to create diferente monthly transactions and not change amount", async () => {
     const { transaction, transactionRepository } = makeSut()
 
-    const transactionValidation = new TransactionValidation({ ...transaction })
+    const transactionValidation = new TransactionValidation(transaction)
     const useCase = new CreateTransaction(
       { ...transaction, type: "ENTRANCE" },
       transactionRepository,

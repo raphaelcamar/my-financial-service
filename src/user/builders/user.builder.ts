@@ -2,6 +2,8 @@ import { Builder } from "@core/data/protocols"
 import { User } from "@user/domain/entities"
 import faker from "@faker-js/faker/locale/pt_BR"
 
+export type UserUnion = keyof User
+
 export class UserBuilder implements Builder<User> {
   public data: User
 
@@ -20,5 +22,19 @@ export class UserBuilder implements Builder<User> {
     }
 
     return data
+  }
+
+  withoutField(fields: UserUnion[]): UserBuilder {
+    fields.map(field => {
+      delete this.data[field]
+    })
+
+    return this
+  }
+
+  defaultEmail(): UserBuilder {
+    const user = { ...this.data, email: "teste@teste.com" }
+    this.data = user
+    return this
   }
 }
