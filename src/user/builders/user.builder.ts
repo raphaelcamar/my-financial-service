@@ -14,7 +14,7 @@ export class UserBuilder implements Builder<User> {
       email: faker.internet.email(),
       lastname: faker.name.lastName(),
       name: faker.name.firstName(),
-      password: faker.internet.password(),
+      password: "123456",
       token: faker.datatype.uuid(),
       _id: faker.datatype.uuid(),
     }
