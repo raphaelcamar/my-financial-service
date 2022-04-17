@@ -4,8 +4,12 @@ import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 
 export class UserRepositorySpy implements UserRepository {
+  private user: User
+
   async verifyAccessToken(token: string): Promise<User> {
-    return new UserBuilder().data
+    if (token === this.user.token) return this.user
+
+    return null
   }
 
   async findById(id: number): Promise<User> {
@@ -14,20 +18,23 @@ export class UserRepositorySpy implements UserRepository {
   }
 
   async createUser(user: User): Promise<User> {
+    this.user = user
     return user
   }
 
   async verifyAccessCredentials(email: string, password: string): Promise<User | null> {
-    const user: User = null
+    if (this.user.email === email && this.user.password === password) {
+      return this.user
+    }
+    return null
+  }
+
+  async updateJWToken(user: User, token: string): Promise<User> {
     return user
   }
 
-  async updateJWToken(user: User, token: string): Promise<any> {
-    return user
-  }
-
-  async verifyUserEmail(email): Promise<User | null> {
-    return email === "teste@email.com" ? email : null
+  async verifyUserEmail(email: string): Promise<User | null> {
+    return email === "teste@teste.com" ? this.user : null
   }
 
   async update(): Promise<any[] | null> {

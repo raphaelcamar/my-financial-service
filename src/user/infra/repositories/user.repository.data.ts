@@ -41,7 +41,7 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async updateJWToken(user: User, token: string): Promise<User> {
-    const result = await UserSchema.findByIdAndUpdate(
+    const result: User = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { token },
       { new: true }

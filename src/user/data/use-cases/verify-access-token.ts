@@ -7,7 +7,7 @@ export class VerifyAccessToken implements UseCase<User> {
   constructor(private token: string, private userRepository: UserRepository) {}
 
   async execute(): Promise<User> {
-    const user = this.userRepository.verifyAccessToken(this.token)
+    const user = await this.userRepository.verifyAccessToken(this.token)
 
     if (!user) throw new NotFoundUserError()
 
