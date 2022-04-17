@@ -8,6 +8,5 @@ export class ValidationError extends Error {
     super(message)
     this.stackTrace = stack
     this.name = "ValidationError"
-    console.error(this.name)
   }
 }

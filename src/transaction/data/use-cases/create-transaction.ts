@@ -16,6 +16,8 @@ export class CreateTransaction implements UseCase<Transaction> {
   ) {}
 
   async execute(): Promise<Transaction> {
+    if (!this.transaction) throw new InvalidParamError()
+
     const error = this.transactionValidation.validate()
 
     if (error) {
@@ -25,8 +27,6 @@ export class CreateTransaction implements UseCase<Transaction> {
     const start = startOfMonth(new Date())
     const end = endOfMonth(new Date())
     const isEntrance = this.transaction.type === "ENTRANCE"
-
-    if (!this.transaction) throw new InvalidParamError()
 
     const [lastTransaction] = await this.transactionRepository.getTransactionsByDate(start, end)
     const amount = lastTransaction?.amount || 0
@@ -41,8 +41,6 @@ export class CreateTransaction implements UseCase<Transaction> {
     const result = await this.transactionRepository.create(transactionAmount)
 
     if (!result) throw new UnexpectedError()
-
-    delete result.userId
 
     return result
   }

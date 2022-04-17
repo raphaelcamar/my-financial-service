@@ -1,82 +1,143 @@
-import { TransactionBuilder } from "@transaction/builders"
-import { TransactionFactory } from "@transaction/data/factories"
 import { Transaction } from "@transaction/domain/entities"
+import { TransactionBuilder } from "@transaction/builders"
+import { CreateTransaction } from "@transaction/data/use-cases"
 import { TransactionValidation } from "@transaction/presenters/validation"
 import { TransactionRepositorySpy, ReminderRepositorySpy } from "@transaction/tests/mocks"
+import { InvalidParamError, ValidationError } from "@transaction/domain/errors"
 
 const makeSut = () => {
   const transaction = new TransactionBuilder().withoutField(["amount"]).data
   const transactionRepository = new TransactionRepositorySpy()
-  const reminderRepository = new ReminderRepositorySpy()
 
   return {
     transaction,
-    reminderRepository,
     transactionRepository,
-    data: transactionRepository.data,
   }
 }
 
-describe("CreateTransaction", () => {
+describe("Create Transaction", () => {
   it("Should be able to create a transaction", async () => {
-    const { transaction, reminderRepository, transactionRepository } = makeSut()
-    const data = { ...transaction, amount: 1 }
-    const factory = new TransactionFactory(data, transactionRepository, reminderRepository)
+    const { transaction, transactionRepository } = makeSut()
+    const transactionValidation = new TransactionValidation(transaction)
+    const useCase = new CreateTransaction(transaction, transactionRepository, transactionValidation)
 
-    const useCase = factory.execute()
-    const transactionData = await useCase.execute()
+    const result = await useCase.execute()
 
-    expect(transactionData).toHaveProperty("amount", transactionData.amount)
+    expect(result).toHaveProperty("billedAt", transaction.billedAt)
+    expect(result).toHaveProperty("topic", transaction.topic)
+    expect(result).toHaveProperty("type", transaction.type)
+    expect(result).toHaveProperty("userId", transaction.userId)
+    expect(result).toHaveProperty("value", transaction.value)
+    expect(result).toHaveProperty("_id", transaction._id)
+    expect(result).toHaveProperty("anotation", transaction.anotation)
   })
 
-  it("Should be able to create a transaction and add a value into amount", async () => {
-    const { transaction, reminderRepository, transactionRepository } = makeSut()
+  it("should be able to create a transaction and add into current amount", async () => {
+    const { transaction, transactionRepository } = makeSut()
 
-    const data: Transaction = { ...transaction, type: "ENTRANCE" }
+    const transactionValidation = new TransactionValidation(transaction)
+    const useCase = new CreateTransaction(transaction, transactionRepository, transactionValidation)
 
-    const factory = new TransactionFactory(data, transactionRepository, reminderRepository)
+    const createdTransaction = await useCase.execute()
 
-    const useCase = factory.execute()
-    const transactionData = await useCase.execute()
-    const secondTransaction = await useCase.execute()
+    const { amount } = createdTransaction
 
-    expect(secondTransaction).toHaveProperty("amount", transactionData.amount * 2)
+    const newTransaction: Transaction = { ...transaction, amount, type: "ENTRANCE" }
+
+    const createTransaction = new CreateTransaction(
+      newTransaction,
+      transactionRepository,
+      transactionValidation
+    )
+
+    const expectedResult = amount + transaction.value
+
+    const result = await createTransaction.execute()
+
+    expect(expectedResult).toEqual(result.amount)
   })
 
-  it("Should be able to create a transaction and subtract amount value", async () => {
-    const { transaction, reminderRepository, transactionRepository } = makeSut()
+  it("should be able to create a transaction and subtract into current amount", async () => {
+    const { transaction, transactionRepository } = makeSut()
 
-    const data: Transaction = { ...transaction, type: "SPENT" }
+    const transactionValidation = new TransactionValidation(transaction)
+    const useCase = new CreateTransaction(transaction, transactionRepository, transactionValidation)
 
-    const factory = new TransactionFactory(data, transactionRepository, reminderRepository)
+    const createdTransaction = await useCase.execute()
 
-    const useCase = factory.execute()
-    const secondTransaction = await useCase.execute()
-    const isNegative = secondTransaction.amount < 0
+    const { amount } = createdTransaction
 
-    expect(isNegative).toBeTruthy()
+    const newTransaction: Transaction = { ...transaction, amount, type: "SPENT" }
+
+    const createTransaction = new CreateTransaction(
+      newTransaction,
+      transactionRepository,
+      transactionValidation
+    )
+
+    const expectedResult = amount - transaction.value
+
+    const result = await createTransaction.execute()
+
+    expect(expectedResult).toEqual(result.amount)
   })
 
-  it("Should not be able to create a transaction and throw ValidationError", async () => {
+  it("should be able to create diferente monthly transactions and not change amount", async () => {
+    const { transaction, transactionRepository } = makeSut()
+
+    const transactionValidation = new TransactionValidation({ ...transaction })
+    const useCase = new CreateTransaction(
+      { ...transaction, type: "ENTRANCE" },
+      transactionRepository,
+      transactionValidation
+    )
+
+    const createdTransaction = await useCase.execute()
+
+    let lastMonth = new Date().getMonth() - 1
+    const year = new Date().getFullYear()
+
+    lastMonth = lastMonth < 0 ? 11 : lastMonth
+
+    const lastMonthTransaction: Transaction = {
+      ...transaction,
+      billedAt: new Date(year, lastMonth, lastMonth),
+    }
+
+    const createTransaction = new CreateTransaction(
+      lastMonthTransaction,
+      transactionRepository,
+      transactionValidation
+    )
+
+    await createTransaction.execute()
+
+    expect(createdTransaction.amount).toEqual(transaction.value)
+  })
+
+  it("should not be able to create a transaction and throw InvalidParamError", async () => {
+    const { transaction, transactionRepository } = makeSut()
+
+    const transactionValidation = new TransactionValidation(transaction)
+    const useCase = new CreateTransaction(null, transactionRepository, transactionValidation)
+
+    await expect(useCase.execute()).rejects.toThrow(InvalidParamError)
+  })
+
+  it("Should be able to validate transactions fields", async () => {
     const validator = new TransactionValidation({} as Transaction)
 
     const result = validator.validate()
     expect(result.stack.length).toEqual(5)
   })
 
-  it("Should be able to create a reminder", async () => {
-    const { transaction, reminderRepository, transactionRepository } = makeSut()
-    const year = new Date().getFullYear() + 1
-    const transactionReminder = { ...transaction, billedAt: new Date(year, 1, 1) }
+  it("Should not be able create transaction and throw ValidationError", async () => {
+    const { transactionRepository } = makeSut()
+    const transaction = {} as Transaction
+    const transactionValidation = new TransactionValidation(transaction)
 
-    const factory = new TransactionFactory(
-      transactionReminder,
-      transactionRepository,
-      reminderRepository
-    )
-    const useCase = factory.execute()
+    const useCase = new CreateTransaction(transaction, transactionRepository, transactionValidation)
 
-    const result = await useCase.execute()
-    expect(result).toHaveProperty("isCancelled")
+    await expect(useCase.execute()).rejects.toThrow(ValidationError)
   })
 })

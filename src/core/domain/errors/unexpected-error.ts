@@ -7,6 +7,5 @@ export class UnexpectedError extends Error {
   constructor() {
     super("Um erro interno Aconteceu. Tente novamente mais tarde")
     this.name = "UnexpectedError"
-    console.error(this.name)
   }
 }

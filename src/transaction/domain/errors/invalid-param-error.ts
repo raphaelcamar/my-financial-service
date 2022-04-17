@@ -7,6 +7,5 @@ export class InvalidParamError extends Error {
   constructor() {
     super("Está faltando o envio da transação.")
     this.name = "InvalidParamError"
-    console.error(this.name)
   }
 }

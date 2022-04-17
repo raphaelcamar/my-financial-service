@@ -7,6 +7,5 @@ export class MongooseError extends Error {
   constructor() {
     super("Um erro interno Aconteceu. Tente novamente mais tarde.")
     this.name = "MongooseError"
-    console.error(this.name)
   }
 }

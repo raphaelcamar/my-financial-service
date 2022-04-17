@@ -1,26 +1,35 @@
 /* eslint-disable no-unused-vars */
-import { TransactionBuilder } from "@transaction/builders"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 
+import { isSameMonth } from "date-fns"
+
 export class TransactionRepositorySpy implements TransactionRepository {
-  public data: Transaction[] = []
+  private transactions: Transaction[] = []
 
   async create(transaction: Transaction): Promise<Transaction> {
-    this.data.push({
+    const createdTransaction: Transaction = {
       ...transaction,
       createdAt: new Date(),
-      _id: "1234",
       updatedAt: new Date(),
-    })
-    return { ...transaction, createdAt: new Date(), _id: "1234", updatedAt: new Date() }
+    }
+
+    this.transactions.push(createdTransaction)
+
+    return createdTransaction
   }
 
-  async getTransactions(userId: string): Promise<Transaction[]> {
-    return new TransactionBuilder().array(5)
+  async getTransactions(userId: string, start: Date, end: Date): Promise<Transaction[]> {
+    const transactions = this.transactions.filter(transaction => transaction.userId === userId)
+
+    const filteredDateTransactions = transactions.filter(transaction =>
+      isSameMonth(start, transaction.billedAt)
+    )
+
+    return filteredDateTransactions
   }
 
   async getTransactionsByDate(start: Date, end: Date, limit?: number): Promise<Transaction[]> {
-    return this.data
+    return this.transactions
   }
 }

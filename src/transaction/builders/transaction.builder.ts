@@ -13,7 +13,7 @@ export class TransactionBuilder implements Builder<Transaction> {
 
   build(): Transaction {
     const data: Transaction = {
-      billedAt: faker.date.past(),
+      billedAt: new Date(),
       topic: faker.random.arrayElement(["FOOD", "TRANSPORT", "HEALTH", "OTHER"]),
       type: faker.random.arrayElement(["ENTRANCE", "SPENT"]),
       userId: faker.datatype.uuid(),
@@ -21,8 +21,6 @@ export class TransactionBuilder implements Builder<Transaction> {
       _id: faker.datatype.uuid(),
       amount: faker.datatype.number({ max: 10, min: 1 }),
       anotation: faker.random.words(5),
-      createdAt: new Date(),
-      updatedAt: new Date(),
     }
 
     return data

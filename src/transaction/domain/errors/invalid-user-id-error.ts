@@ -7,6 +7,5 @@ export class InvalidUserIdError extends Error {
   constructor() {
     super("Missing userId")
     this.name = "MissingCredentialsError"
-    console.error(this.name)
   }
 }
