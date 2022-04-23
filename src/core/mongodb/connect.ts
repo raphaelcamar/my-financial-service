@@ -7,9 +7,7 @@ export class MongoDbConnection {
 
   connect(): void {
     try {
-      mongoose.connect(`mongodb+srv://${this.uri}/my-financial?retryWrites=true&w=majority`, () =>
-        console.log("Connected!")
-      )
+      mongoose.connect(this.uri, () => console.log("Connected!"))
     } catch (err) {
       console.error(err)
       console.log("Could not connect into the database. Try again")
