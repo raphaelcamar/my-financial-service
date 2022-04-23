@@ -1,7 +1,7 @@
 import { Transaction } from "@transaction/domain/entities"
 
 export type TransactionRepository = {
-  create: (transaction: Transaction) => Promise<Transaction>
+  create: (transaction: Transaction.Data) => Promise<Transaction>
   getTransactions: (userId: string, start: Date, end: Date) => Promise<Transaction[]>
   getTransactionsByDate: (
     userId: string,

@@ -9,10 +9,7 @@ import { TransactionValidation } from "@transaction/presenters/validation"
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const transaction: Transaction = {
-      ...req.body,
-      userId,
-    }
+    const transaction = new Transaction({ ...req.body, userId })
 
     try {
       const transactionValidation = new TransactionValidation(transaction)

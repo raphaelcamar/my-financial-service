@@ -8,11 +8,11 @@ export class TransactionRepositorySpy implements TransactionRepository {
   private transactions: Transaction[] = []
 
   async create(transaction: Transaction): Promise<Transaction> {
-    const createdTransaction: Transaction = {
+    const createdTransaction = new Transaction({
       ...transaction,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    })
 
     this.transactions.push(createdTransaction)
 

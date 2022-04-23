@@ -31,7 +31,7 @@ describe("Create Transaction", () => {
 
     const { amount } = createdTransaction
 
-    const newTransaction: Transaction = { ...transaction, amount, type: "ENTRANCE" }
+    const newTransaction = new Transaction({ ...transaction, amount, type: "ENTRANCE" })
 
     const createTransaction = new CreateTransaction(
       newTransaction,
@@ -56,7 +56,7 @@ describe("Create Transaction", () => {
 
     const { amount } = createdTransaction
 
-    const newTransaction: Transaction = { ...transaction, amount, type: "SPENT" }
+    const newTransaction = new Transaction({ ...transaction, amount, type: "SPENT" })
 
     const createTransaction = new CreateTransaction(
       newTransaction,
@@ -75,8 +75,9 @@ describe("Create Transaction", () => {
     const { transaction, transactionRepository } = makeSut()
 
     const transactionValidation = new TransactionValidation(transaction)
+    const differentType = new Transaction({ ...transaction, type: "ENTRANCE" })
     const useCase = new CreateTransaction(
-      { ...transaction, type: "ENTRANCE" },
+      differentType,
       transactionRepository,
       transactionValidation
     )
@@ -88,10 +89,10 @@ describe("Create Transaction", () => {
 
     lastMonth = lastMonth < 0 ? 11 : lastMonth
 
-    const lastMonthTransaction: Transaction = {
+    const lastMonthTransaction = new Transaction({
       ...transaction,
       billedAt: new Date(year, lastMonth, lastMonth),
-    }
+    })
 
     const createTransaction = new CreateTransaction(
       lastMonthTransaction,

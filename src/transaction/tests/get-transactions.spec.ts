@@ -27,7 +27,7 @@ describe("Get transactions", () => {
     )
 
     const createTransactionUseCaseWithOtherId = new CreateTransaction(
-      { ...transaction, userId: "12346" },
+      new Transaction({ ...transaction, userId: "12346" }),
       transactionRepositorySpy,
       transactionValidation
     )
@@ -74,10 +74,10 @@ describe("Get transactions", () => {
 
     lastMonth = lastMonth < 0 ? 11 : lastMonth
 
-    const lastMonthTransaction: Transaction = {
+    const lastMonthTransaction = new Transaction({
       ...transaction,
       billedAt: new Date(year, lastMonth, lastMonth),
-    }
+    })
 
     const transactionValidation = new TransactionValidation(transaction)
 
