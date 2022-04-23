@@ -29,7 +29,12 @@ export class TransactionRepositorySpy implements TransactionRepository {
     return filteredDateTransactions
   }
 
-  async getTransactionsByDate(start: Date, end: Date, limit?: number): Promise<Transaction[]> {
+  async getTransactionsByDate(
+    userId: string,
+    start: Date,
+    end: Date,
+    limit?: number
+  ): Promise<Transaction[]> {
     return this.transactions
   }
 }
