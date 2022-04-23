@@ -12,7 +12,7 @@ export class UserBuilder implements Builder<User> {
   }
 
   build(): User {
-    const data: User = {
+    const data = {
       email: faker.internet.email(),
       lastname: faker.name.lastName(),
       name: faker.name.firstName(),
@@ -21,7 +21,9 @@ export class UserBuilder implements Builder<User> {
       _id: faker.datatype.uuid(),
     }
 
-    return data
+    const user = new User(data)
+
+    return user
   }
 
   withoutField(fields: UserUnion[]): UserBuilder {
@@ -33,7 +35,7 @@ export class UserBuilder implements Builder<User> {
   }
 
   defaultEmail(): UserBuilder {
-    const user = { ...this.data, email: "teste@teste.com" }
+    const user = new User({ ...this.data, email: "teste@teste.com" })
     this.data = user
     return this
   }
