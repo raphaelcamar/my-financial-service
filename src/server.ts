@@ -4,7 +4,7 @@ import express, { urlencoded, json } from "express"
 import cors from "cors"
 import { config } from "dotenv"
 import UserRoute from "@user/presenters/routes"
-import TransactionRoute from "@transaction/presenters/routes"
+import { TransactionRoutes, MonthlyCloseRoutes } from "@transaction/presenters/routes"
 
 Promise.resolve(config()).then(() => {
   const app = express()
@@ -25,7 +25,11 @@ Promise.resolve(config()).then(() => {
     res.status(200).json({ message: "Hello Docker!" })
   })
 
-  const connection = new MongoDbConnection(process.env.MONGO_DB_URI)
+  const local = process.env.RUN_MONGO_IN
+
+  const connection = new MongoDbConnection(
+    local === "local" ? process.env.MONGO_DB_LOCAL : process.env.MONGO_DB_URI
+  )
 
   connection.connect()
 
@@ -36,5 +40,6 @@ Promise.resolve(config()).then(() => {
   })
 
   UserRoute(app)
-  TransactionRoute(app)
+  TransactionRoutes(app)
+  MonthlyCloseRoutes(app)
 })
