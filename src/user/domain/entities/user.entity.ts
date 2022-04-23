@@ -2,19 +2,12 @@ import { MissingParamError } from "@core/domain/errors"
 
 export class User {
   public _id?: string
-
   public createdAt?: Date
-
   public email: string
-
   public lastname: string
-
   public name: string
-
   public password: string
-
   public token: string
-
   public updatedAt?: Date
 
   constructor(private data: User.Data) {
@@ -30,7 +23,7 @@ export class User {
     this.updatedAt = data?.updatedAt || null
   }
 
-  validate(data: User.Data) {
+  validate(data: User.Data): void {
     if (!data?.name) throw new MissingParamError("Missing name")
     if (!data?.lastname) throw new MissingParamError("Missing lastname")
     if (!data?.password) throw new MissingParamError("Missing password")

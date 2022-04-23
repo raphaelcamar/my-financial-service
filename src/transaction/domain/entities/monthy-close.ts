@@ -1,4 +1,4 @@
-import { Transaction } from "./transaction"
+import { Transaction } from "./transaction.entity"
 
 export type Status = "POSITIVE" | "NEGATIVE"
 
@@ -9,7 +9,7 @@ export interface MonthlyClose {
   startMonthlyDate: Date
   endMonthlyDate: Date
   status: Status
-  transactions: Transaction[]
+  transactions: Transaction.Data[]
 }
 
 export type Months = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" | "10" | "11" | "12"

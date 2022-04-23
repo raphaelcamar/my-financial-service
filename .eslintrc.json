@@ -40,7 +40,8 @@
 			"files": ["**/*.entity.ts"],
 			"rules": {
 				"no-redeclare": "off",
-				"import/export": "off"
+				"import/export": "off",
+				"lines-between-class-members": "off"
 			}
 		}
 	]
