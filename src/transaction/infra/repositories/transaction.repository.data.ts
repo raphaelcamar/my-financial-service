@@ -14,8 +14,14 @@ export class TransactionRepositoryData implements TransactionRepository {
     return result
   }
 
-  async getTransactionsByDate(start: Date, end: Date, limit: number): Promise<Transaction[]> {
+  async getTransactionsByDate(
+    userId: string,
+    start: Date,
+    end: Date,
+    limit: number
+  ): Promise<Transaction[]> {
     const lastTransaction: Transaction[] = await TransactionSchema.find({
+      userId,
       billedAt: {
         $gte: start,
         $lte: end,

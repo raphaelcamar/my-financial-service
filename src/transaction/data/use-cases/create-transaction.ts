@@ -28,7 +28,11 @@ export class CreateTransaction implements UseCase<Transaction> {
     const end = endOfMonth(new Date())
     const isEntrance = this.transaction.type === "ENTRANCE"
 
-    const [lastTransaction] = await this.transactionRepository.getTransactionsByDate(start, end)
+    const [lastTransaction] = await this.transactionRepository.getTransactionsByDate(
+      this.transaction.userId,
+      start,
+      end
+    )
     const amount = lastTransaction?.amount || 0
 
     const newAmount = this.getSumOrSubtractValue(amount, this.transaction.value, isEntrance)

@@ -12,6 +12,7 @@ const MonthlyCloseSchema = new Schema(
     startMonthlyDate: { type: Date, required: true },
     endMonthlyDate: { type: Date, required: true, default: new Date() },
     transactions: { type: Schema.Types.Array, ref: "Transaction", required: true },
+    status: { type: String, required: true, default: null },
   },
   {
     timestamps: true,
