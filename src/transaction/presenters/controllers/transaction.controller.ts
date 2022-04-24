@@ -3,7 +3,7 @@ import { HttpExceptionHandler } from "@core/presenters/utils"
 import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
-import { Request, Response } from "express"
+import { Request, Response } from "@main/handlers"
 import { TransactionValidation } from "@transaction/presenters/validation"
 
 export class TransactionController {

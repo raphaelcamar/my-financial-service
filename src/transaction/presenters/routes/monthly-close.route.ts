@@ -1,10 +1,10 @@
-import { Express } from "express"
+import { App } from "@main/handlers"
 import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
 import { MonthyCloseController } from "@transaction/presenters/controllers/monthly-close.controller"
 
 const middlewareToken = new VerifyAccessTokenMiddleware()
 const transactionController = new MonthyCloseController()
 
-export const MonthlyCloseRoutes = (app: Express) => {
+export const MonthlyCloseRoutes = (app: App) => {
   app.post("/monthly-close", middlewareToken.verify, transactionController.create)
 }

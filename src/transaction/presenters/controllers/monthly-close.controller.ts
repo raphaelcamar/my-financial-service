@@ -5,7 +5,7 @@ import {
   MonthlyCloseRepositoryData,
   TransactionRepositoryData,
 } from "@transaction/infra/repositories"
-import { Request, Response } from "express"
+import { Request, Response } from "@main/handlers"
 
 export class MonthyCloseController {
   async create(req: Request, res: Response): Promise<void> {

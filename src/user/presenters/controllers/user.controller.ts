@@ -1,5 +1,5 @@
 import { UserRepositoryData, CryptoRepositoryData } from "@user/infra/repositories"
-import { Request, Response } from "express"
+import { Request, Response } from "@main/handlers"
 import {
   CreateUser,
   VerifyAccessCredentials,
