@@ -9,6 +9,7 @@
     "@user/*": ["./src/user/*"],
     "@core/*": ["./src/core/*"],
     "@transaction/*": ["./src/transaction/*"],
+    "@main/*": ["./src/main/*"],
   },
   "typeRoots": [
     "./node_modules/@types",

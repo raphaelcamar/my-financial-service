@@ -16,7 +16,8 @@ module.exports = {
       alias: {
         '@user': './src/user',
         '@core': './src/core',
-        '@transaction': './src/transaction'
+        '@transaction': './src/transaction',
+        '@main': './src/main',
       }
     }]
   ],
