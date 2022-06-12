@@ -29,7 +29,7 @@ describe("Verify access token", () => {
     expect(result).toHaveProperty("_id", user._id)
   })
 
-  it("Should not be able to search user by token and return user", async () => {
+  it("Should not be able to search user by token and return NotFoundUserError", async () => {
     const { userRepositorySpy, cryptoRepositoryData } = makeSutUser()
 
     const randomToken = "randomTokenGenerated"

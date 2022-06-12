@@ -12,13 +12,6 @@ export class UserRepositoryData implements UserRepository {
     return result
   }
 
-  async findById(id: number) {
-    const result = await UserSchema.findById(id).catch(() => {
-      throw new UnexpectedError()
-    })
-    return result
-  }
-
   async verifyUserEmail(email: string): Promise<User> {
     const result = await UserSchema.findOne({
       email,

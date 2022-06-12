@@ -3,7 +3,6 @@ import { Request, Response } from "@main/handlers"
 import {
   CreateUser,
   VerifyAccessCredentials,
-  Update,
   CreateJWToken,
   VerifyAccessToken,
 } from "@user/data/use-cases"
@@ -55,19 +54,6 @@ export class UserController {
       httpException.execute()
 
       res.status(httpException.status).json({ message: httpException.message })
-    }
-  }
-
-  // TODO: Need to create a update function
-  async update(req: Request, res: Response) {
-    try {
-      const userRepositoryData = new UserRepositoryData()
-      const cryptoRepositoryData = new CryptoRepositoryData()
-      const useCase = new Update(userRepositoryData, cryptoRepositoryData)
-      useCase.execute()
-      res.status(201).json({ verified: true })
-    } catch (err) {
-      res.status(500).json({ err })
     }
   }
 

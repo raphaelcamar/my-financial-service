@@ -25,7 +25,6 @@ describe("Verify Access Credentials", () => {
     expect(result).toHaveProperty("lastname", user.lastname)
     expect(result).toHaveProperty("name", user.name)
     expect(result).toHaveProperty("password", user.password)
-    expect(result).toHaveProperty("_id", user._id)
   })
 
   it("Should not be able to get user by credentials and throw CredentialsError", async () => {

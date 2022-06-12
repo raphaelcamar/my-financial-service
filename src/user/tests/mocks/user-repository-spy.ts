@@ -12,11 +12,6 @@ export class UserRepositorySpy implements UserRepository {
     return null
   }
 
-  async findById(id: number): Promise<User> {
-    const user: User = null
-    return user
-  }
-
   async createUser(user: User): Promise<User> {
     this.user = user
     return user
