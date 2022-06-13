@@ -18,6 +18,7 @@ module.exports = {
         '@core': './src/core',
         '@transaction': './src/transaction',
         '@main': './src/main',
+        '@history': './src/history',
       }
     }]
   ],

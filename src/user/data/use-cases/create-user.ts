@@ -1,8 +1,8 @@
 import { User } from "@user/domain/entities"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
 import { EmailAlreadyExistsError } from "@user/domain/errors"
-import { UnexpectedError } from "@core/domain/errors"
-import { UseCase } from "@core/data/protocols"
+import { UnexpectedError } from "@core/generic/domain/errors"
+import { UseCase } from "@core/generic/data/protocols"
 
 export class CreateUser implements UseCase<User> {
   constructor(

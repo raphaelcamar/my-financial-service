@@ -1,4 +1,4 @@
-import { UseCase } from "@core/data/protocols"
+import { UseCase } from "@core/generic/data/protocols"
 import { UserRepository, CryptoRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 import { CredentialsError } from "@user/domain/errors"

@@ -1,6 +1,6 @@
 import { Transaction } from "@transaction/domain/entities"
 import faker from "@faker-js/faker/locale/pt_BR"
-import { Builder } from "@core/data/protocols"
+import { Builder } from "@core/generic/data/protocols"
 
 export type TransactionUnion = keyof Transaction
 

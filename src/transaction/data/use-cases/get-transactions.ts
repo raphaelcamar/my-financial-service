@@ -1,7 +1,7 @@
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
-import { UseCase } from "@core/data/protocols"
-import { UnexpectedError } from "@core/domain/errors"
+import { UseCase } from "@core/generic/data/protocols"
+import { UnexpectedError } from "@core/generic/domain/errors"
 import { endOfMonth, startOfMonth } from "date-fns"
 import { InvalidUserIdError } from "@transaction/domain/errors"
 

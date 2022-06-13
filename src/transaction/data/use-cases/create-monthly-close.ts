@@ -1,6 +1,6 @@
 import { TransactionRepository } from "@transaction/data/protocols"
 import { MonthlyCloseRepository } from "@transaction/data/protocols/monthly-close-repository"
-import { UseCase } from "@core/data/protocols"
+import { UseCase } from "@core/generic/data/protocols"
 import { MonthlyClose, Transaction } from "@transaction/domain/entities"
 import { endOfMonth, startOfMonth, subMonths } from "date-fns"
 

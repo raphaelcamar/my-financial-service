@@ -10,6 +10,7 @@ const UserSchema = new Schema(
       tokenId: { type: String, required: false },
       expires_in: { type: Date, required: false },
     },
+    codeRecover: { type: String },
   },
   {
     timestamps: true,

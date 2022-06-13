@@ -1,4 +1,4 @@
-import { Builder } from "@core/data/protocols"
+import { Builder } from "@core/generic/data/protocols"
 import { User } from "@user/domain/entities"
 import faker from "@faker-js/faker/locale/pt_BR"
 
