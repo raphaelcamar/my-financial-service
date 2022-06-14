@@ -1,4 +1,4 @@
-import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
+import { VerifyAccessTokenMiddleware } from "@core/generic/presenters/middlewares"
 import { TransactionController } from "@transaction/presenters/controllers"
 import { App } from "@main/handlers"
 

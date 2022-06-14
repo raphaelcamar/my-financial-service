@@ -7,8 +7,8 @@ import {
   VerifyAccessToken,
 } from "@user/data/use-cases"
 import { User } from "@user/domain/entities"
-import { ErrorStatus, SuccessStatus } from "@core/domain/entities"
-import { HttpExceptionHandler } from "@core/presenters/utils"
+import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
+import { HttpExceptionHandler } from "@core/generic/presenters/utils"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {

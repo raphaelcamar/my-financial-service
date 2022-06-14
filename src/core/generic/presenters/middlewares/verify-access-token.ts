@@ -1,6 +1,6 @@
 import Jwt from "jsonwebtoken"
 import { Request, Response, Next } from "@main/handlers/request"
-import { ErrorStatus } from "@core/domain/entities"
+import { ErrorStatus } from "@core/generic/domain/entities"
 
 export class VerifyAccessTokenMiddleware {
   verify(req: Request, res: Response, next: Next) {

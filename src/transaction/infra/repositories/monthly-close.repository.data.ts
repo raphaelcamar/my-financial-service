@@ -1,4 +1,4 @@
-import { UnexpectedError } from "@core/domain/errors"
+import { UnexpectedError } from "@core/generic/domain/errors"
 import { MonthlyCloseRepository } from "@transaction/data/protocols/monthly-close-repository"
 import { MonthlyClose } from "@transaction/domain/entities"
 import { MonthlyClose as MonthlyCloseSchema } from "@transaction/infra/db/schemas"

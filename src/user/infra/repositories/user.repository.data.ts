@@ -1,4 +1,4 @@
-import { UnexpectedError } from "@core/domain/errors"
+import { UnexpectedError } from "@core/generic/domain/errors"
 import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 import { User as UserSchema } from "@user/infra/db/schemas"

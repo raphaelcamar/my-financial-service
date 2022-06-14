@@ -1,5 +1,5 @@
 import { UserController } from "@user/presenters/controllers"
-import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
+import { VerifyAccessTokenMiddleware } from "@core/generic/presenters/middlewares"
 import { App } from "@main/handlers"
 
 const userController = new UserController()

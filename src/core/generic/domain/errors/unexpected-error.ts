@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { ErrorStatus } from "@core/domain/entities"
+import { ErrorStatus } from "@core/generic/domain/entities"
 
 export class UnexpectedError extends Error {
   status = ErrorStatus.INTERNAL

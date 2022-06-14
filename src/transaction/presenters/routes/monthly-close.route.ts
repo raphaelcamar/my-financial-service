@@ -1,5 +1,5 @@
 import { App } from "@main/handlers"
-import { VerifyAccessTokenMiddleware } from "@core/presenters/middlewares"
+import { VerifyAccessTokenMiddleware } from "@core/generic/presenters/middlewares"
 import { MonthyCloseController } from "@transaction/presenters/controllers/monthly-close.controller"
 
 const middlewareToken = new VerifyAccessTokenMiddleware()

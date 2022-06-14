@@ -1,4 +1,4 @@
-import { MissingParamError } from "@core/domain/errors"
+import { MissingParamError } from "@core/generic/domain/errors"
 
 export type TypeTransaction = "ENTRANCE" | "SPENT"
 
