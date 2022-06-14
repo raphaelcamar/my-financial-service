@@ -5,9 +5,6 @@ import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import { TransactionValidation } from "@transaction/presenters/validation"
-import { CreateHistory } from "@core/history/data/use-cases"
-import { HistoryRepositoryData } from "@core/history/infra/repositories/history.repository.data"
-import { History } from "@core/history/domain/entities"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -24,21 +21,7 @@ export class TransactionController {
         transactionValidation
       )
 
-      const transactionCreated = await useCase.execute()
-
-      const historyRepository = new HistoryRepositoryData<Transaction.Data>()
-      const history = new History({
-        context: "Transaction",
-        occurrenceDate: new Date(),
-        summary: "Transação criada em",
-        userId: req?.userId,
-        metadata: {
-          transactionCreated,
-        },
-      })
-      const historyUseCase = new CreateHistory<Transaction.Data>(historyRepository, history)
-
-      await historyUseCase.execute()
+      await useCase.execute()
 
       const result = await getTransactionUseCase.execute()
 
