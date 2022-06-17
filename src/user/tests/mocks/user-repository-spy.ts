@@ -4,6 +4,8 @@ import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 
 export class UserRepositorySpy implements UserRepository {
+  updateOneBy: (by: object, update: object) => Promise<User>
+
   private user: User
 
   async verifyAccessToken(token: string): Promise<User> {
