@@ -1,4 +1,7 @@
 export * from "./create-jwt-token"
+export * from "./create-password-recover"
 export * from "./create-user"
+export * from "./update-user"
 export * from "./verify-access-credentials"
 export * from "./verify-access-token"
+export * from "./verify-password-recover"

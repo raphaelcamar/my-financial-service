@@ -58,4 +58,12 @@ export class UserRepositoryData implements UserRepository {
     })
     return result
   }
+
+  async updateOneBy(to: object, update: object): Promise<User> {
+    const result = await UserSchema.findOneAndUpdate(to, update, { new: true }).catch(() => {
+      throw new UnexpectedError()
+    })
+
+    return result
+  }
 }

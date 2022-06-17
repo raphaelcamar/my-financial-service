@@ -9,6 +9,7 @@ export class User {
   public password: string
   public token: string
   public updatedAt?: Date
+  public codeRecover?: number
 
   constructor(private data: User.Data) {
     this.validate(data)
@@ -21,6 +22,7 @@ export class User {
     this.password = data.password
     this.token = data.token
     this.updatedAt = data?.updatedAt || null
+    this.codeRecover = data?.codeRecover
   }
 
   validate(data: User.Data): void {
@@ -41,5 +43,6 @@ export namespace User {
     password: string
     token: string
     updatedAt?: Date
+    codeRecover?: number
   }
 }
