@@ -1,4 +1,4 @@
-import { History } from "@core/history/domain/entities"
+import { History } from "@history/domain/entities"
 
 export interface HistoryRepository {
   createHistory: <T>(history: History.Data<T>) => Promise<void>

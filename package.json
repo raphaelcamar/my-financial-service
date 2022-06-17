@@ -48,6 +48,7 @@
     "@babel/node": "^7.16.5",
     "@babel/preset-env": "^7.16.5",
     "@babel/preset-typescript": "^7.16.5",
+    "@types/nodemailer": "^6.4.4",
     "babel-plugin-module-resolver": "^4.1.0",
     "cors": "^2.8.5",
     "crypto-js": "^4.1.1",
@@ -58,6 +59,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.2",
     "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.5",
     "ts-node": "^10.4.0"
   }
 }
