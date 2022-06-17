@@ -1,5 +1,5 @@
 import { SuccessStatus } from "@core/generic/domain/entities"
-import { HttpExceptionHandler } from "@core/generic/presenters/utils"
+import { HttpExceptionHandler } from "@core/generic/utils"
 import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"

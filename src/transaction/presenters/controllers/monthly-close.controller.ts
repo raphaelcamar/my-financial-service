@@ -1,5 +1,5 @@
 import { SuccessStatus } from "@core/generic/domain/entities"
-import { HttpExceptionHandler } from "@core/generic/presenters/utils"
+import { HttpExceptionHandler } from "@core/generic/utils"
 import { CreateMonthlyClose } from "@transaction/data/use-cases"
 import {
   MonthlyCloseRepositoryData,
