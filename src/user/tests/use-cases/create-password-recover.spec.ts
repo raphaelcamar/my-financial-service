@@ -14,7 +14,7 @@ describe("Create password recover", () => {
 
     const passwordRecover = new CreatePasswordRecover(userRepositorySpy, createdUser?.email)
 
-    const code = passwordRecover.execute()
+    const code = await passwordRecover.execute()
 
     expect(code).toBeGreaterThan(111111)
     expect(code).toBeLessThan(999999)
@@ -23,8 +23,9 @@ describe("Create password recover", () => {
   test("Should not be able to create a code for password recover and throw NotFoundUserError", async () => {
     const { userRepositorySpy } = makeSutUser()
 
-    const passwordRecover = new CreatePasswordRecover(userRepositorySpy, "Some-email")
+    const useCase = new CreatePasswordRecover(userRepositorySpy, "Some-email")
 
-    await expect(passwordRecover.execute()).rejects.toThrow(NotFoundUserError)
+    expect(true).toBeTruthy()
+    await expect(useCase.execute()).rejects.toThrow(NotFoundUserError)
   })
 })
