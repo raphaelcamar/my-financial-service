@@ -66,4 +66,15 @@ export class UserRepositoryData implements UserRepository {
 
     return result
   }
+
+  async findByCodeAndUpdate(email: string, code: number): Promise<User> {
+    const result = await UserSchema.findOneAndUpdate(
+      { email, codeRecover: code },
+      { codeRecover: null }
+    ).catch(() => {
+      throw new UnexpectedError()
+    })
+
+    return result
+  }
 }
