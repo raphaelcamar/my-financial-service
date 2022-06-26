@@ -9,7 +9,7 @@ export class VerifyAccessTokenMiddleware {
     Jwt.verify(token, jwt_token, (err, decoded) => {
       if (err) {
         res
-          .status(ErrorStatus.FORBIDDEN)
+          .status(ErrorStatus.UNAUTHORIZED)
           .json({ message: "Token expired!", status: ErrorStatus.UNAUTHORIZED })
       } else {
         req.userId = decoded?.id
