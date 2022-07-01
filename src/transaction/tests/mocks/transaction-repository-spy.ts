@@ -2,8 +2,6 @@
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 
-import { isSameMonth } from "date-fns"
-
 export class TransactionRepositorySpy implements TransactionRepository {
   private transactions: Transaction[] = []
 
@@ -19,22 +17,13 @@ export class TransactionRepositorySpy implements TransactionRepository {
     return createdTransaction
   }
 
-  async getTransactions(userId: string, start: Date, end: Date): Promise<Transaction[]> {
+  async getTransactions(userId: string, query: object): Promise<Transaction[]> {
     const transactions = this.transactions.filter(transaction => transaction.userId === userId)
 
-    const filteredDateTransactions = transactions.filter(transaction =>
-      isSameMonth(start, transaction.billedAt)
-    )
-
-    return filteredDateTransactions
+    return transactions
   }
 
-  async getTransactionsByDate(
-    userId: string,
-    start: Date,
-    end: Date,
-    limit?: number
-  ): Promise<Transaction[]> {
+  async getLastTransaction(userId: string): Promise<Transaction[]> {
     return this.transactions
   }
 }

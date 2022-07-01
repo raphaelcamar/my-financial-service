@@ -51,4 +51,9 @@ export namespace Transaction {
     amount?: number
     topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
   }
+
+  export interface Filter {
+    start?: string
+    limit?: string
+  }
 }

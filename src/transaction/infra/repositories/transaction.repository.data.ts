@@ -2,6 +2,7 @@ import { UnexpectedError } from "@core/generic/domain/errors"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 import { Transaction as TransactionSchema } from "@transaction/infra/db/schemas"
+import { endOfMonth, startOfMonth } from "date-fns"
 
 export class TransactionRepositoryData implements TransactionRepository {
   async create(transaction: Transaction): Promise<Transaction> {
@@ -14,21 +15,12 @@ export class TransactionRepositoryData implements TransactionRepository {
     return result
   }
 
-  async getTransactionsByDate(
-    userId: string,
-    start: Date,
-    end: Date,
-    limit: number
-  ): Promise<Transaction[]> {
+  async getLastTransaction(userId: string): Promise<Transaction[]> {
     const lastTransaction: Transaction[] = await TransactionSchema.find({
       userId,
-      billedAt: {
-        $gte: start,
-        $lte: end,
-      },
     })
       .sort({ $natural: -1 })
-      .limit(limit || 1)
+      .limit(1)
       .catch(() => {
         throw new UnexpectedError()
       })
@@ -36,13 +28,10 @@ export class TransactionRepositoryData implements TransactionRepository {
     return lastTransaction
   }
 
-  async getTransactions(userId: string, start: Date, end: Date): Promise<Transaction[]> {
+  async getTransactions(userId: string, query: object): Promise<Transaction[]> {
     const transactions: Transaction[] = await TransactionSchema.find({
       userId,
-      billedAt: {
-        $gte: start,
-        $lte: end,
-      },
+      billedAt: query,
     })
       .sort({ $natural: -1 })
       .catch(() => {

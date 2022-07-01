@@ -4,7 +4,6 @@ import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
-import { endOfMonth, startOfMonth } from "date-fns"
 import { InvalidParamError, ValidationError } from "@transaction/domain/errors"
 import { TransactionValidation } from "@transaction/presenters/validation"
 
@@ -24,15 +23,12 @@ export class CreateTransaction implements UseCase<Transaction> {
       throw new ValidationError(error.error, error.stack)
     }
 
-    const start = startOfMonth(new Date())
-    const end = endOfMonth(new Date())
     const isEntrance = this.transaction.type === "ENTRANCE"
 
-    const [lastTransaction] = await this.transactionRepository.getTransactionsByDate(
-      this.transaction.userId,
-      start,
-      end
+    const [lastTransaction] = await this.transactionRepository.getLastTransaction(
+      this.transaction.userId
     )
+
     const amount = lastTransaction?.amount || 0
 
     const newAmount = this.getSumOrSubtractValue(amount, this.transaction.value, isEntrance)
