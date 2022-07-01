@@ -8,9 +8,11 @@ export class VerifyAccessTokenMiddleware {
     const token = req.headers.authorization?.replace("Bearer ", "") || ""
     Jwt.verify(token, jwt_token, (err, decoded) => {
       if (err) {
-        res
-          .status(ErrorStatus.UNAUTHORIZED)
-          .json({ message: "Token expired!", status: ErrorStatus.UNAUTHORIZED })
+        res.status(ErrorStatus.UNAUTHORIZED).json({
+          message: "Sessão expirada!",
+          status: ErrorStatus.UNAUTHORIZED,
+          tokenExpired: true,
+        })
       } else {
         req.userId = decoded?.id
         next()
