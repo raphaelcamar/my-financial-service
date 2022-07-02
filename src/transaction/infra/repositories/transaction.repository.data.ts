@@ -41,4 +41,15 @@ export class TransactionRepositoryData implements TransactionRepository {
 
     return transactions as Transaction[]
   }
+
+  async deleteTransaction(userId: string, transactionId: string): Promise<number> {
+    const deletedTransaction = await TransactionSchema.deleteOne({
+      userId,
+      _id: transactionId,
+    }).catch(() => {
+      throw new UnexpectedError()
+    })
+
+    return deletedTransaction?.deletedCount
+  }
 }

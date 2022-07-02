@@ -8,4 +8,5 @@ const transactionController = new TransactionController()
 export const TransactionRoutes = (app: App) => {
   app.post("/transaction", middlewareToken.verify, transactionController.create)
   app.get("/transaction", middlewareToken.verify, transactionController.getTransactions)
+  app.delete("/transaction/:id", middlewareToken.verify, transactionController.deleteTransaction)
 }

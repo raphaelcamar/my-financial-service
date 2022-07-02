@@ -1,6 +1,6 @@
 import { SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
-import { GetTransactions, CreateTransaction } from "@transaction/data/use-cases"
+import { GetTransactions, CreateTransaction, DeleteTransaction } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
 import { Request, Response } from "@main/handlers"
@@ -47,6 +47,28 @@ export class TransactionController {
       const result = await useCase.execute()
 
       res.json(result).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
+    }
+  }
+
+  async deleteTransaction(req: Request, res: Response): Promise<void> {
+    const userId = req?.userId
+
+    const { params } = req
+
+    try {
+      const transactionRepositoryData = new TransactionRepositoryData()
+
+      const useCase = new DeleteTransaction(transactionRepositoryData, userId, params?.id)
+
+      await useCase.execute()
+
+      res.status(SuccessStatus.NO_CONTENT).send()
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 
