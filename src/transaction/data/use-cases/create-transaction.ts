@@ -23,38 +23,10 @@ export class CreateTransaction implements UseCase<Transaction> {
       throw new ValidationError(error.error, error.stack)
     }
 
-    const isEntrance = this.transaction.type === "ENTRANCE"
-
-    const [lastTransaction] = await this.transactionRepository.getLastTransaction(
-      this.transaction.userId
-    )
-
-    const amount = lastTransaction?.amount || 0
-
-    const newAmount = this.getSumOrSubtractValue(amount, this.transaction.value, isEntrance)
-
-    const transactionAmount = {
-      ...this.transaction,
-      amount: newAmount,
-    }
-
-    const result = await this.transactionRepository.create(transactionAmount)
+    const result = await this.transactionRepository.create(this.transaction)
 
     if (!result) throw new UnexpectedError()
 
     return result
-  }
-
-  private getSumOrSubtractValue(
-    amount: number,
-    transactionValue: number,
-    isEntrance: boolean
-  ): number {
-    if (isEntrance) {
-      return amount + transactionValue
-    }
-
-    const newAmount = (amount -= transactionValue)
-    return newAmount
   }
 }

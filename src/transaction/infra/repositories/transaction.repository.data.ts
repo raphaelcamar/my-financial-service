@@ -29,15 +29,16 @@ export class TransactionRepositoryData implements TransactionRepository {
   }
 
   async getTransactions(userId: string, query: object): Promise<Transaction[]> {
-    const transactions: Transaction[] = await TransactionSchema.find({
+    const transactions = await TransactionSchema.find({
       userId,
       billedAt: query,
     })
+      .lean()
       .sort({ $natural: -1 })
       .catch(() => {
         throw new UnexpectedError()
       })
 
-    return transactions
+    return transactions as Transaction[]
   }
 }

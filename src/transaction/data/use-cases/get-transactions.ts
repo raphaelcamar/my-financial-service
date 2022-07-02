@@ -17,11 +17,11 @@ export class GetTransactions implements UseCase<Transaction[]> {
 
     const query = this.getFilters(this.filters)
 
-    const result = await this.transactionRepository.getTransactions(this.userId, query)
+    const transactions = await this.transactionRepository.getTransactions(this.userId, query)
 
-    if (!result) throw new UnexpectedError()
+    if (!transactions) throw new UnexpectedError()
 
-    return result
+    return transactions
   }
 
   getFilters = (filters: Transaction.Filter): object => {
@@ -29,6 +29,7 @@ export class GetTransactions implements UseCase<Transaction[]> {
 
     const start = parse(filters?.start, "dd/MM/yyyy", new Date())
     const limit = parse(filters?.limit, "dd/MM/yyyy", new Date())
+
     const query = {
       $gte: start,
       $lte: limit,
