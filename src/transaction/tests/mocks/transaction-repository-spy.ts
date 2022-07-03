@@ -26,4 +26,11 @@ export class TransactionRepositorySpy implements TransactionRepository {
   async getLastTransaction(userId: string): Promise<Transaction[]> {
     return this.transactions
   }
+
+  async deleteTransaction(transactionId: string): Promise<number> {
+    const founded = this.transactions.filter(transaction => transaction._id !== transactionId)
+
+    if (!founded) return 0
+    return 1
+  }
 }

@@ -1,5 +1,3 @@
-/* eslint-disable no-param-reassign */
-/* eslint-disable no-multi-assign */
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"

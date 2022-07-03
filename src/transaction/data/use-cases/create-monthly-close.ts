@@ -2,7 +2,7 @@ import { TransactionRepository } from "@transaction/data/protocols"
 import { MonthlyCloseRepository } from "@transaction/data/protocols/monthly-close-repository"
 import { UseCase } from "@core/generic/data/protocols"
 import { MonthlyClose, Transaction } from "@transaction/domain/entities"
-import { endOfMonth, startOfMonth, subMonths } from "date-fns"
+import { endOfMonth, format, startOfMonth, subMonths } from "date-fns"
 
 export class CreateMonthlyClose implements UseCase<MonthlyClose> {
   constructor(
@@ -45,27 +45,25 @@ export class CreateMonthlyClose implements UseCase<MonthlyClose> {
   async getLastMonthsData(): Promise<Transaction[]> {
     const lastMonth = subMonths(new Date(), 1)
 
-    const start = startOfMonth(lastMonth)
-    const end = endOfMonth(lastMonth)
+    const start = format(startOfMonth(lastMonth), "dd/MM/yyyy")
+    const end = format(endOfMonth(lastMonth), "dd/MM/yyyy")
 
-    const lastMonthTransactions = await this.transactionRepository.getTransactions(
-      this.userId,
+    const lastMonthTransactions = await this.transactionRepository.getTransactions(this.userId, {
       start,
-      end
-    )
+      end,
+    })
 
     return lastMonthTransactions
   }
 
   async getCurrentMonthsData(): Promise<Transaction[]> {
-    const start = startOfMonth(new Date())
-    const end = endOfMonth(new Date())
+    const start = format(startOfMonth(new Date()), "dd/MM/yyyy")
+    const end = format(endOfMonth(new Date()), "dd/MM/yyyy")
 
-    const currentMonthTransactions = await this.transactionRepository.getTransactions(
-      this.userId,
+    const currentMonthTransactions = await this.transactionRepository.getTransactions(this.userId, {
       start,
-      end
-    )
+      end,
+    })
 
     return currentMonthTransactions
   }
