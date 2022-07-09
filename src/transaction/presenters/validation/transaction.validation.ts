@@ -1,12 +1,8 @@
+import { ValidateFields, ValidateResponse } from "@core/generic/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 import Joi from "joi"
 
-export interface ValidateResponse {
-  error: string
-  stack: Joi.ValidationErrorItem[]
-}
-
-export class TransactionValidation {
+export class TransactionValidation implements ValidateFields {
   constructor(private transaction: Transaction) {}
 
   validate(): ValidateResponse {

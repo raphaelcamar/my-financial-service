@@ -5,4 +5,5 @@ export type TransactionRepository = {
   getTransactions: (userId: string, query: object) => Promise<Transaction[]>
   getLastTransaction: (userId: string) => Promise<Transaction[]>
   deleteTransaction: (userId: string, transactionId: string) => Promise<number>
+  updateTransaction: (transaction: Transaction.Data) => Promise<void>
 }

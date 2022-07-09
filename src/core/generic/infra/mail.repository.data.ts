@@ -1,4 +1,4 @@
-import { EmailServiceRepository } from "@core/generic/data/protocols/mail-repository"
+import { EmailServiceRepository } from "@core/generic/data/protocols"
 import { EmailServiceData } from "@core/generic/domain/entities/mail.entity"
 import nodemailer, { Transporter } from "nodemailer"
 import SMTPTransport from "nodemailer/lib/smtp-transport"

@@ -9,4 +9,5 @@ export const TransactionRoutes = (app: App) => {
   app.post("/transaction", middlewareToken.verify, transactionController.create)
   app.get("/transaction", middlewareToken.verify, transactionController.getTransactions)
   app.delete("/transaction/:id", middlewareToken.verify, transactionController.deleteTransaction)
+  app.put("/transaction/update", middlewareToken.verify, transactionController.updateTransaction)
 }
