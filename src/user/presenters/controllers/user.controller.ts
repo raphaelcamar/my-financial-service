@@ -87,7 +87,9 @@ export class UserController {
 
       httpException.execute()
 
-      res.status(httpException.status).json({ message: httpException.message })
+      res
+        .status(httpException.status)
+        .json({ message: httpException.message, status: httpException.status })
     }
   }
 
