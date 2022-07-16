@@ -28,10 +28,9 @@ export class TransactionRepositoryData implements TransactionRepository {
   }
 
   async getTransactions(userId: string, query: object): Promise<Transaction[]> {
-    const transactions = await TransactionSchema.find({
-      userId,
-      billedAt: query,
-    })
+    const findBy = query ? { userId, billedAt: query } : { userId }
+
+    const transactions = await TransactionSchema.find(findBy)
       .lean()
       .sort({ $natural: -1 })
       .catch(() => {

@@ -1,22 +1,23 @@
-import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
+import { TransactionRepository } from "@transaction/data/protocols"
 import { parse } from "date-fns"
 
-export class GetMostSpent implements UseCase<Transaction.Data> {
+export class GetTotalFilter implements UseCase<number> {
   constructor(
     private userId: string,
     private transactionRepository: TransactionRepository,
     private filter: Transaction.Filter
   ) {}
 
-  async execute() {
+  async execute(): Promise<number> {
     const query = this.getFilters(this.filter)
 
     const transactions = await this.transactionRepository.getTransactions(this.userId, query)
-    const mostSpentTransaction = this.getMostSpent(transactions)
 
-    return mostSpentTransaction
+    const total = this.getTotal(transactions)
+
+    return total
   }
 
   private getFilters(filters: Transaction.Filter): object {
@@ -33,12 +34,12 @@ export class GetMostSpent implements UseCase<Transaction.Data> {
     return query
   }
 
-  getMostSpent(values: Transaction.Data[]): Transaction.Data {
-    if (values?.length <= 0) return null
+  getTotal(transactions: Transaction.Data[] | null): number {
+    if (transactions?.length <= 0) return 0
 
-    const spents = values.filter(transaction => transaction.type !== "ENTRANCE")
-    const mostSpent = spents.reduce((prev, curr) => (prev.value > curr.value ? prev : curr))
+    const values = transactions.map(transaction => transaction?.value)
+    const sumValues = values?.reduce((prev, curr) => prev + curr)
 
-    return mostSpent
+    return sumValues
   }
 }

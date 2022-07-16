@@ -6,6 +6,7 @@ import {
   DeleteTransaction,
   UpdateTransaction,
   GetMostSpent,
+  GetTotalFilter,
 } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
@@ -130,9 +131,11 @@ export class TransactionController {
       const transactionRepositoryData = new TransactionRepositoryData()
 
       const mostSpent = new GetMostSpent(userId, transactionRepositoryData, filter)
+      const totalFilter = new GetTotalFilter(userId, transactionRepositoryData, filter)
 
       const getTypeStatistic = {
         mostSpent,
+        totalFilter,
       }
       const useCase = getTypeStatistic[params?.type]
 
