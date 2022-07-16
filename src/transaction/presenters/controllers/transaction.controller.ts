@@ -8,6 +8,7 @@ import {
   GetMostSpent,
   GetTotalFilter,
   GetTotal,
+  GetAverage,
 } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
@@ -134,12 +135,15 @@ export class TransactionController {
       const mostSpent = new GetMostSpent(userId, transactionRepositoryData, filter)
       const totalFilter = new GetTotalFilter(userId, transactionRepositoryData, filter)
       const total = new GetTotal(userId, transactionRepositoryData)
+      const average = new GetAverage(userId, transactionRepositoryData, filter)
 
       const getTypeStatistic = {
         mostSpent,
         totalFilter,
         total,
+        average,
       }
+
       const useCase = getTypeStatistic[params?.type]
 
       if (!useCase) throw new WrongParamError()
