@@ -5,12 +5,13 @@ import {
   CreateTransaction,
   DeleteTransaction,
   UpdateTransaction,
+  GetMostSpent,
 } from "@transaction/data/use-cases"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepositoryData } from "@transaction/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import { TransactionValidation } from "@transaction/presenters/validation"
-import { ValidationError } from "@transaction/domain/errors"
+import { ValidationError, WrongParamError } from "@transaction/domain/errors"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -117,6 +118,35 @@ export class TransactionController {
       res
         .status(httpException.status)
         .json({ message: httpException.message, stack: error?.stackTrace || [] })
+    }
+  }
+
+  async getStatistics(req: Request, res: Response): Promise<void> {
+    const userId = req?.userId
+    const params = req?.params
+    const filter: Transaction.Filter = req?.query
+
+    try {
+      const transactionRepositoryData = new TransactionRepositoryData()
+
+      const mostSpent = new GetMostSpent(userId, transactionRepositoryData, filter)
+
+      const getTypeStatistic = {
+        mostSpent,
+      }
+      const useCase = getTypeStatistic[params?.type]
+
+      if (!useCase) throw new WrongParamError()
+
+      const result = await useCase.execute()
+
+      res.status(201).json({ statistic: result })
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
     }
   }
 }

@@ -2,7 +2,6 @@ import { Transaction } from "@transaction/domain/entities"
 import { TransactionValidation } from "@transaction/presenters/validation"
 import { TransactionBuilder } from "@transaction/builders"
 import { CreateTransaction, GetTransactions } from "@transaction/data/use-cases"
-import { endOfMonth, format, startOfMonth } from "date-fns"
 import { TransactionRepositorySpy } from "./mocks"
 
 const makeSut = () => {

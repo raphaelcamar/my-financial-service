@@ -33,4 +33,8 @@ export class TransactionRepositorySpy implements TransactionRepository {
     if (!founded) return 0
     return 1
   }
+
+  updateTransaction: (transaction: Transaction.Data) => Promise<void>
+
+  getStatistics: (userId: string, query: object) => Promise<Transaction[]>
 }

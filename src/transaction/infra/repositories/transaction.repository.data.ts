@@ -2,7 +2,6 @@ import { UnexpectedError } from "@core/generic/domain/errors"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 import { Transaction as TransactionSchema } from "@transaction/infra/db/schemas"
-import { endOfMonth, startOfMonth } from "date-fns"
 
 export class TransactionRepositoryData implements TransactionRepository {
   async create(transaction: Transaction): Promise<Transaction> {
