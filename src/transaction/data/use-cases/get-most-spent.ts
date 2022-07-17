@@ -13,7 +13,7 @@ export class GetMostSpent implements UseCase<Transaction.Data> {
   async execute() {
     const query = this.getFilters(this.filter)
 
-    const transactions = await this.transactionRepository.getTransactions(this.userId, query)
+    const transactions = await this.transactionRepository.getSpents(this.userId, query)
     const mostSpentTransaction = this.getMostSpent(transactions)
 
     return mostSpentTransaction
@@ -36,8 +36,7 @@ export class GetMostSpent implements UseCase<Transaction.Data> {
   getMostSpent(values: Transaction.Data[]): Transaction.Data {
     if (values?.length <= 0) return null
 
-    const spents = values.filter(transaction => transaction.type !== "ENTRANCE")
-    const mostSpent = spents.reduce((prev, curr) => (prev.value > curr.value ? prev : curr))
+    const mostSpent = values.reduce((prev, curr) => (prev.value < curr.value ? prev : curr))
 
     return mostSpent
   }

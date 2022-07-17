@@ -3,6 +3,8 @@ import { TransactionRepository } from "@transaction/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 
 export class TransactionRepositorySpy implements TransactionRepository {
+  getSpents: (userId: string, query: object, justValue?: boolean) => Promise<Transaction[]>
+
   private transactions: Transaction[] = []
 
   async create(transaction: Transaction): Promise<Transaction> {

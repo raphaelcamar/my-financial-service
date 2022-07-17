@@ -20,11 +20,7 @@ describe("Get Average statistic", () => {
       value: values[1],
       type: "SPENT",
     }
-    const transaction2: Transaction.Data = {
-      ...new TransactionBuilder().build(),
-      value: values[2],
-      type: "ENTRANCE",
-    }
+
     const transaction3: Transaction.Data = {
       ...transaction,
       value: values[3],
@@ -38,7 +34,7 @@ describe("Get Average statistic", () => {
 
     const total = values[1] + values[3] + values[4]
 
-    const transactions = [transaction1, transaction2, transaction3, transaction4]
+    const transactions = [transaction1, transaction3, transaction4]
 
     const result = useCase.getAverage(transactions)
     expect(result).toBe(total / 3)

@@ -10,17 +10,17 @@ describe("Get most spent", () => {
     const useCase = new GetMostSpent("134", transactionRepository, {})
     const transaction1: Transaction.Data = {
       ...new TransactionBuilder().build(),
-      value: -100,
+      value: -100.2,
       type: "SPENT",
     }
     const transaction2: Transaction.Data = {
       ...new TransactionBuilder().build(),
-      value: -500,
+      value: -50.0,
       type: "SPENT",
     }
     const transaction3: Transaction.Data = {
       ...transaction,
-      value: -100,
+      value: -100.3,
       type: "SPENT",
     }
     const transactions = [transaction1, transaction2, transaction3]

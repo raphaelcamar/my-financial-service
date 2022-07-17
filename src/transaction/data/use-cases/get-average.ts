@@ -13,7 +13,7 @@ export class GetAverage implements UseCase<number> {
   async execute(): Promise<number> {
     const query = this.getFilters(this.filter)
 
-    const transactions = await this.transactionRepository.getTransactions(this.userId, query)
+    const transactions = await this.transactionRepository.getSpents(this.userId, query, true)
 
     const total = this.getAverage(transactions)
 
@@ -37,9 +37,8 @@ export class GetAverage implements UseCase<number> {
   getAverage(transactions: Transaction.Data[] | null): number {
     if (transactions?.length <= 0) return 0
 
-    const spents = transactions.filter(transaction => transaction.type !== "ENTRANCE")
-    const values = spents.map(transaction => transaction?.value)
-    const divideBy = spents?.length
+    const values = transactions.map(transaction => transaction?.value)
+    const divideBy = transactions?.length
     const sumValues = values?.reduce((prev, curr) => prev + curr)
 
     return sumValues / divideBy

@@ -112,45 +112,41 @@ export class TransactionController {
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
+      } else {
+        const httpException = new HttpExceptionHandler(error)
+
+        httpException.execute()
+
+        res
+          .status(httpException.status)
+          .json({ message: httpException.message, stack: error?.stackTrace || [] })
       }
-
-      const httpException = new HttpExceptionHandler(error)
-
-      httpException.execute()
-
-      res
-        .status(httpException.status)
-        .json({ message: httpException.message, stack: error?.stackTrace || [] })
     }
   }
 
   async getStatistics(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const params = req?.params
     const filter: Transaction.Filter = req?.query
 
     try {
       const transactionRepositoryData = new TransactionRepositoryData()
 
-      const mostSpent = new GetMostSpent(userId, transactionRepositoryData, filter)
-      const totalFilter = new GetTotalFilter(userId, transactionRepositoryData, filter)
-      const total = new GetTotal(userId, transactionRepositoryData)
-      const average = new GetAverage(userId, transactionRepositoryData, filter)
+      const mostSpent = await new GetMostSpent(userId, transactionRepositoryData, filter).execute()
+      const totalFilter = await new GetTotalFilter(
+        userId,
+        transactionRepositoryData,
+        filter
+      ).execute()
+      const total = await new GetTotal(userId, transactionRepositoryData).execute()
+      const average = await new GetAverage(userId, transactionRepositoryData, filter).execute()
 
-      const getTypeStatistic = {
+      const statistics = {
         mostSpent,
         totalFilter,
         total,
         average,
       }
-
-      const useCase = getTypeStatistic[params?.type]
-
-      if (!useCase) throw new WrongParamError()
-
-      const result = await useCase.execute()
-
-      res.status(201).json({ statistic: result })
+      res.status(SuccessStatus.SUCCESS).json({ statistics, filter })
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 

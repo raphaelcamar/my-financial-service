@@ -54,9 +54,31 @@ export class TransactionRepositoryData implements TransactionRepository {
   async updateTransaction(transaction: Transaction): Promise<void> {
     await TransactionSchema.updateOne(
       { userId: transaction?.userId, _id: transaction?._id },
-      { transaction }
+      transaction
     ).catch(() => {
       throw new UnexpectedError()
     })
+  }
+
+  async getSpents(userId: string, query: object, justValue?: boolean): Promise<Transaction[]> {
+    const findBy = query ? { userId, billedAt: query } : { userId }
+    const fields = justValue ? { value: 1, _id: 0 } : null
+
+    const transactions = await TransactionSchema.find(
+      {
+        ...findBy,
+        type: {
+          $eq: "SPENT",
+        },
+      },
+      fields
+    )
+      .lean()
+      .sort({ $natural: -1 })
+      .catch(() => {
+        throw new UnexpectedError()
+      })
+
+    return transactions as Transaction[]
   }
 }
