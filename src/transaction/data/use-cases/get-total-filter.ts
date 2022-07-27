@@ -13,10 +13,9 @@ export class GetTotalFilter implements UseCase<number> {
   async execute(): Promise<number> {
     const query = this.getFilters(this.filter)
 
-    const transactions = await this.transactionRepository.getTransactions(this.userId, query)
+    const transactions = await this.transactionRepository.getSpents(this.userId, query)
 
     const total = this.getTotal(transactions)
-
     return total
   }
 

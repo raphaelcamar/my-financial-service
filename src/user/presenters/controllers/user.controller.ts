@@ -1,3 +1,4 @@
+import { History } from "@history/domain/entities"
 import { UserRepositoryData, CryptoRepositoryData } from "@user/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import {
@@ -13,12 +14,16 @@ import { User } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { EmailServiceRepositoryData } from "@core/generic/infra"
+import { CreateHistory } from "@history/data/use-cases"
+import { HistoryRepositoryData } from "@history/infra/repositories/history.repository.data"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {
     try {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
+      const historyRepository = new HistoryRepositoryData()
+
       const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData)
       const user = await useCase.execute()
 
@@ -27,6 +32,30 @@ export class UserController {
       const result = await userRepositoryData.updateJWToken(user, token)
 
       delete result.password
+
+      const history = new History<User, "LOGIN">({
+        context: "USER",
+        occurrenceDate: new Date(),
+        summary: "Entrou no sistema",
+        userId: user?._id,
+        metadata: user,
+        generatedBy: "USER",
+        action: "LOGIN",
+      })
+
+      const photoHistory = new History<User>({
+        context: "USER",
+        occurrenceDate: new Date(),
+        summary: "Entrou no sistema",
+        userId: user?._id,
+        metadata: user,
+        generatedBy: "USER",
+        action: "UPDATE",
+      })
+
+      await new CreateHistory(historyRepository, history).execute()
+
+      await new CreateHistory(historyRepository, photoHistory).execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
@@ -42,6 +71,7 @@ export class UserController {
     try {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
+      const historyRepository = new HistoryRepositoryData()
       const useCase = new VerifyAccessCredentials(
         email,
         password,
@@ -54,6 +84,19 @@ export class UserController {
       const result = await userRepositoryData.updateJWToken(user, token)
 
       delete result.password
+
+      const history = new History<User, "LOGIN">({
+        context: "USER",
+        occurrenceDate: new Date(),
+        summary: "Entrou no sistema",
+        userId: user?._id,
+        metadata: user,
+        generatedBy: "USER",
+        action: "LOGIN",
+      })
+      const historyUseCase = new CreateHistory(historyRepository, history)
+
+      await historyUseCase.execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (error) {
@@ -139,16 +182,32 @@ export class UserController {
     }
   }
 
+  // TODO change name of the funtion and endpoint, to updatePassword
   async update(req: Request, res: Response) {
     try {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
+      const historyRepository = new HistoryRepositoryData()
+
       const useCase = new UpdateUser(
         userRepositoryData,
         req.body as User.Data,
         cryptoRepositoryData
       )
       const user = await useCase.execute()
+
+      const history = new History<User, "PASSWORD">({
+        context: "USER",
+        occurrenceDate: new Date(),
+        summary: "Atualizou a senha",
+        userId: user?._id,
+        metadata: user,
+        generatedBy: "USER",
+        action: "PASSWORD",
+      })
+      const historyUseCase = new CreateHistory(historyRepository, history)
+
+      await historyUseCase.execute()
 
       res.status(SuccessStatus.SUCCESS).json(user)
     } catch (error) {

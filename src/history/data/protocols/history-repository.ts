@@ -1,5 +1,5 @@
 import { History } from "@history/domain/entities"
 
 export interface HistoryRepository {
-  createHistory: <T>(history: History.Data<T>) => Promise<void>
+  createHistory: <T, K>(history: History<T | null, K>) => Promise<void>
 }
