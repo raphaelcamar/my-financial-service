@@ -7,7 +7,7 @@ import { InitializeMiddlewares } from "@main/middlewares"
 
 Promise.resolve(config()).then(() => {
   const app = express()
-  const port = 4000
+  const port = Number(process.env.PORT) || 4000
 
   new InitializeMiddlewares(app, port).initialize()
 
