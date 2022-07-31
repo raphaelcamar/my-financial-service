@@ -17,5 +17,12 @@ export class InitializeMiddlewares {
         optionsSuccessStatus: 200,
       })
     )
+
+    this.app.use(
+      cors({
+        origin: "https://my-financial-front.vercel.app",
+        optionsSuccessStatus: 200,
+      })
+    )
   }
 }
