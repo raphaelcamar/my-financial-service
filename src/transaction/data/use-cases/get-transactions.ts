@@ -4,6 +4,7 @@ import { UseCase } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { parse } from "date-fns"
 import { InvalidUserIdError } from "@transaction/domain/errors"
+import locale from "date-fns/locale"
 
 export class GetTransactions implements UseCase<Transaction[]> {
   constructor(
@@ -27,8 +28,11 @@ export class GetTransactions implements UseCase<Transaction[]> {
   getFilters = (filters: Transaction.Filter): object => {
     if (!filters?.start && !filters?.limit) return null
 
-    const start = parse(filters?.start, "dd/MM/yyyy", new Date())
-    const limit = parse(filters?.limit, "dd/MM/yyyy", new Date())
+    const start = parse(filters?.start, "dd/MM/yyyy", new Date(), { locale: locale.ptBR })
+    const limit = parse(filters?.limit, "dd/MM/yyyy", new Date(), { locale: locale.ptBR })
+
+    console.log({ start, limit })
+    console.log("UTC Dates", { start, limit })
 
     const query = {
       $gte: start,
