@@ -36,8 +36,8 @@ export class GetTransactions implements UseCase<Transaction[]> {
     })
 
     const query = {
-      $gte: start,
-      $lte: limit,
+      $gte: start.toLocaleDateString(),
+      $lte: limit.toLocaleDateString(),
     }
 
     return query
