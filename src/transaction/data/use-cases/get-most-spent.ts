@@ -1,7 +1,7 @@
 import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
-import { parse } from "date-fns"
+import { addDays, parse } from "date-fns"
 
 export class GetMostSpent implements UseCase<Transaction.Data> {
   constructor(
@@ -27,7 +27,7 @@ export class GetMostSpent implements UseCase<Transaction.Data> {
 
     const query = {
       $gte: start,
-      $lte: limit,
+      $lte: addDays(limit, 1),
     }
 
     return query

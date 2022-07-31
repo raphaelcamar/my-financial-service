@@ -1,7 +1,7 @@
 import { UseCase } from "@core/generic/data/protocols"
 import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
-import { parse } from "date-fns"
+import { addDays, parse } from "date-fns"
 
 export class GetAverage implements UseCase<number> {
   constructor(
@@ -28,7 +28,7 @@ export class GetAverage implements UseCase<number> {
 
     const query = {
       $gte: start,
-      $lte: limit,
+      $lte: addDays(limit, 1),
     }
 
     return query
