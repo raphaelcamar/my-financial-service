@@ -4,8 +4,8 @@
 
 # My financial 
 
-## Descrição
-My financial é um aplicação que permite controlar sua vida financeira. O projeto foi iniciado para ser uma base de estudos sobre nodeJS, permitindo aplicar soluções e conceitos de sua infraestrutura.
+## Description
+My financial it´s a app that allows you to control your financial life. The project was started to be a studying base about NodeJS, allowing to apply differet solutions and concepts about your infraestructure
 
 ## Tecnologias utilizadas
 
