@@ -13,7 +13,7 @@ export class InitializeMiddlewares {
 
     this.app.use(
       cors({
-        origin: "https://my-financial-front.vercel.app",
+        origin: ["https://my-financial-front.vercel.app", "http://localhost:3000"],
         optionsSuccessStatus: 200,
       })
     )
