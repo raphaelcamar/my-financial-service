@@ -15,7 +15,7 @@ My financial it´s a app that allows you to control your financial life. The pro
 - Docker
 - Express
 - Clean architecture
-- Criptografia
+- Cryptography
 - Husky
 
 ## Autores
