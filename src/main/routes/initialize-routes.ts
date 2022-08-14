@@ -1,3 +1,4 @@
+import { TagRoutes } from "@core/tag/presenters/routes/tag.route"
 import { App } from "@main/handlers"
 import { MonthlyCloseRoutes, TransactionRoutes } from "@transaction/presenters/routes"
 import { UserRoutes } from "@user/presenters/routes"
@@ -11,6 +12,8 @@ export class InitializeRoutes {
     TransactionRoutes(this.app)
 
     MonthlyCloseRoutes(this.app)
+
+    TagRoutes(this.app)
 
     this.getSingularRoutes()
   }

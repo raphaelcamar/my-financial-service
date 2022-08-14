@@ -10,6 +10,9 @@ export class Recurrence {
   public type: PaymentType
   public name: string
   public value: number
+  public inactivatedAt?: Date
+  public recurernceType: "SIGNATURE" | string
+  public tagId: string
 
   constructor(data: Recurrence.Data) {
     this.validate(data)
@@ -21,6 +24,7 @@ export class Recurrence {
     this.type = data.type
     this.name = data.name
     this.value = data.value
+    this.tagId = data.tagId
   }
 
   private validate?(data: Recurrence.Data) {
@@ -30,6 +34,7 @@ export class Recurrence {
     if (!data?.type) throw new MissingParamError("Missing type")
     if (!data?.name) throw new MissingParamError("Missing name")
     if (!data?.value) throw new MissingParamError("Missing value")
+    if (!data?.tagId) throw new MissingParamError("Missing TagId")
   }
 }
 
@@ -42,5 +47,6 @@ export namespace Recurrence {
     type: PaymentType
     name: string
     value: number
+    tagId: string
   }
 }
