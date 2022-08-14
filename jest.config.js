@@ -6,5 +6,6 @@ module.exports = {
     '^@core/(.*)$': '<rootDir>/src/core/$1',
     '^@transaction/(.*)$': '<rootDir>/src/transaction/$1',
     '^@history/(.*)$': '<rootDir>/src/history/$1',
+    '^@tag/(.*)$': '<rootDir>/src/tag/$1',
   }
 };

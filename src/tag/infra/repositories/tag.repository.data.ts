@@ -1,6 +1,6 @@
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { TagRepository } from "src/tag/data/protocols"
-import { Tag } from "src/tag/domain/entities"
+import { Tag } from "@tag/domain/entities"
 import { Tag as TagSchema } from "@tag/infra/db"
 
 export class TagRepositoryData implements TagRepository {

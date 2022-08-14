@@ -19,6 +19,7 @@ module.exports = {
         '@transaction': './src/transaction',
         '@main': './src/main',
         '@history': './src/history',
+        '@tag': './src/tag',
       }
     }]
   ],
