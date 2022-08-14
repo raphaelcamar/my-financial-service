@@ -1,7 +1,7 @@
 import { UnexpectedError } from "@core/generic/domain/errors"
-import { TagRepository } from "@core/tag/data/protocols"
-import { Tag } from "@core/tag/domain/entities"
-import { Tag as TagSchema } from "@core/tag/infra/db"
+import { TagRepository } from "src/tag/data/protocols"
+import { Tag } from "src/tag/domain/entities"
+import { Tag as TagSchema } from "@tag/infra/db"
 
 export class TagRepositoryData implements TagRepository {
   async create(tag: Tag): Promise<Tag> {

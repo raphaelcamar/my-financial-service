@@ -10,7 +10,8 @@
     "@core/*": ["./src/core/*"],
     "@transaction/*": ["./src/transaction/*"],
     "@main/*": ["./src/main/*"],
-    "@history/*": ["src/history/*"]
+    "@history/*": ["src/history/*"],
+    "@tag/*": ["src/tag/*"]
   },
   "typeRoots": [
     "./node_modules/@types",

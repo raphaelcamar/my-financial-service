@@ -1,7 +1,7 @@
 import { SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
-import { CreateTag } from "@core/tag/data/use-cases"
-import { TagRepositoryData } from "@core/tag/infra/repositories"
+import { CreateTag } from "src/tag/data/use-cases"
+import { TagRepositoryData } from "@tag/infra/repositories"
 import { Request, Response } from "@main/handlers"
 
 export class TagController {

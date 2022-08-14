@@ -1,6 +1,6 @@
 import { UseCase } from "@core/generic/data/protocols"
-import { Tag } from "@core/tag/domain/entities"
-import { TagRepository } from "@core/tag/data/protocols"
+import { Tag } from "src/tag/domain/entities"
+import { TagRepository } from "@tag/data/protocols"
 
 export class CreateTag implements UseCase<Tag> {
   constructor(private tagRepository: TagRepository, private tag: Tag, private userId: string) {}

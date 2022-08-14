@@ -1,4 +1,4 @@
-import { TagRoutes } from "@core/tag/presenters/routes/tag.route"
+import { TagRoutes } from "@tag/presenters/routes/tag.route"
 import { App } from "@main/handlers"
 import { MonthlyCloseRoutes, TransactionRoutes } from "@transaction/presenters/routes"
 import { UserRoutes } from "@user/presenters/routes"
