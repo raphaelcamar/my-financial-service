@@ -21,4 +21,10 @@ export class TagRepositoryData implements TagRepository {
 
     return result
   }
+
+  async delete(tagId: string, userId: string): Promise<Tag> {
+    const result: Tag = await TagSchema.findOneAndDelete({ _id: tagId, userId })
+
+    return result
+  }
 }
