@@ -16,4 +16,11 @@ export class TagRepositorySpy implements TagRepository {
 
     return { ...tagUpdated, inactivatedAt }
   }
+
+  async delete(tagId: string, userId: string): Promise<Tag> {
+    const tag = new TagBuilder().build()
+    const tagUpdated = await Promise.resolve(() => {}).then(() => tag)
+
+    return tagUpdated
+  }
 }
