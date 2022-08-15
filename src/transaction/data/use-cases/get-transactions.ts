@@ -2,9 +2,8 @@ import { Transaction } from "@transaction/domain/entities"
 import { TransactionRepository } from "@transaction/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
-import { addDays, formatISO, parse } from "date-fns"
+import { addDays, parse } from "date-fns"
 import { InvalidUserIdError } from "@transaction/domain/errors"
-import ptBR from "date-fns/locale/pt-BR"
 
 export class GetTransactions implements UseCase<Transaction[]> {
   constructor(

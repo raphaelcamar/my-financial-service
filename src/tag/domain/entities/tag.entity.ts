@@ -1,5 +1,7 @@
 import { MissingParamError } from "@core/generic/domain/errors"
 
+export type TagStatus = "active" | "inactive"
+
 export class Tag<T = {}> {
   public _id?: string
   public description: string

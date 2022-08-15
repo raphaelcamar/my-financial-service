@@ -27,4 +27,9 @@ export class TagRepositoryData implements TagRepository {
 
     return result
   }
+
+  async get(userId: string, query: object): Promise<Tag[]> {
+    const result = await TagSchema.find({ userId, ...query })
+    return result
+  }
 }

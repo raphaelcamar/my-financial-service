@@ -2,14 +2,14 @@ import { TagRepository } from "@tag/data/protocols"
 import { UseCase } from "@core/generic/data/protocols"
 import { MissingParamError } from "@core/generic/domain/errors"
 import { NotFoundUserError } from "@user/domain/errors"
-import { Tag } from "@tag/domain/entities"
+import { Tag, TagStatus } from "@tag/domain/entities"
 
 export class ActiveOrInactiveTag implements UseCase<Tag> {
   constructor(
     private tagRepository: TagRepository,
     private userId: string,
     private tagId: string,
-    private type: string
+    private type: TagStatus
   ) {}
 
   async execute(): Promise<Tag> {
