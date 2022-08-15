@@ -38,4 +38,9 @@ export class TagBuilder implements Builder<Tag> {
 
     return this
   }
+
+  array(size: number): Tag[] {
+    const tags = new Array(size).fill(this.build())
+    return tags
+  }
 }

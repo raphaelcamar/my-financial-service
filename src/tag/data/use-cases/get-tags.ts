@@ -2,7 +2,7 @@ import { UseCase } from "@core/generic/data/protocols"
 import { MissingParamError } from "@core/generic/domain/errors"
 import { Tag, TagStatus } from "@tag/domain/entities"
 import { NotFoundUserError } from "@user/domain/errors"
-import { TagRepository } from "../protocols"
+import { TagRepository } from "@tag/data/protocols"
 
 export class GetTags implements UseCase<Tag[]> {
   constructor(

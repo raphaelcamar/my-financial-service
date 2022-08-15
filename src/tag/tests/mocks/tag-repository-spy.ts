@@ -23,4 +23,10 @@ export class TagRepositorySpy implements TagRepository {
 
     return tagUpdated
   }
+
+  async get(userId: string, query: object): Promise<Tag[]> {
+    const tags = await Promise.resolve(() => {}).then(() => new TagBuilder().array(5))
+
+    return tags
+  }
 }
