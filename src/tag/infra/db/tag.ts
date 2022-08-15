@@ -7,6 +7,7 @@ const TagSchema = new Schema(
     title: { type: String, required: true },
     metadata: { type: Object, default: {} },
     userId: { type: Schema.Types.ObjectId, ref: "User", required: true, default: null },
+    inactivatedAt: { type: Date, default: null },
   },
   { timestamps: true }
 )

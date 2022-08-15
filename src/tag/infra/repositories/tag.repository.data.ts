@@ -13,4 +13,12 @@ export class TagRepositoryData implements TagRepository {
 
     return result
   }
+
+  async inactivate(tagId: string, inactivatedAt: Date): Promise<Tag> {
+    const result = await TagSchema.findOneAndUpdate({ _id: tagId }, { inactivatedAt }).catch(() => {
+      throw new UnexpectedError()
+    })
+
+    return result
+  }
 }

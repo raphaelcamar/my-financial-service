@@ -21,7 +21,7 @@ export class Tag<T = {}> {
     this.title = data.title
   }
 
-  private validate(data: Tag.Data<T>): void {
+  private validate?(data: Tag.Data<T>): void {
     if (!data?.description) throw new MissingParamError("Missing description")
     if (!data?.color) throw new MissingParamError("Missing color")
     if (!data?.title) throw new MissingParamError("Missing title")

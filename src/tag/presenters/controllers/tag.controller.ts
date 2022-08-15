@@ -1,6 +1,6 @@
 import { SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
-import { CreateTag } from "src/tag/data/use-cases"
+import { CreateTag, ActiveOrInactiveTag } from "src/tag/data/use-cases"
 import { TagRepositoryData } from "@tag/infra/repositories"
 import { Request, Response } from "@main/handlers"
 
@@ -16,6 +16,27 @@ export class TagController {
       const result = await useCase.execute()
 
       res.json(result).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
+    }
+  }
+
+  async activeOrInactiveTag(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req?.userId
+      const tagId = req.params?.id
+      const type = req.params?.type
+
+      const tagRepositoryData = new TagRepositoryData()
+      const useCase = new ActiveOrInactiveTag(tagRepositoryData, userId, tagId, type)
+
+      await useCase.execute()
+
+      res.json().status(SuccessStatus.NO_CONTENT)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 
