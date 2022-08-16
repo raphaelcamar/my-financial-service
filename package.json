@@ -5,7 +5,7 @@
   "scripts": {
     "build": "babel src --extensions \" .js,.ts\" --out-dir dist --copy-files --no-copy-ignored",
     "test": "jest --runInBand",
-    "test:ci": "jest --ci",
+    "test:ci": "jest --ci --forceExit",
     "test:watch": "jest --slient=false --runInBand --watch",
     "clear-jest": "jest --clearCache",
     "lint": "eslint . --ext .ts --fix-dry-run",
