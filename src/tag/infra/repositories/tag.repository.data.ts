@@ -24,7 +24,6 @@ export class TagRepositoryData implements TagRepository {
     ).catch(() => {
       throw new UnexpectedError()
     })
-    console.log(result)
     return result
   }
 
