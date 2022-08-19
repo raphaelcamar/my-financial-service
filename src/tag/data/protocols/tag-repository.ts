@@ -5,4 +5,5 @@ export interface TagRepository {
   inactivate(tagId: string, inactivatedAt: Date): Promise<Tag>
   delete(tagId: string, userId: string): Promise<Tag>
   get(userId: string, query: object): Promise<Tag[]>
+  getAll(userId: string): Promise<Tag[]>
 }

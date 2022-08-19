@@ -5,6 +5,7 @@ import { TagRepositoryData } from "@tag/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import { GetTags } from "@tag/data/use-cases/get-tags"
 import { TagStatus } from "@tag/domain/entities"
+import { GetAllTags } from "@tag/data/use-cases/get-all-tags"
 
 export class TagController {
   async create(req: Request, res: Response): Promise<void> {
@@ -36,9 +37,9 @@ export class TagController {
       const tagRepositoryData = new TagRepositoryData()
       const useCase = new ActiveOrInactiveTag(tagRepositoryData, userId, tagId, type)
 
-      await useCase.execute()
+      const tag = await useCase.execute()
 
-      res.json().status(SuccessStatus.NO_CONTENT)
+      res.json(tag).status(SuccessStatus.SUCCESS)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 
@@ -69,13 +70,31 @@ export class TagController {
     }
   }
 
-  async get(req: Request, res: Response): Promise<void> {
+  async getByStatus(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
       const type = req.params?.type as TagStatus
 
       const tagRepositoryData = new TagRepositoryData()
       const useCase = new GetTags(tagRepositoryData, type, userId)
+
+      const result = await useCase.execute()
+
+      res.json(result).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
+    }
+  }
+
+  async get(req: Request, res: Response): Promise<void> {
+    try {
+      const userId = req?.userId
+      const tagRepositoryData = new TagRepositoryData()
+      const useCase = new GetAllTags(tagRepositoryData, userId)
 
       const result = await useCase.execute()
 

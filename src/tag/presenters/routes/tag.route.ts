@@ -13,5 +13,6 @@ export const TagRoutes = (app: App) => {
     controller.activeOrInactiveTag
   )
   app.delete("/tag/:id", middlewareToken.verify, controller.delete)
-  app.get("/tag/:type(active|inactive)", middlewareToken.verify, controller.get)
+  app.get("/tag/:type(active|inactive)", middlewareToken.verify, controller.getByStatus)
+  app.get("/tag", middlewareToken.verify, controller.get)
 }

@@ -15,10 +15,16 @@ export class TagRepositoryData implements TagRepository {
   }
 
   async inactivate(tagId: string, inactivatedAt: Date): Promise<Tag> {
-    const result = await TagSchema.findOneAndUpdate({ _id: tagId }, { inactivatedAt }).catch(() => {
+    const result = await TagSchema.findOneAndUpdate(
+      { _id: tagId },
+      { inactivatedAt },
+      {
+        returnOriginal: false,
+      }
+    ).catch(() => {
       throw new UnexpectedError()
     })
-
+    console.log(result)
     return result
   }
 
@@ -30,6 +36,11 @@ export class TagRepositoryData implements TagRepository {
 
   async get(userId: string, query: object): Promise<Tag[]> {
     const result = await TagSchema.find({ userId, ...query })
+    return result
+  }
+
+  async getAll(userId: string): Promise<Tag[]> {
+    const result = await TagSchema.find({ userId })
     return result
   }
 }
