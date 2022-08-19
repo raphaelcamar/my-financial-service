@@ -4,6 +4,12 @@ import { Tag } from "@tag/domain/entities"
 import { TagBuilder } from "@tag/tests/builders"
 
 export class TagRepositorySpy implements TagRepository {
+  async getAll(userId: string): Promise<Tag[]> {
+    const tags = await Promise.resolve(() => {}).then(() => new TagBuilder().array(5))
+
+    return tags
+  }
+
   async create(tag: Tag): Promise<Tag> {
     const tagCreated = await Promise.resolve(() => {}).then(() => tag)
 
