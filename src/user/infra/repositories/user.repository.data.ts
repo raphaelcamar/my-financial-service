@@ -77,4 +77,12 @@ export class UserRepositoryData implements UserRepository {
 
     return result
   }
+
+  async updatePicture(pictureUrl: string, userId: string): Promise<string> {
+    const result = await UserSchema.findOneAndUpdate({ _id: userId }, { pictureUrl }).catch(() => {
+      throw new UnexpectedError()
+    })
+
+    return result
+  }
 }

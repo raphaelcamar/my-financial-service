@@ -9,4 +9,5 @@ export type UserRepository = {
   verifyAccessToken: (token: string) => Promise<User>
   updateOneBy: (by: Partial<User>, update: Partial<User>) => Promise<User>
   findByCodeAndUpdate: (email: string, code: number) => Promise<User>
+  updatePicture: (pictureUrl: string, userId: string) => Promise<string>
 }

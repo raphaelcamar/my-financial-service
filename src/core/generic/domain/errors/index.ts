@@ -1,3 +1,4 @@
+export * from "./create-local-file-error"
 export * from "./missing-param-error"
 export * from "./mongoose-error"
 export * from "./not-sended-email"
