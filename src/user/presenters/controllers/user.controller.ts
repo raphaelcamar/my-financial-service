@@ -9,11 +9,12 @@ import {
   CreatePasswordRecover,
   VerifyPasswordCodeRecover,
   UpdateUser,
+  UpdatePicture,
 } from "@user/data/use-cases"
 import { User } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
-import { EmailServiceRepositoryData } from "@core/generic/infra"
+import { CloudServiceRepositoryData, EmailServiceRepositoryData } from "@core/generic/infra"
 import { CreateHistory } from "@history/data/use-cases"
 import { HistoryRepositoryData } from "@history/infra/repositories/history.repository.data"
 
@@ -210,6 +211,46 @@ export class UserController {
       await historyUseCase.execute()
 
       res.status(SuccessStatus.SUCCESS).json(user)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
+    }
+  }
+
+  async updatePicture(req: Request, res: Response): Promise<void> {
+    try {
+      const userRepositoryData = new UserRepositoryData()
+      const historyRepository = new HistoryRepositoryData()
+      const cloudServiceRepository = new CloudServiceRepositoryData()
+
+      const { userId, file } = req
+
+      const useCase = new UpdatePicture(
+        userRepositoryData,
+        cloudServiceRepository,
+        file?.filename,
+        userId
+      )
+
+      const pictureUrl = await useCase.execute()
+      const history = new History<string, "PICTURE">({
+        context: "USER",
+        occurrenceDate: new Date(),
+        summary: "Atualizou a foto",
+        userId,
+        metadata: pictureUrl,
+        generatedBy: "USER",
+        action: "PICTURE",
+      })
+
+      const historyUseCase = new CreateHistory(historyRepository, history)
+
+      await historyUseCase.execute()
+
+      res.json({ pictureUrl }).status(SuccessStatus.NO_CONTENT)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 
