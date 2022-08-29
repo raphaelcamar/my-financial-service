@@ -57,4 +57,8 @@ export class UserRepositorySpy implements UserRepository {
     }
     return null
   }
+
+  async updatePicture(pictureUrl: string, userId: string) {
+    return Promise.resolve(pictureUrl)
+  }
 }
