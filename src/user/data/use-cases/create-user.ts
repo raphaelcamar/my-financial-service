@@ -23,6 +23,7 @@ export class CreateUser implements UseCase<User> {
     this.user.password = passwordEncrypted
 
     const result = await this.userRepository.createUser(this.user)
+
     if (!result) throw new UnexpectedError()
     return result
   }

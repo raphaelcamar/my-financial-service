@@ -1,5 +1,9 @@
 import { History } from "@history/domain/entities"
-import { UserRepositoryData, CryptoRepositoryData } from "@user/infra/repositories"
+import {
+  UserRepositoryData,
+  CryptoRepositoryData,
+  WalletRepositoryData,
+} from "@user/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import {
   CreateUser,
@@ -10,8 +14,9 @@ import {
   VerifyPasswordCodeRecover,
   UpdateUser,
   UpdatePicture,
+  CreateWallet,
 } from "@user/data/use-cases"
-import { User } from "@user/domain/entities"
+import { User, Wallet } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { CloudServiceRepositoryData, EmailServiceRepositoryData } from "@core/generic/infra"
@@ -24,6 +29,7 @@ export class UserController {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
       const historyRepository = new HistoryRepositoryData()
+      const walletRepository = new WalletRepositoryData()
 
       const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData)
       const user = await useCase.execute()
@@ -31,6 +37,15 @@ export class UserController {
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
       const token = await createToken.execute()
       const result = await userRepositoryData.updateJWToken(user, token)
+
+      const wallet = new Wallet({
+        color: "primary",
+        userId: user._id,
+        name: "Minha Carteira",
+      })
+      const createWallet = new CreateWallet(wallet, walletRepository)
+      // TODO enviar wallet para o usuário de volta, e no login também
+      const walletCreated = await createWallet.execute()
 
       delete result.password
 
@@ -44,19 +59,7 @@ export class UserController {
         action: "LOGIN",
       })
 
-      const photoHistory = new History<User>({
-        context: "USER",
-        occurrenceDate: new Date(),
-        summary: "Entrou no sistema",
-        userId: user?._id,
-        metadata: user,
-        generatedBy: "USER",
-        action: "UPDATE",
-      })
-
       await new CreateHistory(historyRepository, history).execute()
-
-      await new CreateHistory(historyRepository, photoHistory).execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
