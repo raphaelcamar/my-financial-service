@@ -15,6 +15,7 @@ import {
   UpdateUser,
   UpdatePicture,
   CreateWallet,
+  UpdateWallet,
 } from "@user/data/use-cases"
 import { User, Wallet } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
@@ -28,40 +29,48 @@ export class UserController {
     try {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
-      const historyRepository = new HistoryRepositoryData()
       const walletRepository = new WalletRepositoryData()
 
-      const useCase = new CreateUser(req.body, userRepositoryData, cryptoRepositoryData)
+      const wallet = new Wallet({
+        color: "primary",
+        name: "Minha Carteira",
+      })
+      const createWallet = new CreateWallet(wallet, walletRepository)
+      const walletCreated = await createWallet.execute()
+
+      const useCase = new CreateUser(
+        { ...req.body, wallets: [walletCreated?.id] },
+        userRepositoryData,
+        cryptoRepositoryData
+      )
       const user = await useCase.execute()
 
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
       const token = await createToken.execute()
       const result = await userRepositoryData.updateJWToken(user, token)
 
-      const wallet = new Wallet({
-        color: "primary",
-        userId: user._id,
-        name: "Minha Carteira",
-      })
-      const createWallet = new CreateWallet(wallet, walletRepository)
-      // TODO enviar wallet para o usuário de volta, e no login também
-      const walletCreated = await createWallet.execute()
-
       delete result.password
 
-      const history = new History<User, "LOGIN">({
-        context: "USER",
-        occurrenceDate: new Date(),
-        summary: "Entrou no sistema",
-        userId: user?._id,
-        metadata: user,
-        generatedBy: "USER",
-        action: "LOGIN",
-      })
+      // const history = new History<User, "LOGIN">({
+      //   context: "USER",
+      //   occurrenceDate: new Date(),
+      //   summary: "Entrou no sistema",
+      //   userId: user?._id,
+      //   metadata: user,
+      //   generatedBy: "USER",
+      //   action: "LOGIN",
+      // })
 
-      await new CreateHistory(historyRepository, history).execute()
+      // await new CreateHistory(historyRepository, history).execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
+
+      const updateWallet = new UpdateWallet(
+        { ...walletCreated, userId: result._id },
+        walletRepository
+      )
+
+      await updateWallet.execute()
     } catch (err) {
       res
         .status(err?.status || ErrorStatus.INTERNAL)
@@ -98,8 +107,8 @@ export class UserController {
         generatedBy: "USER",
         action: "LOGIN",
       })
-      const historyUseCase = new CreateHistory(historyRepository, history)
 
+      const historyUseCase = new CreateHistory(historyRepository, history)
       await historyUseCase.execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
@@ -193,11 +202,7 @@ export class UserController {
       const cryptoRepositoryData = new CryptoRepositoryData()
       const historyRepository = new HistoryRepositoryData()
 
-      const useCase = new UpdateUser(
-        userRepositoryData,
-        req.body as User.Data,
-        cryptoRepositoryData
-      )
+      const useCase = new UpdateUser(userRepositoryData, req.body as User, cryptoRepositoryData)
       const user = await useCase.execute()
 
       const history = new History<User, "PASSWORD">({

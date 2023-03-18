@@ -1,6 +1,6 @@
 export class Wallet {
   public id?: string
-  public userId: string
+  public userId?: string
   public name: string
   public createdAt?: Date
   public updatedAt?: Date

@@ -1,4 +1,4 @@
-import mongoose, { Schema } from "mongoose"
+import mongoose, { Schema, ObjectId } from "mongoose"
 
 const UserSchema = new Schema(
   {
@@ -12,6 +12,7 @@ const UserSchema = new Schema(
       expires_in: { type: Date, required: false },
     },
     codeRecover: { type: Number },
+    wallets: [{ type: Schema.Types.ObjectId, ref: "Wallet", required: true }],
   },
   {
     timestamps: true,

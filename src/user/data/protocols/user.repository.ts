@@ -1,7 +1,7 @@
 import { User } from "@user/domain/entities"
 
 export type UserRepository = {
-  createUser: (user: User) => Promise<User>
+  createUser: (user: User) => Promise<any>
   verifyAccessCredentials: (email: string, password: string) => Promise<User | null>
   updateJWToken: (user: User, token: string) => Promise<User>
   verifyUserEmail: (email: string) => Promise<User | null>

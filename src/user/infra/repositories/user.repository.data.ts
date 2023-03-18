@@ -6,83 +6,89 @@ import { User as UserSchema } from "@user/infra/db/schemas"
 export class UserRepositoryData implements UserRepository {
   async createUser(user: User): Promise<User> {
     const userSchema = new UserSchema(user)
-    const result = await userSchema.save().catch(() => {
-      throw new UnexpectedError()
+    const result: any = await userSchema.save().catch(err => {
+      throw new UnexpectedError(err)
     })
-    return result
+
+    return result as User
   }
 
   async verifyUserEmail(email: string): Promise<User> {
-    const result = await UserSchema.findOne({
+    const result: any = await UserSchema.findOne({
       email,
-    }).catch(() => {
-      throw new UnexpectedError()
+    }).catch(err => {
+      throw new UnexpectedError(err)
     })
 
-    return result
+    return result as User
   }
 
   async verifyAccessCredentials(email: string, password: string): Promise<User> {
-    const result = await UserSchema.findOne({
+    const result: any = await UserSchema.findOne({
       password,
       email,
-    }).catch(() => {
-      throw new UnexpectedError()
+    }).catch(err => {
+      throw new UnexpectedError(err)
     })
 
-    return result
+    return result as User
   }
 
   async updateJWToken(user: User, token: string): Promise<User> {
-    const result: User = await UserSchema.findByIdAndUpdate(
+    const result: any = await UserSchema.findByIdAndUpdate(
       { _id: user._id },
       { token },
       { new: true }
-    ).catch(() => {
-      throw new UnexpectedError()
-    })
-    return result
+    )
+      .populate("wallets")
+      .catch(err => {
+        throw new UnexpectedError(err)
+      })
+
+    return result as User
   }
 
   async update() {
-    const result = await UserSchema.find({}).catch(() => {
-      throw new UnexpectedError()
+    const result = await UserSchema.find({}).catch(err => {
+      throw new UnexpectedError(err)
     })
 
     return result
   }
 
   async verifyAccessToken(token: string): Promise<User> {
-    const result: User = await UserSchema.findOne({ token }).catch(() => {
-      throw new UnexpectedError()
+    const result: any = await UserSchema.findOne({ token }).catch(err => {
+      throw new UnexpectedError(err)
     })
-    return result
+    return result as User
   }
 
   async updateOneBy(to: object, update: object): Promise<User> {
-    const result = await UserSchema.findOneAndUpdate(to, update, { new: true }).catch(() => {
-      throw new UnexpectedError()
+    const result: any = await UserSchema.findOneAndUpdate(to, update, { new: true }).catch(err => {
+      throw new UnexpectedError(err)
     })
 
-    return result
+    return result as User
   }
 
   async findByCodeAndUpdate(email: string, code: number): Promise<User> {
-    const result = await UserSchema.findOneAndUpdate(
+    const result: any = await UserSchema.findOneAndUpdate(
       { email, codeRecover: code },
       { codeRecover: null }
-    ).catch(() => {
-      throw new UnexpectedError()
+    ).catch(err => {
+      throw new UnexpectedError(err)
     })
 
-    return result
+    return result as User
   }
 
   async updatePicture(pictureUrl: string, userId: string): Promise<string> {
-    const result = await UserSchema.findOneAndUpdate({ _id: userId }, { pictureUrl }).catch(() => {
-      throw new UnexpectedError()
-    })
+    const result: any = await UserSchema.findOneAndUpdate({ _id: userId }, { pictureUrl }).catch(
+      err => {
+        throw new UnexpectedError(err)
+      }
+    )
 
-    return result
+    return result as string
   }
 }
