@@ -1,6 +1,6 @@
 import { UseCase } from "@core/generic/data/protocols"
 import { Wallet } from "@user/domain/entities"
-import { WalletProtocol } from "../protocols"
+import { WalletProtocol } from "@user/data/protocols"
 
 export class GetWallets implements UseCase<Wallet[]> {
   constructor(private userId: string, private walletRepository: WalletProtocol) {}

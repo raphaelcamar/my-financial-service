@@ -5,24 +5,23 @@ import {
   WalletRepositoryData,
 } from "@user/infra/repositories"
 import { Request, Response } from "@main/handlers"
-import {
-  CreateUser,
-  VerifyAccessCredentials,
-  CreateJWToken,
-  VerifyAccessToken,
-  CreatePasswordRecover,
-  VerifyPasswordCodeRecover,
-  UpdateUser,
-  UpdatePicture,
-  CreateWallet,
-  UpdateWallet,
-} from "@user/data/use-cases"
 import { User, Wallet } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { CloudServiceRepositoryData, EmailServiceRepositoryData } from "@core/generic/infra"
 import { CreateHistory } from "@history/data/use-cases"
 import { HistoryRepositoryData } from "@history/infra/repositories/history.repository.data"
+import { CreateWallet, UpdateWallet } from "@user/data/use-cases/wallet"
+import {
+  CreateJWToken,
+  CreatePasswordRecover,
+  CreateUser,
+  UpdatePicture,
+  UpdateUser,
+  VerifyAccessCredentials,
+  VerifyAccessToken,
+  VerifyPasswordCodeRecover,
+} from "@user/data/use-cases/user"
 
 export class UserController {
   async create(req: Request, res: Response): Promise<void> {

@@ -1,4 +1,4 @@
-import { CreateUser } from "@user/data/use-cases"
+import { CreateUser } from "@user/data/use-cases/user"
 import { User } from "@user/domain/entities"
 import { EmailAlreadyExistsError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
@@ -26,7 +26,11 @@ describe("CreateUser", () => {
 
     await useCaseCreate.execute()
 
-    const differentUserEmail = new User({ ...user, email: "teste@teste.com" })
+    const differentUserEmail = new User({
+      ...user,
+      email: "teste@teste.com",
+      token: { expires_in: null, tokenId: null },
+    })
 
     const useCase = new CreateUser(differentUserEmail, userRepositorySpy, cryptoRepositoryData)
 

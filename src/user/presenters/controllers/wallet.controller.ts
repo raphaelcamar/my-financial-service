@@ -1,6 +1,6 @@
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { Request, Response } from "@main/handlers"
-import { CreateWallet, GetWallets } from "@user/data/use-cases"
+import { CreateWallet, GetWallets } from "@user/data/use-cases/wallet"
 import { WalletRepositoryData } from "@user/infra/repositories"
 
 export class WalletController {

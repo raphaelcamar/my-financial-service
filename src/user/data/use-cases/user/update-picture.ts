@@ -1,5 +1,5 @@
 import { CloudServiceRepository, UseCase } from "@core/generic/data/protocols"
-import { UserRepository } from "../protocols"
+import { UserRepository } from "@user/data/protocols"
 
 export class UpdatePicture implements UseCase<string> {
   constructor(

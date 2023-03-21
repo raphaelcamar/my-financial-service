@@ -1,4 +1,4 @@
-import { CreateJWToken } from "@user/data/use-cases"
+import { CreateJWToken } from "@user/data/use-cases/user"
 import { makeSutUser } from "../base-sut"
 
 describe("Create JWT", () => {

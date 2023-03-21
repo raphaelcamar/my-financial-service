@@ -1,5 +1,5 @@
 import { UserBuilder } from "@user/builders"
-import { CreateJWToken, CreateUser, VerifyAccessToken } from "@user/data/use-cases"
+import { CreateJWToken, CreateUser, VerifyAccessToken } from "@user/data/use-cases/user"
 import { NotFoundUserError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
 

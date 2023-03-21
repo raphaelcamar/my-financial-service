@@ -1,4 +1,4 @@
-import { VerifyAccessCredentials, CreateUser } from "@user/data/use-cases"
+import { VerifyAccessCredentials, CreateUser } from "@user/data/use-cases/user"
 import { CredentialsError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
 

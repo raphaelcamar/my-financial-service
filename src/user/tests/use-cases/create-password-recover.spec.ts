@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import { UserBuilder } from "@user/builders"
-import { CreatePasswordRecover, CreateUser } from "@user/data/use-cases"
+import { CreatePasswordRecover, CreateUser } from "@user/data/use-cases/user"
 import { NotFoundUserError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
 
