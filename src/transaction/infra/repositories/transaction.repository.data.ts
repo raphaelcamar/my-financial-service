@@ -7,15 +7,15 @@ export class TransactionRepositoryData implements TransactionRepository {
   async create(transaction: Transaction): Promise<Transaction> {
     const transactionSchema = new TransactionSchema(transaction)
 
-    const result = await transactionSchema.save().catch(() => {
+    const result: any = await transactionSchema.save().catch(() => {
       throw new UnexpectedError()
     })
 
-    return result
+    return result as Transaction
   }
 
   async getLastTransaction(userId: string): Promise<Transaction[]> {
-    const lastTransaction: Transaction[] = await TransactionSchema.find({
+    const lastTransaction: any = await TransactionSchema.find({
       userId,
     })
       .sort({ $natural: -1 })
@@ -24,13 +24,13 @@ export class TransactionRepositoryData implements TransactionRepository {
         throw new UnexpectedError()
       })
 
-    return lastTransaction
+    return lastTransaction as Transaction[]
   }
 
   async getTransactions(userId: string, query: object): Promise<Transaction[]> {
     const findBy = query ? { userId, billedAt: query } : { userId }
 
-    const transactions = await TransactionSchema.find(findBy)
+    const transactions: any = await TransactionSchema.find(findBy)
       .lean()
       .sort({ $natural: -1 })
       .catch(() => {
@@ -41,14 +41,14 @@ export class TransactionRepositoryData implements TransactionRepository {
   }
 
   async deleteTransaction(userId: string, transactionId: string): Promise<number> {
-    const deletedTransaction = await TransactionSchema.deleteOne({
+    const deletedTransaction: any = await TransactionSchema.deleteOne({
       userId,
       _id: transactionId,
     }).catch(() => {
       throw new UnexpectedError()
     })
 
-    return deletedTransaction?.deletedCount
+    return deletedTransaction?.deletedCount as number
   }
 
   async updateTransaction(transaction: Transaction): Promise<void> {
@@ -64,7 +64,7 @@ export class TransactionRepositoryData implements TransactionRepository {
     const findBy = query ? { userId, billedAt: query } : { userId }
     const fields = justValue ? { value: 1, _id: 0 } : null
 
-    const transactions = await TransactionSchema.find(
+    const transactions: any = await TransactionSchema.find(
       {
         ...findBy,
         type: {

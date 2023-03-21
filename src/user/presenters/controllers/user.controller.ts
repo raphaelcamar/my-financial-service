@@ -47,6 +47,14 @@ export class UserController {
 
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
       const token = await createToken.execute()
+
+      const updateWallet = new UpdateWallet(
+        { ...walletCreated, userId: user._id },
+        walletRepository
+      )
+
+      await updateWallet.execute()
+
       const result = await userRepositoryData.updateJWToken(user, token)
 
       delete result.password
@@ -64,13 +72,6 @@ export class UserController {
       // await new CreateHistory(historyRepository, history).execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
-
-      const updateWallet = new UpdateWallet(
-        { ...walletCreated, userId: result._id },
-        walletRepository
-      )
-
-      await updateWallet.execute()
     } catch (err) {
       res
         .status(err?.status || ErrorStatus.INTERNAL)

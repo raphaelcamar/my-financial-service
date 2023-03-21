@@ -22,7 +22,9 @@ services:
     image: mongo
     container_name: mongodb-financial
     volumes:
-      - ./data/:/data/db/
+      - mongo_db:/data/db/
     ports:
       - 27017:27017
     restart: unless-stopped
+volumes:
+  mongo_db:

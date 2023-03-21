@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export class ValidationError extends Error {
   public status = 400
 

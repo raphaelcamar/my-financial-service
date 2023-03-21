@@ -19,7 +19,8 @@ import { ValidationError, WrongParamError } from "@transaction/domain/errors"
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const transaction = new Transaction({ ...req.body, userId })
+    const walletId = req?.walletId
+    const transaction = new Transaction({ ...req.body, userId, walletId })
 
     try {
       const transactionValidation = new TransactionValidation(transaction)
@@ -51,6 +52,7 @@ export class TransactionController {
 
   async getTransactions(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
+    const walletId = req?.walletId
     const filters: Transaction.Filter = req.query
 
     try {

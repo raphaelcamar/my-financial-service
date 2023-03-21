@@ -12,6 +12,7 @@ export class Transaction {
   updatedAt?: Date
   value: number
   amount?: number
+  walletId: string
   topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
 
   constructor(data: Transaction.Data) {
@@ -27,6 +28,7 @@ export class Transaction {
     this.value = data?.value
     this.amount = data?.amount
     this.topic = data?.topic
+    this.walletId = data?.walletId
   }
 
   validate(data: Transaction.Data): void {
@@ -35,6 +37,7 @@ export class Transaction {
     if (!data?.type) throw new MissingParamError("Missing type")
     if (!data?.value) throw new MissingParamError("Missing value")
     if (!data?.topic) throw new MissingParamError("Missing topic")
+    if (!data?.walletId) throw new MissingParamError("Missing walletId")
   }
 }
 
@@ -48,6 +51,7 @@ export namespace Transaction {
     type: TypeTransaction
     updatedAt?: Date
     value: number
+    walletId: string
     amount?: number
     topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
   }

@@ -7,7 +7,6 @@ export class CreateWallet implements UseCase<Wallet> {
 
   async execute(): Promise<Wallet> {
     const result = await this.walletRepository.create(this.wallet)
-    console.log(result)
     return result
   }
 }

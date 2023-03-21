@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 import { ErrorStatus } from "@core/generic/domain/entities"
 
 export class InvalidUserIdError extends Error {

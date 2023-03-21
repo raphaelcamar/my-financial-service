@@ -8,6 +8,11 @@ const TransactionSchema = new Schema(
       required: true,
       default: null,
     },
+    walletId: {
+      type: Schema.Types.ObjectId,
+      ref: "Wallet",
+      required: true,
+    },
     billedAt: { type: Date, required: true, default: new Date() },
     anotation: { type: String, required: true, default: null },
     type: { type: String, required: true },
