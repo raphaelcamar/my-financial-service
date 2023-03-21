@@ -21,6 +21,7 @@ export class TransactionBuilder implements Builder<Transaction> {
       _id: faker.datatype.uuid(),
       amount: faker.datatype.number({ max: 10, min: 1 }),
       anotation: faker.random.words(5),
+      walletId: faker.datatype.uuid(),
     })
 
     return data

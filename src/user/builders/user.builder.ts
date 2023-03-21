@@ -12,13 +12,17 @@ export class UserBuilder implements Builder<User> {
   }
 
   build(): User {
-    const data = {
+    const data: User.Data = {
       email: faker.internet.email(),
       lastname: faker.name.lastName(),
       name: faker.name.firstName(),
       password: "123456",
-      token: faker.datatype.uuid(),
-      _id: faker.datatype.uuid(),
+      token: {
+        expires_in: new Date(),
+        tokenId: faker.datatype.uuid(),
+      },
+      id: faker.datatype.uuid(),
+      wallets: [],
     }
 
     const user = new User(data)
@@ -35,7 +39,7 @@ export class UserBuilder implements Builder<User> {
   }
 
   defaultEmail(): UserBuilder {
-    const user = new User({ ...this.data, email: "teste@teste.com" })
+    const user = new User({ ...(this.data as User.Data), email: "teste@teste.com" })
     this.data = user
     return this
   }
