@@ -5,8 +5,8 @@ export class UnexpectedError extends Error {
   status = ErrorStatus.INTERNAL
 
   constructor(err?: any) {
-    super("Um erro interno Aconteceu. Tente novamente mais tarde")
     console.log(err)
+    super("Um erro interno Aconteceu. Tente novamente mais tarde")
     this.name = "UnexpectedError"
   }
 }

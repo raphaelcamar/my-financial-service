@@ -8,6 +8,7 @@ export class HttpExceptionHandler {
   constructor(private err: any) {
     this.status = err?.status
     this.message = err?.message
+    console.error({ status: err?.status, message: err?.message })
   }
 
   execute() {

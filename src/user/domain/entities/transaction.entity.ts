@@ -60,4 +60,12 @@ export namespace Transaction {
     start?: string
     limit?: string
   }
+
+  export interface Indicator {
+    month: number
+    entrance: {
+      value: number
+      differencePercentage: number
+    }
+  }
 }

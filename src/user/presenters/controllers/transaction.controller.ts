@@ -2,10 +2,15 @@ import { SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { Request, Response } from "@main/handlers"
 import { ValidationError } from "@user/domain/errors"
-import { CreateTransaction, GetTransactions } from "@user/data/use-cases/transaction"
+import {
+  CreateTransaction,
+  GetTransactionIndicators,
+  GetTransactions,
+} from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
 import { TransactionRepositoryData } from "@user/infra/repositories"
 import { TransactionValidation } from "@user/presenters/validation"
+import { MissingParamError } from "@core/generic/domain/errors"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -50,6 +55,39 @@ export class TransactionController {
       const transactionRepositoryData = new TransactionRepositoryData()
 
       const useCase = new GetTransactions(userId, transactionRepositoryData, filters, walletId)
+
+      const result = await useCase.execute()
+
+      res.json(result).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message })
+    }
+  }
+
+  async getTransactionIndicators(req: Request, res: Response): Promise<void> {
+    const userId = req?.userId
+    const walletId = req?.walletId
+    let query: any = req?.query
+
+    if (query) {
+      query = Number(query.month)
+    } else {
+      throw new MissingParamError("Missing month")
+    }
+
+    const transactionRepositoryData = new TransactionRepositoryData()
+
+    try {
+      const useCase = new GetTransactionIndicators(
+        userId,
+        walletId,
+        query,
+        transactionRepositoryData
+      )
 
       const result = await useCase.execute()
 

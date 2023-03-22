@@ -6,6 +6,11 @@ const middlewareToken = new VerifyAccessTokenMiddleware()
 const transactionController = new TransactionController()
 
 export const TransactionV2Routes = (app: App) => {
-  app.post("/transaction/v2", middlewareToken.verify, transactionController.create)
-  app.get("/transaction/v2", middlewareToken.verify, transactionController.getTransactions)
+  app.post("/v2/transaction", middlewareToken.verify, transactionController.create)
+  app.get("/v2/transaction", middlewareToken.verify, transactionController.getTransactions)
+  app.get(
+    "/v2/transaction/indicators",
+    middlewareToken.verify,
+    transactionController.getTransactionIndicators
+  )
 }
