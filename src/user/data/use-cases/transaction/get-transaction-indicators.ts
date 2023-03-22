@@ -1,6 +1,7 @@
 import { UseCase } from "@core/generic/data/protocols"
 import { TransactionProtocol } from "@user/data/protocols"
 import { Transaction } from "@user/domain/entities"
+import { NotFoundError } from "@user/domain/errors"
 
 export class GetTransactionIndicators implements UseCase<Transaction.Indicator> {
   constructor(
@@ -17,6 +18,19 @@ export class GetTransactionIndicators implements UseCase<Transaction.Indicator> 
       this.walletId,
       query
     )
+
+    if (!result) {
+      return {
+        entrance: {
+          differencePercentage: 0,
+          value: 0,
+        },
+        spent: {
+          differencePercentage: 0,
+          value: 0,
+        },
+      }
+    }
     return result
   }
 

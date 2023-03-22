@@ -2,6 +2,11 @@ import { MissingParamError } from "@core/generic/domain/errors"
 
 export type TypeTransaction = "ENTRANCE" | "SPENT"
 
+type IndicatorType = {
+  value: number
+  differencePercentage: number
+}
+
 export class Transaction {
   _id?: string
   userId: string
@@ -62,10 +67,7 @@ export namespace Transaction {
   }
 
   export interface Indicator {
-    month: number
-    entrance: {
-      value: number
-      differencePercentage: number
-    }
+    entrance: IndicatorType
+    spent: IndicatorType
   }
 }

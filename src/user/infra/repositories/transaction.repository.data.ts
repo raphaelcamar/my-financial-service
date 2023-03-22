@@ -79,7 +79,7 @@ export class TransactionRepositoryData implements TransactionProtocol {
     ]).catch(err => {
       throw new UnexpectedError(err)
     })
-    return transactionIndicators[0] as Transaction.Indicator
+    return transactionIndicators?.[0] as Transaction.Indicator
   }
 
   async getTransactions(userId: string, walletId: string, query: object): Promise<Transaction[]> {
