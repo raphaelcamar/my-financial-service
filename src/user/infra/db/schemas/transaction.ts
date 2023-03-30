@@ -18,6 +18,8 @@ const TransactionSchema = new Schema(
     type: { type: String, required: true },
     value: { type: Number, required: true },
     topic: { type: String, required: true },
+    status: { type: String, required: true },
+    coin: { type: String, required: true, default: "BRL" },
   },
   {
     timestamps: true,

@@ -34,6 +34,7 @@ export class TransactionController {
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
+        return
       }
 
       const httpException = new HttpExceptionHandler(error)

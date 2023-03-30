@@ -7,6 +7,20 @@ type IndicatorType = {
   differencePercentage: number
 }
 
+export type StatusType = "FINISHED" | "PENDING"
+export type CoinType =
+  | "USD"
+  | "BRL"
+  | "EUR"
+  | "ARS"
+  | "GBP"
+  | "JPY"
+  | "CNY"
+  | "AUD"
+  | "CAD"
+  | "CHF"
+  | "NZD"
+
 export class Transaction {
   _id?: string
   userId: string
@@ -19,6 +33,8 @@ export class Transaction {
   amount?: number
   walletId: string
   topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
+  coin: CoinType
+  status: StatusType
 
   constructor(data: Transaction.Data) {
     this.validate(data)
@@ -34,6 +50,8 @@ export class Transaction {
     this.amount = data?.amount
     this.topic = data?.topic
     this.walletId = data?.walletId
+    this.status = data?.status
+    this.coin = data?.coin
   }
 
   validate(data: Transaction.Data): void {
@@ -59,6 +77,8 @@ export namespace Transaction {
     walletId: string
     amount?: number
     topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
+    coin: CoinType
+    status: StatusType
   }
 
   export interface Filter {
