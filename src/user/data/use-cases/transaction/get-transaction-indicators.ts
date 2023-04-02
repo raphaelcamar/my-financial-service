@@ -1,23 +1,13 @@
 import { UseCase } from "@core/generic/data/protocols"
 import { TransactionProtocol } from "@user/data/protocols"
 import { Transaction } from "@user/domain/entities"
-import { NotFoundError } from "@user/domain/errors"
 
 export class GetTransactionIndicators implements UseCase<Transaction.Indicator> {
-  constructor(
-    private userId: string,
-    private walletId: string,
-    private month: number,
-    private transactionRepository: TransactionProtocol
-  ) {}
+  constructor(private userId: string, private walletId: string, private month: number, private transactionRepository: TransactionProtocol) {}
 
   async execute(): Promise<Transaction.Indicator> {
     const query = this.getFilter()
-    const result = await this.transactionRepository.getTransactionIndicators(
-      this.userId,
-      this.walletId,
-      query
-    )
+    const result = await this.transactionRepository.getTransactionIndicators(this.userId, this.walletId, query)
 
     if (!result) {
       return {

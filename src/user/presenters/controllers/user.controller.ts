@@ -1,9 +1,5 @@
 import { History } from "@history/domain/entities"
-import {
-  UserRepositoryData,
-  CryptoRepositoryData,
-  WalletRepositoryData,
-} from "@user/infra/repositories"
+import { UserRepositoryData, CryptoRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 import { Request, Response } from "@main/handlers"
 import { User, Wallet } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
@@ -37,20 +33,13 @@ export class UserController {
       const createWallet = new CreateWallet(wallet, walletRepository)
       const walletCreated = await createWallet.execute()
 
-      const useCase = new CreateUser(
-        { ...req.body, wallets: [walletCreated?.id] },
-        userRepositoryData,
-        cryptoRepositoryData
-      )
+      const useCase = new CreateUser({ ...req.body, wallets: [walletCreated?.id] }, userRepositoryData, cryptoRepositoryData)
       const user = await useCase.execute()
 
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
       const token = await createToken.execute()
 
-      const updateWallet = new UpdateWallet(
-        { ...walletCreated, userId: user._id },
-        walletRepository
-      )
+      const updateWallet = new UpdateWallet({ ...walletCreated, userId: user._id }, walletRepository)
 
       await updateWallet.execute()
 
@@ -72,9 +61,7 @@ export class UserController {
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
-      res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo deu errado" })
+      res.status(err?.status || ErrorStatus.INTERNAL).json({ message: err?.message || "Algo deu errado" })
     }
   }
 
@@ -85,13 +72,10 @@ export class UserController {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
       const historyRepository = new HistoryRepositoryData()
-      const useCase = new VerifyAccessCredentials(
-        email,
-        password,
-        userRepositoryData,
-        cryptoRepositoryData
-      )
+
+      const useCase = new VerifyAccessCredentials(email, password, userRepositoryData, cryptoRepositoryData)
       const user = await useCase.execute()
+
       const createToken = new CreateJWToken(user, cryptoRepositoryData)
       const token = await createToken.execute()
       const result = await userRepositoryData.updateJWToken(user, token)
@@ -143,9 +127,7 @@ export class UserController {
 
       httpException.execute()
 
-      res
-        .status(httpException.status)
-        .json({ message: httpException.message, status: httpException.status })
+      res.status(httpException.status).json({ message: httpException.message, status: httpException.status })
     }
   }
 
@@ -236,12 +218,7 @@ export class UserController {
 
       const { userId, file } = req
 
-      const useCase = new UpdatePicture(
-        userRepositoryData,
-        cloudServiceRepository,
-        file?.filename,
-        userId
-      )
+      const useCase = new UpdatePicture(userRepositoryData, cloudServiceRepository, file?.filename, userId)
 
       const pictureUrl = await useCase.execute()
       const history = new History<string, "PICTURE">({

@@ -35,11 +35,7 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async updateJWToken(user: User, token: string): Promise<User> {
-    const result: any = await UserSchema.findByIdAndUpdate(
-      { _id: user._id },
-      { token },
-      { new: true }
-    )
+    const result: any = await UserSchema.findByIdAndUpdate({ _id: user._id }, { token }, { new: true })
       .populate("wallets")
       .catch(err => {
         throw new UnexpectedError(err)
@@ -72,10 +68,7 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async findByCodeAndUpdate(email: string, code: number): Promise<User> {
-    const result: any = await UserSchema.findOneAndUpdate(
-      { email, codeRecover: code },
-      { codeRecover: null }
-    ).catch(err => {
+    const result: any = await UserSchema.findOneAndUpdate({ email, codeRecover: code }, { codeRecover: null }).catch(err => {
       throw new UnexpectedError(err)
     })
 
@@ -83,11 +76,9 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async updatePicture(pictureUrl: string, userId: string): Promise<string> {
-    const result: any = await UserSchema.findOneAndUpdate({ _id: userId }, { pictureUrl }).catch(
-      err => {
-        throw new UnexpectedError(err)
-      }
-    )
+    const result: any = await UserSchema.findOneAndUpdate({ _id: userId }, { pictureUrl }).catch(err => {
+      throw new UnexpectedError(err)
+    })
 
     return result as string
   }

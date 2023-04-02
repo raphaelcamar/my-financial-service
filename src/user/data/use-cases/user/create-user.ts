@@ -5,11 +5,7 @@ import { UnexpectedError } from "@core/generic/domain/errors"
 import { UseCase } from "@core/generic/data/protocols"
 
 export class CreateUser implements UseCase<User> {
-  constructor(
-    private user: User,
-    private userRepository: UserRepository,
-    private cryptoRepository: CryptoRepository
-  ) {}
+  constructor(private user: User, private userRepository: UserRepository, private cryptoRepository: CryptoRepository) {}
 
   async execute(): Promise<User> {
     const existsEmail = await this.userRepository.verifyUserEmail(this.user.email)

@@ -32,7 +32,7 @@
 		"no-empty-function": "off",
 		"no-useless-constructor": "off",
 		"no-unused-vars": "off",
-		"max-len": ["error", { "code": 100}],
+		"max-len": ["error", { "code": 150}],
 		"import/no-extraneous-dependencies": ["error", {"devDependencies": ["**/*.test.ts", "**/*.builder.ts"]}]
 	},
 	"overrides": [

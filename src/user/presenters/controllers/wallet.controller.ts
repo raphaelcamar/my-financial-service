@@ -14,9 +14,7 @@ export class WalletController {
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
-      res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo deu errado" })
+      res.status(err?.status || ErrorStatus.INTERNAL).json({ message: err?.message || "Algo deu errado" })
     }
   }
 
@@ -30,9 +28,7 @@ export class WalletController {
 
       res.status(SuccessStatus.SUCCESS).json(result)
     } catch (err) {
-      res
-        .status(err?.status || ErrorStatus.INTERNAL)
-        .json({ message: err?.message || "Algo deu errado" })
+      res.status(err?.status || ErrorStatus.INTERNAL).json({ message: err?.message || "Algo deu errado" })
     }
   }
 }

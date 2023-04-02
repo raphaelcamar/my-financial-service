@@ -20,6 +20,12 @@ const TransactionSchema = new Schema(
     topic: { type: String, required: true },
     status: { type: String, required: true },
     coin: { type: String, required: true, default: "BRL" },
+    recurrenceId: {
+      type: Schema.Types.ObjectId,
+      ref: "Recurrence",
+      required: false,
+      default: null,
+    },
   },
   {
     timestamps: true,

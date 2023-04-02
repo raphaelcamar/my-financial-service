@@ -24,8 +24,4 @@ const MonthlyClosingSchema = new Schema(
   { timestamps: true }
 )
 
-export const MonthlyClosing = mongoose.model(
-  "MonthlyClosing",
-  MonthlyClosingSchema,
-  "MonthlyClosing"
-)
+export const MonthlyClosing = mongoose.model("MonthlyClosing", MonthlyClosingSchema, "MonthlyClosing")

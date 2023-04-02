@@ -7,11 +7,11 @@ export class WalletRepositoryData implements WalletProtocol {
   async create(wallet: Wallet): Promise<Wallet> {
     const walletSchema = new WalletSchema(wallet)
 
-    const result = await walletSchema.save().catch(() => {
+    const result: any = await walletSchema.save().catch(() => {
       throw new UnexpectedError()
     })
 
-    return new Wallet(result as unknown as Wallet)
+    return new Wallet(result as Wallet)
   }
 
   async getWallets(userId: string): Promise<Wallet[]> {

@@ -8,18 +8,7 @@ type IndicatorType = {
 }
 
 export type StatusType = "FINISHED" | "PENDING"
-export type CoinType =
-  | "USD"
-  | "BRL"
-  | "EUR"
-  | "ARS"
-  | "GBP"
-  | "JPY"
-  | "CNY"
-  | "AUD"
-  | "CAD"
-  | "CHF"
-  | "NZD"
+export type CoinType = "USD" | "BRL" | "EUR" | "ARS" | "GBP" | "JPY" | "CNY" | "AUD" | "CAD" | "CHF" | "NZD"
 
 export class Transaction {
   _id?: string

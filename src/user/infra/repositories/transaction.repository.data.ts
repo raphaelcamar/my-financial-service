@@ -1,6 +1,6 @@
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { Transaction as TransactionSchema } from "@user/infra/db/schemas"
-import { TransactionProtocol } from "@user/data/protocols/transaction.protocol"
+import { TransactionProtocol, TransactionsSplittedByTypeProps } from "@user/data/protocols/transaction.protocol"
 import { Transaction } from "@user/domain/entities"
 import mongoose from "mongoose"
 
@@ -15,11 +15,7 @@ export class TransactionRepositoryData implements TransactionProtocol {
     return result as Transaction
   }
 
-  async getTransactionIndicators(
-    userId: string,
-    walletId: string,
-    query: object
-  ): Promise<Transaction.Indicator> {
+  async getTransactionIndicators(userId: string, walletId: string, query: object): Promise<Transaction.Indicator> {
     const transactionIndicators: any = await TransactionSchema.aggregate([
       {
         $match: {
@@ -93,5 +89,83 @@ export class TransactionRepositoryData implements TransactionProtocol {
       })
 
     return transactions as Transaction[]
+  }
+
+  async getTransactionsSplittedByType(userId: string, walletId: string, query: object): Promise<TransactionsSplittedByTypeProps> {
+    const transactions: any = await TransactionSchema.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          walletId: new mongoose.Types.ObjectId(walletId),
+          billedAt: query,
+        },
+      },
+      {
+        $group: {
+          _id: "$type",
+          transactions: {
+            $push: "$$ROOT",
+          },
+          total: {
+            $sum: "$value",
+          },
+        },
+      },
+      {
+        $group: {
+          _id: "results",
+          ENTRANCE: {
+            $push: {
+              $cond: [
+                {
+                  $eq: ["$_id", "ENTRANCE"],
+                },
+                {
+                  transactions: "$transactions",
+                  total: "$total",
+                },
+                "$$REMOVE",
+              ],
+            },
+          },
+          SPENT: {
+            $push: {
+              $cond: [
+                {
+                  $eq: ["$_id", "SPENT"],
+                },
+                {
+                  transactions: "$transactions",
+                  total: "$total",
+                },
+                "$$REMOVE",
+              ],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          entrance: {
+            $ifNull: [
+              {
+                $arrayElemAt: ["$ENTRANCE", 0],
+              },
+              {},
+            ],
+          },
+          spent: {
+            $ifNull: [
+              {
+                $arrayElemAt: ["$SPENT", 0],
+              },
+              {},
+            ],
+          },
+        },
+      },
+    ])
+    return transactions?.[0] as TransactionsSplittedByTypeProps
   }
 }
