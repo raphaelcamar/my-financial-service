@@ -1,4 +1,5 @@
 import mongoose, { Schema } from "mongoose"
+import { updateWalletBeforeAddTransaction } from "../watchers"
 
 const TransactionSchema = new Schema(
   {
@@ -31,5 +32,7 @@ const TransactionSchema = new Schema(
     timestamps: true,
   }
 )
+
+TransactionSchema.pre("save", updateWalletBeforeAddTransaction)
 
 export const Transaction = mongoose.model("Transaction", TransactionSchema, "Transaction")

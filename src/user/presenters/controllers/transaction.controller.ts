@@ -4,7 +4,7 @@ import { Request, Response } from "@main/handlers"
 import { ValidationError } from "@user/domain/errors"
 import { CloseMonth, CreateTransaction, GetTransactionIndicators, GetTransactions } from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
-import { MonthlyClosingRepositoryData, TransactionRepositoryData } from "@user/infra/repositories"
+import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 import { TransactionValidation } from "@user/presenters/validation"
 import { MissingParamError } from "@core/generic/domain/errors"
 
@@ -96,6 +96,7 @@ export class TransactionController {
       try {
         const transactionRepositoryData = new TransactionRepositoryData()
         const monthlyClosingRepository = new MonthlyClosingRepositoryData()
+        const walletRepositoryData = new WalletRepositoryData()
 
         const monthClose = new CloseMonth(userId, walletId, transactionRepositoryData, monthlyClosingRepository, Number(monthToClose))
         const closedMonth = await monthClose.execute()
