@@ -5,13 +5,8 @@ import { MonthlyClose, Transaction } from "@transaction/domain/entities"
 import { endOfMonth, format, startOfMonth, subMonths } from "date-fns"
 
 export class CreateMonthlyClose implements UseCase<MonthlyClose> {
-  constructor(
-    private monthlyCloseRepository: MonthlyCloseRepository,
-    private userId: string,
-    private transactionRepository: TransactionRepository
-  ) {}
+  constructor(private monthlyCloseRepository: MonthlyCloseRepository, private userId: string, private transactionRepository: TransactionRepository) {}
 
-  // TODO put date-fns in a other place. And calling the repository of him
   async execute(): Promise<MonthlyClose> {
     const start = startOfMonth(new Date())
     const end = endOfMonth(new Date())
@@ -22,10 +17,7 @@ export class CreateMonthlyClose implements UseCase<MonthlyClose> {
     const lastMonthlyValue = lastMonthTransactions?.[0]?.amount || 1
     const currentMonthlyValue = currentMonthTransactions?.[0]?.amount || 1
 
-    const differencePercentage = this.calculateDifferencePercentage(
-      lastMonthlyValue,
-      currentMonthlyValue
-    )
+    const differencePercentage = this.calculateDifferencePercentage(lastMonthlyValue, currentMonthlyValue)
 
     const createMonthlyClose: MonthlyClose = {
       differencePercentage,

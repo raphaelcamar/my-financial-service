@@ -1,8 +1,8 @@
+/* eslint-disable no-unsafe-optional-chaining */
 import { UseCase } from "@core/generic/data/protocols"
 import { MonthlyClosingProtocol, TransactionProtocol } from "@user/data/protocols"
 import { MonthlyClosing, Transaction } from "@user/domain/entities"
 import { HasPendingTransactionsError } from "@user/domain/errors"
-import { addDays } from "date-fns"
 
 export class CloseMonth implements UseCase<MonthlyClosing> {
   constructor(
@@ -10,38 +10,46 @@ export class CloseMonth implements UseCase<MonthlyClosing> {
     private walletId: string,
     private transationRepository: TransactionProtocol,
     private monthlyClosingRepository: MonthlyClosingProtocol,
-    private monthToClose: number
+    private monthToClose: number,
+    private year: number
   ) {}
 
   async execute(): Promise<MonthlyClosing> {
     const { entrance, spent } = await this.attachAllTransactionsEntrances()
+    if (entrance?.transactions && spent?.transactions) {
+      this.verifyIfHasPendingTransactions(entrance?.transactions, spent?.transactions)
+    }
 
-    this.verifyIfHasPendingTransactions(entrance.transactions, spent.transactions)
     const getTransactionsIds = [
-      ...entrance.transactions.map(transaction => transaction._id),
-      ...spent.transactions.map(transaction => transaction._id),
+      ...(entrance?.transactions.map(transaction => transaction._id) || []),
+      ...(spent?.transactions.map(transaction => transaction._id) || []),
     ]
 
-    const objToSend = new MonthlyClosing({
+    const balance = spent?.total + entrance?.total
+
+    const monthlyClosing = new MonthlyClosing({
       userId: this.userId,
       walletId: this.walletId,
       month: this.monthToClose,
-      year: new Date().getFullYear(),
+      aditionalInformation: `Fechamento do mês ${this.monthToClose}`,
+      totalEntrance: entrance?.total || 0,
+      totalSpents: spent?.total || 0,
+      balance: Number.isNaN(balance) ? 0 : balance,
+      year: this.year,
       transactions: getTransactionsIds,
     })
 
-    const closedMonth = await this.monthlyClosingRepository.closeMonth(objToSend)
+    const closedMonth = await this.monthlyClosingRepository.closeMonth(monthlyClosing)
 
     return closedMonth
   }
 
   private getQuery() {
-    const date = new Date()
-    const firstDay = new Date(date.getFullYear(), Number(this.monthToClose) - 1, 1)
-    const lastDay = new Date(date.getFullYear(), Number(this.monthToClose), 0)
+    const firstDay = new Date(this.year, Number(this.monthToClose) - 1, 1)
+    const lastDay = new Date(this.year, Number(this.monthToClose), 0)
 
     const query = {
-      $lte: addDays(lastDay, 1),
+      $lte: lastDay,
       $gte: firstDay,
     }
 
@@ -63,11 +71,11 @@ export class CloseMonth implements UseCase<MonthlyClosing> {
   }
 
   private async attachAllTransactionsEntrances() {
-    const { entrance, spent } = await this.transationRepository.getTransactionsSplittedByType(this.userId, this.walletId, this.getQuery())
+    const transactions = await this.transationRepository.getTransactionsSplittedByType(this.userId, this.walletId, this.getQuery())
 
     return {
-      entrance: entrance?.transactions ? entrance : null,
-      spent: spent?.transactions ? spent : null,
+      entrance: transactions?.entrance?.transactions ? transactions?.entrance : null,
+      spent: transactions?.spent?.transactions ? transactions?.spent : null,
     }
   }
 }

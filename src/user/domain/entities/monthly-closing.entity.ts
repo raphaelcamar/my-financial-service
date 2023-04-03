@@ -5,8 +5,8 @@ export class MonthlyClosing {
   userId: string
   walletId: string
   totalSpents?: number
-  initialBalance?: number
-  finalBalance?: number
+  totalEntrance?: number
+  balance?: number
   aditionalInformation?: string
   month: number
   year: number
@@ -17,8 +17,8 @@ export class MonthlyClosing {
     this.userId = data.userId
     this.walletId = data.walletId
     this.totalSpents = data.totalSpents
-    this.initialBalance = data.initialBalance
-    this.finalBalance = data.finalBalance
+    this.totalEntrance = data.totalEntrance
+    this.balance = data.balance
     this.month = data.month
     this.year = data.year
     this.transactions = data.transactions

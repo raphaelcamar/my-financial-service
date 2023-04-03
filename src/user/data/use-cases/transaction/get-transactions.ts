@@ -18,11 +18,7 @@ export class GetTransactions implements UseCase<Transaction[]> {
 
     const query = this.getFilters(this.filters)
 
-    const transactions = await this.transactionRepository.getTransactions(
-      this.userId,
-      this.walletId,
-      query
-    )
+    const transactions = await this.transactionRepository.getTransactions(this.userId, this.walletId, query)
 
     if (!transactions) throw new UnexpectedError()
 

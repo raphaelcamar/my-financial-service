@@ -2,11 +2,12 @@ import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { Request, Response } from "@main/handlers"
 import { ValidationError } from "@user/domain/errors"
-import { CloseMonth, CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction } from "@user/data/use-cases/transaction"
+import { CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction } from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
 import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 import { TransactionValidation } from "@user/presenters/validation"
 import { MissingParamError } from "@core/generic/domain/errors"
+import { GetMonthlyClosing } from "@user/data/use-cases/monthly-closing"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -62,18 +63,31 @@ export class TransactionController {
   async getTransactionIndicators(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
     const walletId = req?.walletId
-    let query: any = req?.query
+    let month: any = req?.query?.month
+    let year: any = req?.query?.year
 
-    if (query) {
-      query = Number(query.month)
+    if (month) {
+      month = Number(month)
+    } else {
+      throw new MissingParamError("Missing month")
+    }
+
+    if (year) {
+      year = Number(year)
     } else {
       throw new MissingParamError("Missing month")
     }
 
     const transactionRepositoryData = new TransactionRepositoryData()
+    const monthlyClosingRepository = new MonthlyClosingRepositoryData()
 
     try {
-      const useCase = new GetTransactionIndicators(userId, walletId, query, transactionRepositoryData)
+      const monthToSearch = month <= 1 ? 12 : month - 1
+      const yearToSearch = month <= 1 ? year - 1 : year
+
+      const monthlyClosingUseCase = new GetMonthlyClosing(userId, walletId, monthlyClosingRepository, monthToSearch, yearToSearch)
+      const previousClosing = await monthlyClosingUseCase.execute()
+      const useCase = new GetTransactionIndicators(userId, walletId, month, transactionRepositoryData, previousClosing)
 
       const result = await useCase.execute()
 
@@ -84,32 +98,6 @@ export class TransactionController {
       httpException.execute()
 
       res.status(httpException.status).json({ message: httpException.message })
-    }
-  }
-
-  async closeMonth(req: Request, res: Response): Promise<void> {
-    const userId = req?.userId
-    const walletId = req?.walletId
-    const { monthToClose } = req.body || null
-
-    if (monthToClose) {
-      try {
-        const transactionRepositoryData = new TransactionRepositoryData()
-        const monthlyClosingRepository = new MonthlyClosingRepositoryData()
-
-        const monthClose = new CloseMonth(userId, walletId, transactionRepositoryData, monthlyClosingRepository, Number(monthToClose))
-        const closedMonth = await monthClose.execute()
-
-        res.json(closedMonth).status(SuccessStatus.NO_CONTENT)
-      } catch (error) {
-        const httpException = new HttpExceptionHandler(error)
-
-        httpException.execute()
-
-        res.status(httpException.status).json({ message: httpException.message, details: httpException.body.details })
-      }
-    } else {
-      res.status(ErrorStatus.BAD_REQUEST).json("Missing month at query")
     }
   }
 

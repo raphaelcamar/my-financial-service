@@ -13,4 +13,12 @@ export class MonthlyClosingRepositoryData implements MonthlyClosingProtocol {
 
     return closedMonth as MonthlyClosing
   }
+
+  async getMonthlyClosing(month: number, year: number, userId: string, walletId: string): Promise<MonthlyClosing> {
+    const result: any = await MonthlyClosingSchema.findOne({ userId, walletId, month, year }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return result as MonthlyClosing
+  }
 }

@@ -5,6 +5,7 @@ export type TypeTransaction = "ENTRANCE" | "SPENT"
 type IndicatorType = {
   value: number
   differencePercentage: number
+  differenceValue?: number
 }
 
 export type StatusType = "FINISHED" | "PENDING"
