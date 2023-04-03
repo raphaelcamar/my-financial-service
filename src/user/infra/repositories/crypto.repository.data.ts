@@ -15,7 +15,7 @@ export class CryptoRepositoryData implements CryptoRepository {
       password: user?.password,
     }
 
-    const token = await Jwt.sign(payload, this.token_jwt, {
+    const token = Jwt.sign(payload, this.token_jwt, {
       expiresIn: 86400,
     })
 

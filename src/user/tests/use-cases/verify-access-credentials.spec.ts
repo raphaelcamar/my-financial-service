@@ -11,12 +11,7 @@ describe("Verify Access Credentials", () => {
 
     await createUserUseCase.execute()
 
-    const useCase = new VerifyAccessCredentials(
-      user.email,
-      passBeforeEncrypt,
-      userRepositorySpy,
-      cryptoRepositoryData
-    )
+    const useCase = new VerifyAccessCredentials(user.email, passBeforeEncrypt, userRepositorySpy, cryptoRepositoryData)
 
     const result = await useCase.execute()
 
@@ -35,12 +30,7 @@ describe("Verify Access Credentials", () => {
 
     const wrongPassword = "someWrongPassword"
 
-    const useCase = new VerifyAccessCredentials(
-      user.email,
-      wrongPassword,
-      userRepositorySpy,
-      cryptoRepositoryData
-    )
+    const useCase = new VerifyAccessCredentials(user.email, wrongPassword, userRepositorySpy, cryptoRepositoryData)
 
     await expect(useCase.execute()).rejects.toThrow(CredentialsError)
   })

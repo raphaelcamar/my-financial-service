@@ -1,6 +1,3 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-unused-vars */
-import { UserBuilder } from "@user/builders"
 import { UserRepository } from "@user/data/protocols"
 import { User } from "@user/domain/entities"
 
@@ -42,7 +39,11 @@ export class UserRepositorySpy implements UserRepository {
 
     if (!hasUser) return null
 
-    Promise.resolve(Object.keys(update).forEach(key => (this.user[key] = update[key])))
+    Promise.resolve(
+      Object.keys(update).forEach(key => {
+        this.user[key] = update[key]
+      })
+    )
 
     return Promise.resolve(this.user)
   }

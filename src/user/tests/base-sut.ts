@@ -1,6 +1,6 @@
 import { UserBuilder } from "@user/builders"
 import { User } from "@user/domain/entities"
-import { CryptoRepositoryData } from "@user/infra/repositories"
+import { CryptoRepositoryData } from "@user/infra/repositories/crypto.repository.data"
 import { UserRepositorySpy } from "./mocks"
 
 type sutType = {

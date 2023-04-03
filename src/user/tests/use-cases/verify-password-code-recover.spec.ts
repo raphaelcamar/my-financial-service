@@ -1,8 +1,4 @@
-import {
-  CreatePasswordRecover,
-  CreateUser,
-  VerifyPasswordCodeRecover,
-} from "@user/data/use-cases/user"
+import { CreatePasswordRecover, CreateUser, VerifyPasswordCodeRecover } from "@user/data/use-cases/user"
 import { WrongCodeError } from "@user/domain/errors"
 import { makeSutUser } from "../base-sut"
 
