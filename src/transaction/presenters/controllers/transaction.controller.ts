@@ -26,11 +26,7 @@ export class TransactionController {
       const transactionValidation = new TransactionValidation(transaction)
       const transactionRepositoryData = new TransactionRepositoryData()
 
-      const useCase = new CreateTransaction(
-        transaction,
-        transactionRepositoryData,
-        transactionValidation
-      )
+      const useCase = new CreateTransaction(transaction, transactionRepositoryData, transactionValidation)
 
       const result = await useCase.execute()
 
@@ -44,9 +40,7 @@ export class TransactionController {
 
       httpException.execute()
 
-      res
-        .status(httpException.status)
-        .json({ message: httpException.message, stack: error?.stackTrace || [] })
+      res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [] })
     }
   }
 
@@ -102,11 +96,7 @@ export class TransactionController {
       const transactionValidation = new TransactionValidation(transaction)
       const transactionRepositoryData = new TransactionRepositoryData()
 
-      const useCase = new UpdateTransaction(
-        transaction,
-        transactionRepositoryData,
-        transactionValidation
-      )
+      const useCase = new UpdateTransaction(transaction, transactionRepositoryData, transactionValidation)
 
       await useCase.execute()
 
@@ -119,9 +109,7 @@ export class TransactionController {
 
         httpException.execute()
 
-        res
-          .status(httpException.status)
-          .json({ message: httpException.message, stack: error?.stackTrace || [] })
+        res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [] })
       }
     }
   }
@@ -134,11 +122,7 @@ export class TransactionController {
       const transactionRepositoryData = new TransactionRepositoryData()
 
       const mostSpent = await new GetMostSpent(userId, transactionRepositoryData, filter).execute()
-      const totalFilter = await new GetTotalFilter(
-        userId,
-        transactionRepositoryData,
-        filter
-      ).execute()
+      const totalFilter = await new GetTotalFilter(userId, transactionRepositoryData, filter).execute()
       const total = await new GetTotal(userId, transactionRepositoryData).execute()
       const average = await new GetAverage(userId, transactionRepositoryData, filter).execute()
 

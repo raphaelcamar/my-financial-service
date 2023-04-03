@@ -168,4 +168,12 @@ export class TransactionRepositoryData implements TransactionProtocol {
     ])
     return transactions?.[0] as TransactionsSplittedByTypeProps
   }
+
+  async updateTransaction(transaction: Transaction): Promise<void> {
+    await TransactionSchema.updateOne({ userId: transaction?.userId, _id: transaction?._id, walletId: transaction.walletId }, transaction).catch(
+      () => {
+        throw new UnexpectedError()
+      }
+    )
+  }
 }

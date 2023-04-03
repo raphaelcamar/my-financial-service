@@ -52,10 +52,7 @@ export class TransactionRepositoryData implements TransactionRepository {
   }
 
   async updateTransaction(transaction: Transaction): Promise<void> {
-    await TransactionSchema.updateOne(
-      { userId: transaction?.userId, _id: transaction?._id },
-      transaction
-    ).catch(() => {
+    await TransactionSchema.updateOne({ userId: transaction?.userId, _id: transaction?._id }, transaction).catch(() => {
       throw new UnexpectedError()
     })
   }

@@ -1,5 +1,5 @@
 import mongoose, { Schema } from "mongoose"
-import { updateWalletBeforeAddTransaction } from "../watchers"
+import { updateWalletBeforeAddTransaction, updateWalletBeforeUpdateTransaction } from "../watchers"
 
 const TransactionSchema = new Schema(
   {
@@ -34,5 +34,6 @@ const TransactionSchema = new Schema(
 )
 
 TransactionSchema.pre("save", updateWalletBeforeAddTransaction)
+TransactionSchema.pre("updateOne", updateWalletBeforeUpdateTransaction)
 
 export const Transaction = mongoose.model("Transaction", TransactionSchema, "Transaction")

@@ -2,7 +2,7 @@ import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { Request, Response } from "@main/handlers"
 import { ValidationError } from "@user/domain/errors"
-import { CloseMonth, CreateTransaction, GetTransactionIndicators, GetTransactions } from "@user/data/use-cases/transaction"
+import { CloseMonth, CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction } from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
 import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 import { TransactionValidation } from "@user/presenters/validation"
@@ -96,7 +96,6 @@ export class TransactionController {
       try {
         const transactionRepositoryData = new TransactionRepositoryData()
         const monthlyClosingRepository = new MonthlyClosingRepositoryData()
-        const walletRepositoryData = new WalletRepositoryData()
 
         const monthClose = new CloseMonth(userId, walletId, transactionRepositoryData, monthlyClosingRepository, Number(monthToClose))
         const closedMonth = await monthClose.execute()
@@ -111,6 +110,35 @@ export class TransactionController {
       }
     } else {
       res.status(ErrorStatus.BAD_REQUEST).json("Missing month at query")
+    }
+  }
+
+  async updateTransaction(req: Request, res: Response): Promise<void> {
+    const userId = req?.userId
+    const walletId = req?.walletId
+    const transaction = new Transaction({ ...req.body, userId, walletId })
+
+    try {
+      const transactionValidation = new TransactionValidation(transaction)
+      const transactionRepositoryData = new TransactionRepositoryData()
+
+      const useCase = new UpdateTransaction(transaction, transactionRepositoryData, transactionValidation)
+
+      await useCase.execute()
+
+      res.json(transaction).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      if (error instanceof ValidationError) {
+        res.status(error?.status).json(error?.stackTrace)
+      } else {
+        const httpException = new HttpExceptionHandler(error)
+
+        httpException.execute()
+
+        res
+          .status(httpException.status)
+          .json({ message: httpException.message, stack: error?.stackTrace || [], details: httpException?.body?.details })
+      }
     }
   }
 }

@@ -26,7 +26,7 @@ export class Transaction {
   status: StatusType
 
   constructor(data: Transaction.Data) {
-    this.validate(data)
+    // this.validate(data)
 
     this._id = data?._id
     this.userId = data?.userId
