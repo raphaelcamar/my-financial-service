@@ -171,8 +171,8 @@ export class TransactionRepositoryData implements TransactionProtocol {
 
   async updateTransaction(transaction: Transaction): Promise<void> {
     await TransactionSchema.updateOne({ userId: transaction?.userId, _id: transaction?._id, walletId: transaction.walletId }, transaction).catch(
-      () => {
-        throw new UnexpectedError()
+      err => {
+        throw new UnexpectedError(err)
       }
     )
   }

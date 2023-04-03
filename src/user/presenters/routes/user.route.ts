@@ -13,10 +13,5 @@ export const UserRoutes = (app: App) => {
   app.post("/user/verify-code", userController.verifyCodePasswordRecover)
   app.put("/user/update", userController.update)
   app.post("/user/verify", middlewareToken.verify, userController.verifyAccessToken)
-  app.post(
-    "/user/updatePicture",
-    middlewareToken.verify,
-    upload.multer.single("file"),
-    userController.updatePicture
-  )
+  app.post("/user/updatePicture", middlewareToken.verify, upload.multer.single("file"), userController.updatePicture)
 }

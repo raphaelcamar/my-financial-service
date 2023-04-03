@@ -23,9 +23,10 @@ export async function updateWalletBeforeUpdateTransaction(next: mongoose.Callbac
   try {
     const transaction = this._update
     const wallet = await Wallet.findById(transaction.walletId)
-    const transactionToUpdate = await Transaction.findById(transaction._id, { value: 1 })
 
-    const walletValue = wallet.value as number
+    const transactionToUpdate = await Transaction.findById(transaction._id, { value: 1 })
+    const walletValue = wallet?.value as number
+
     wallet.value = walletValue - (transactionToUpdate.value as number) + (transaction.value as number)
 
     await Wallet.updateOne({ _id: wallet.id }, wallet)

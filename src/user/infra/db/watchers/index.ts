@@ -1,1 +1,1 @@
-export * from "./transaction-whatcher"
+export * from "./transaction-watcher"

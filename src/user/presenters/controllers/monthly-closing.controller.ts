@@ -10,6 +10,7 @@ export class MonthlyClosingController {
     const walletId = req?.walletId
     const { monthToClose, year } = req.body || null
 
+    // TODO validar se existe a walletId, e o user
     if (monthToClose) {
       try {
         const transactionRepositoryData = new TransactionRepositoryData()
@@ -21,7 +22,6 @@ export class MonthlyClosingController {
         res.json(closedMonth).status(SuccessStatus.NO_CONTENT)
       } catch (error) {
         const httpException = new HttpExceptionHandler(error)
-
         httpException.execute()
 
         res.status(httpException.status).json({ message: httpException.message, details: httpException.body.details })
