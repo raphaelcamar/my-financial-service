@@ -1,7 +1,7 @@
 import { CreateUser } from "@user/data/use-cases/user"
 import { User } from "@user/domain/entities"
 import { EmailAlreadyExistsError } from "@user/domain/errors"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts"
 
 describe("CreateUser", () => {
   it("should be able to create a user", async () => {

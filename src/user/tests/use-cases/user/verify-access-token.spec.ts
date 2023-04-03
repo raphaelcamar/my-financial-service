@@ -1,7 +1,7 @@
 import { UserBuilder } from "@user/builders"
 import { CreateJWToken, CreateUser, VerifyAccessToken } from "@user/data/use-cases/user"
 import { NotFoundUserError } from "@user/domain/errors"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts/user-sut"
 
 describe("Verify access token", () => {
   it("Should be able to search user by token and return user", async () => {

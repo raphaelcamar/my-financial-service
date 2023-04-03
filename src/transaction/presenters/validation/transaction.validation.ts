@@ -37,12 +37,9 @@ export class TransactionValidation implements ValidateFields {
       "number.base": "Valor deve ser numérico",
       "any.required": "Valor deve ser informado",
     }),
-    topic: Joi.string()
-      .valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "SALARY")
-      .required()
-      .messages({
-        "any.only": "A opção de tópico não deve ser diferente das opções",
-        "any.required": "Deve informar o tópico",
-      }),
+    topic: Joi.string().valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "SALARY").required().messages({
+      "any.only": "A opção de tópico não deve ser diferente das opções",
+      "any.required": "Deve informar o tópico",
+    }),
   })
 }

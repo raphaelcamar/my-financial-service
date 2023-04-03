@@ -1,4 +1,4 @@
-import { Transaction } from "@transaction/domain/entities"
+import { Transaction } from "@user/domain/entities"
 import faker from "@faker-js/faker/locale/pt_BR"
 import { Builder } from "@core/generic/data/protocols"
 
@@ -22,6 +22,8 @@ export class TransactionBuilder implements Builder<Transaction> {
       amount: faker.datatype.number({ max: 10, min: 1 }),
       anotation: faker.random.words(5),
       walletId: faker.datatype.uuid(),
+      coin: faker.random.arrayElement(["USD", "BRL", "EUR", "ARS", "GBP", "JPY", "CNY", "AUD", "CAD", "CHF", "NZD"]),
+      status: faker.random.arrayElement(["FINISHED", "PENDING"]),
     })
 
     return data

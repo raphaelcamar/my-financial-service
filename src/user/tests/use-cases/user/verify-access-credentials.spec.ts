@@ -1,6 +1,6 @@
 import { VerifyAccessCredentials, CreateUser } from "@user/data/use-cases/user"
 import { CredentialsError } from "@user/domain/errors"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts/user-sut"
 
 describe("Verify Access Credentials", () => {
   it("Should be able to search user by password and email and return the user", async () => {

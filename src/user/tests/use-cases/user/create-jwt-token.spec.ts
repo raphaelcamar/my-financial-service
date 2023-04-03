@@ -1,5 +1,5 @@
 import { CreateJWToken } from "@user/data/use-cases/user"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts"
 
 describe("Create JWT", () => {
   it("should be able to create a JWT token according to the user data", async () => {

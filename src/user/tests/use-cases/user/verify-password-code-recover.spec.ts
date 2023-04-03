@@ -1,6 +1,6 @@
 import { CreatePasswordRecover, CreateUser, VerifyPasswordCodeRecover } from "@user/data/use-cases/user"
 import { WrongCodeError } from "@user/domain/errors"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts/user-sut"
 
 describe("Verify password recover", () => {
   test("Should be able to verify the password code recover", async () => {

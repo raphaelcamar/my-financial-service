@@ -1,8 +1,7 @@
-/* eslint-disable max-len */
 import { UserBuilder } from "@user/builders"
 import { CreatePasswordRecover, CreateUser } from "@user/data/use-cases/user"
 import { NotFoundUserError } from "@user/domain/errors"
-import { makeSutUser } from "../base-sut"
+import { makeSutUser } from "@user/tests/suts"
 
 describe("Create password recover", () => {
   test("Should be able to create a code for password recover", async () => {

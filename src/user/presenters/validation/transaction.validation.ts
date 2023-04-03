@@ -37,24 +37,18 @@ export class TransactionValidation implements ValidateFields {
       "number.base": "Valor deve ser numérico",
       "any.required": "Valor deve ser informado",
     }),
-    topic: Joi.string()
-      .valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "SALARY")
-      .required()
-      .messages({
-        "any.only": "A opção de tópico não deve ser diferente das opções",
-        "any.required": "Deve informar o tópico",
-      }),
+    topic: Joi.string().valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "SALARY").required().messages({
+      "any.only": "A opção de tópico não deve ser diferente das opções",
+      "any.required": "Deve informar o tópico",
+    }),
     status: Joi.string().valid("PENDING", "FINISHED").required().messages({
       "any.only": "A opção de status não deve ser diferente das opções",
       "any.required": "Deve informar o status da transação",
     }),
-    coin: Joi.string()
-      .valid("USD", "BRL", "EUR", "ARS", "GBP", "JPY", "CNY", "AUD", "CAD", "CHF", "NZD")
-      .required()
-      .messages({
-        "any.only": "A opção deve ser uma moeda válida",
-        "any.base": "Informe um tipo de moeda correto",
-        "any.required": "Deve informar o tipo da moeda",
-      }),
+    coin: Joi.string().valid("USD", "BRL", "EUR", "ARS", "GBP", "JPY", "CNY", "AUD", "CAD", "CHF", "NZD").required().messages({
+      "any.only": "A opção deve ser uma moeda válida",
+      "any.base": "Informe um tipo de moeda correto",
+      "any.required": "Deve informar o tipo da moeda",
+    }),
   })
 }
