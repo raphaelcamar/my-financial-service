@@ -37,6 +37,7 @@ export class UserRepositoryData implements UserRepository {
   async updateJWToken(user: User, token: string): Promise<User> {
     const result: any = await UserSchema.findByIdAndUpdate({ _id: user._id }, { token }, { new: true })
       .populate("wallets")
+      .populate("currentWallet")
       .catch(err => {
         throw new UnexpectedError(err)
       })

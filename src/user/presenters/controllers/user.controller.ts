@@ -30,10 +30,15 @@ export class UserController {
         color: "primary",
         name: "Minha Carteira",
       })
+
       const createWallet = new CreateWallet(wallet, walletRepository)
       const walletCreated = await createWallet.execute()
 
-      const useCase = new CreateUser({ ...req.body, wallets: [walletCreated?.id] }, userRepositoryData, cryptoRepositoryData)
+      const useCase = new CreateUser(
+        { ...req.body, wallets: [walletCreated?.id], currentWallet: walletCreated?.id },
+        userRepositoryData,
+        cryptoRepositoryData
+      )
       const user = await useCase.execute()
 
       const createToken = new CreateJWToken(user, cryptoRepositoryData)

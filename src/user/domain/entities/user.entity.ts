@@ -10,6 +10,7 @@ export class User {
   public token: string
   public updatedAt?: Date
   public wallets: Wallet[]
+  public currentWallet?: Wallet
   public codeRecover?: number
 
   constructor(private data: User.Data) {
@@ -22,6 +23,7 @@ export class User {
     this.token = data?.token?.tokenId
     this.updatedAt = data?.updatedAt || null
     this.codeRecover = data?.codeRecover
+    this.currentWallet = data?.currentWallet
   }
 }
 
@@ -34,6 +36,7 @@ export namespace User {
     name: string
     password: string
     wallets: Wallet[]
+    currentWallet?: Wallet
     token?: {
       tokenId?: string
       expires_in?: Date

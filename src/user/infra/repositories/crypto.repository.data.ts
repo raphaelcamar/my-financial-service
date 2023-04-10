@@ -12,7 +12,7 @@ export class CryptoRepositoryData implements CryptoRepository {
       name: user?.name,
       lastname: user?.lastname,
       email: user?.email,
-      password: user?.password,
+      currentWallet: user?.currentWallet,
     }
 
     const token = Jwt.sign(payload, this.token_jwt, {

@@ -1,4 +1,4 @@
-import mongoose, { Schema, ObjectId } from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const UserSchema = new Schema(
   {
@@ -11,6 +11,7 @@ const UserSchema = new Schema(
       tokenId: { type: String, required: false },
       expires_in: { type: Date, required: false },
     },
+    currentWallet: { type: Schema.Types.ObjectId, ref: "Wallet", required: true },
     codeRecover: { type: Number },
     wallets: [{ type: Schema.Types.ObjectId, ref: "Wallet", required: true }],
   },
