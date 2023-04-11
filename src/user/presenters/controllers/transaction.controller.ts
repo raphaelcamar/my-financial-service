@@ -2,7 +2,7 @@ import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { Request, Response } from "@main/handlers"
 import { ValidationError } from "@user/domain/errors"
-import { CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction } from "@user/data/use-cases/transaction"
+import { CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction, DeleteTransaction } from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
 import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 import { TransactionValidation } from "@user/presenters/validation"
@@ -102,7 +102,7 @@ export class TransactionController {
 
   async updateTransaction(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.walletId
+    const walletId = req?.params.walletId
     const transaction = new Transaction({ ...req.body, userId, walletId })
 
     try {
@@ -126,6 +126,27 @@ export class TransactionController {
           .status(httpException.status)
           .json({ message: httpException.message, stack: error?.stackTrace || [], details: httpException?.body?.details })
       }
+    }
+  }
+
+  async deleteTransaction(req: Request, res: Response) {
+    try {
+      const userId = req?.userId
+      const walletId = req?.params.walletId
+      const transactionId = req?.params.id
+
+      const transactionRepositoryData = new TransactionRepositoryData()
+      const useCase = new DeleteTransaction(transactionRepositoryData, userId, transactionId, walletId)
+
+      const deletedTransaction = await useCase.execute()
+
+      res.json(deletedTransaction).status(SuccessStatus.SUCCESS)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
+
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [], details: httpException?.body?.details })
     }
   }
 }

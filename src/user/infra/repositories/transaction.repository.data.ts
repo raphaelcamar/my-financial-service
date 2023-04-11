@@ -176,4 +176,12 @@ export class TransactionRepositoryData implements TransactionProtocol {
       }
     )
   }
+
+  async deleteTransaction(transactionId: string, userId: string, walletId: string): Promise<Transaction> {
+    const deletedTransaction: any = await TransactionSchema.findOneAndDelete({ userId, walletId, _id: transactionId }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return deletedTransaction as Transaction
+  }
 }

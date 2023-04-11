@@ -17,4 +17,5 @@ export type TransactionProtocol = {
   getTransactionIndicators: (userId: string, walletId: string, query: object) => Promise<Transaction.Indicator>
   getTransactionsSplittedByType: (userId: string, walletId: string, query?: object) => Promise<TransactionsSplittedByTypeProps>
   updateTransaction: (transaction: Transaction.Data) => Promise<void>
+  deleteTransaction: (transactionId: string, userId: string, walletId: string) => Promise<Transaction>
 }
