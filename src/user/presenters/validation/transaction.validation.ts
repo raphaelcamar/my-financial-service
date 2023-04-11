@@ -29,7 +29,7 @@ export class TransactionValidation implements ValidateFields {
       "string.base": "Anotação no formato inválido",
       "any.required": "Deve informar a anotação",
     }),
-    type: Joi.string().valid("ENTRANCE", "SPENT").required().messages({
+    type: Joi.string().valid("ENTRANCE", "SPENT", "RECURRENT").required().messages({
       "any.only": "A opção de tipo não deve ser diferente das opções citadas acima",
       "any.required": "Deve informar o tipo",
     }),

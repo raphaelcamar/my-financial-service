@@ -7,7 +7,7 @@ const transactionController = new TransactionController()
 
 export const TransactionV2Routes = (app: App) => {
   app.post("/v2/transaction", middlewareToken.verify, transactionController.create)
-  app.get("/v2/transaction", middlewareToken.verify, transactionController.getTransactions)
+  app.get("/v2/transaction/:walletId", middlewareToken.verify, transactionController.getTransactions)
   app.get("/v2/transaction/indicators", middlewareToken.verify, transactionController.getTransactionIndicators)
   app.put("/v2/transaction/update", middlewareToken.verify, transactionController.updateTransaction)
 }

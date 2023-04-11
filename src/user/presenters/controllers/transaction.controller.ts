@@ -40,9 +40,8 @@ export class TransactionController {
 
   async getTransactions(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.walletId
+    const walletId = req?.params.walletId
     const filters: Transaction.Filter = req.query
-
     try {
       const transactionRepositoryData = new TransactionRepositoryData()
 
