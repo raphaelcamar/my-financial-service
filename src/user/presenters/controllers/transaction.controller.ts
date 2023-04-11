@@ -12,7 +12,7 @@ import { GetMonthlyClosing } from "@user/data/use-cases/monthly-closing"
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.walletId
+    const walletId = req?.body.walletId
     const transaction = new Transaction({ ...req.body, userId, walletId })
 
     try {
