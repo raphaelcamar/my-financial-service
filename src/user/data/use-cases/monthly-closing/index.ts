@@ -1,3 +1,5 @@
 export * from "./close-month"
 export * from "./get-monthly-closing"
 export * from "./get-difference-from-months"
+export * from "./verify-if-can-close"
+export * from "./verify-if-has-pending-transactions"

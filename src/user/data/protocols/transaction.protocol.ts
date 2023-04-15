@@ -11,6 +11,11 @@ export type TransactionsSplittedByTypeProps = {
   }
 }
 
+export type GetPendingTransactionsGroupedByUserProps = {
+  userId: string
+  transactions: Transaction
+}
+
 export type TransactionProtocol = {
   create: (transaction: Transaction.Data) => Promise<Transaction>
   getTransactions: (userId: string, walletId: string, query?: object) => Promise<Transaction[]>
@@ -18,4 +23,5 @@ export type TransactionProtocol = {
   getTransactionsSplittedByType: (userId: string, walletId: string, query?: object) => Promise<TransactionsSplittedByTypeProps>
   updateTransaction: (transaction: Transaction.Data) => Promise<void>
   deleteTransaction: (transactionId: string, userId: string, walletId: string) => Promise<Transaction>
+  getPendingTransactionsGroupedByUser: (filter: object) => Promise<GetPendingTransactionsGroupedByUserProps[]>
 }

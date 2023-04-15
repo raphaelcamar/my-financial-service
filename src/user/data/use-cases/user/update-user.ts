@@ -4,11 +4,7 @@ import { User } from "@user/domain/entities"
 import { NotFoundUserError } from "@user/domain/errors"
 
 export class UpdateUser implements UseCase<User> {
-  constructor(
-    private userRepository: UserRepository,
-    private data: Partial<User>,
-    private cryptoRepository: CryptoRepository
-  ) {}
+  constructor(private userRepository: UserRepository, private data: Partial<User>, private cryptoRepository: CryptoRepository) {}
 
   async execute(): Promise<User> {
     if (this.data.password) {

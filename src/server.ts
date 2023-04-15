@@ -4,6 +4,7 @@ import { config } from "dotenv"
 import { MongoDbConnection } from "@main/external-connections"
 import { InitializeRoutes } from "@main/routes"
 import { InitializeMiddlewares } from "@main/middlewares"
+import { SchedulerController } from "@user/presenters/controllers"
 
 Promise.resolve(config()).then(() => {
   const app = express()
@@ -19,7 +20,11 @@ Promise.resolve(config()).then(() => {
 
   connection.connect()
 
-  new InitializeRoutes(app).initialize()
+  const route = new InitializeRoutes(app)
+  route.initialize()
+
+  const scheduler = new SchedulerController()
+  scheduler.init()
 
   process.on("SIGINT", () => {
     connection.disconnect()

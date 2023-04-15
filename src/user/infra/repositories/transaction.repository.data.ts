@@ -1,6 +1,10 @@
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { Transaction as TransactionSchema } from "@user/infra/db/schemas"
-import { TransactionProtocol, TransactionsSplittedByTypeProps } from "@user/data/protocols/transaction.protocol"
+import {
+  GetPendingTransactionsGroupedByUserProps,
+  TransactionProtocol,
+  TransactionsSplittedByTypeProps,
+} from "@user/data/protocols/transaction.protocol"
 import { Transaction } from "@user/domain/entities"
 import mongoose from "mongoose"
 
@@ -183,5 +187,50 @@ export class TransactionRepositoryData implements TransactionProtocol {
     })
 
     return deletedTransaction as Transaction
+  }
+
+  async getPendingTransactionsGroupedByUser(filter: object) {
+    const result: any = await TransactionSchema.aggregate([
+      {
+        $match: {
+          billedAt: filter,
+        },
+      },
+      {
+        $group: {
+          _id: "$userId",
+          transactions: {
+            $push: {
+              $cond: [
+                {
+                  $eq: ["$status", "PENDING"],
+                },
+                {
+                  transaction: "$$ROOT",
+                },
+                "$$REMOVE",
+              ],
+            },
+          },
+        },
+      },
+      {
+        $project: {
+          _id: 0,
+          userId: "$_id",
+          transactions: {
+            $ifNull: [
+              {
+                $arrayElemAt: ["$transactions.transaction", 0],
+              },
+              null,
+            ],
+          },
+        },
+      },
+    ]).catch(error => {
+      throw new UnexpectedError(error)
+    })
+    return result as GetPendingTransactionsGroupedByUserProps[]
   }
 }

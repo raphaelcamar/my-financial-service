@@ -10,7 +10,6 @@ export class MonthlyClosingController {
     const walletId = req?.walletId
     const { monthToClose, year } = req.body || null
 
-    // TODO validar se existe a walletId, e o user
     if (monthToClose) {
       try {
         const transactionRepositoryData = new TransactionRepositoryData()
