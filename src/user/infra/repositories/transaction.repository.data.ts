@@ -7,6 +7,7 @@ import {
 } from "@user/data/protocols/transaction.protocol"
 import { Transaction } from "@user/domain/entities"
 import mongoose from "mongoose"
+import { DeleteTransactionError } from "@user/domain/errors"
 
 export class TransactionRepositoryData implements TransactionProtocol {
   async create(transaction: Transaction): Promise<Transaction> {
@@ -182,10 +183,13 @@ export class TransactionRepositoryData implements TransactionProtocol {
   }
 
   async deleteTransaction(transactionId: string, userId: string, walletId: string): Promise<Transaction> {
-    const deletedTransaction: any = await TransactionSchema.findOneAndDelete({ userId, walletId, _id: transactionId }).catch(err => {
+    const findedTransactionToDelete = await TransactionSchema.findOne({ userId, walletId, _id: transactionId }).catch(err => {
       throw new UnexpectedError(err)
     })
 
+    if (!findedTransactionToDelete) throw new DeleteTransactionError()
+
+    const deletedTransaction = await findedTransactionToDelete.deleteOne()
     return deletedTransaction as Transaction
   }
 
