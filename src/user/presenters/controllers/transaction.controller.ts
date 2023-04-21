@@ -12,7 +12,7 @@ import { GetMonthlyClosing } from "@user/data/use-cases/monthly-closing"
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.body.walletId
+    const walletId = req?.walletId
     const transaction = new Transaction({ ...req.body, userId, walletId })
 
     try {
@@ -40,7 +40,7 @@ export class TransactionController {
 
   async getTransactions(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.params.walletId
+    const walletId = req?.walletId
     const filters: Transaction.Filter = req.query
     try {
       const transactionRepositoryData = new TransactionRepositoryData()
@@ -61,7 +61,7 @@ export class TransactionController {
 
   async getTransactionIndicators(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.params?.walletId
+    const walletId = req?.walletId
     let month: any = req?.query?.month
     let year: any = req?.query?.year
 
@@ -98,7 +98,7 @@ export class TransactionController {
 
   async updateTransaction(req: Request, res: Response): Promise<void> {
     const userId = req?.userId
-    const walletId = req?.params.walletId
+    const walletId = req?.walletId
     const transaction = new Transaction({ ...req.body, userId, walletId })
 
     try {
@@ -128,7 +128,7 @@ export class TransactionController {
   async deleteTransaction(req: Request, res: Response) {
     try {
       const userId = req?.userId
-      const walletId = req?.params.walletId
+      const walletId = req?.walletId
       const transactionId = req?.params.id
 
       const transactionRepositoryData = new TransactionRepositoryData()
