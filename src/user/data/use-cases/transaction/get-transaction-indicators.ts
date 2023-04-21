@@ -50,7 +50,7 @@ export class GetTransactionIndicators implements UseCase<Transaction.Indicator> 
     }
   }
 
-  private getFilter(): { $lte: any; $gte: any } {
+  private getFilter(): { $lte: Date; $gte: Date } {
     const date = new Date()
     const firstDay = new Date(date.getFullYear(), this.month - 1, 1)
     const lastDay = new Date(date.getFullYear(), this.month, 0)
