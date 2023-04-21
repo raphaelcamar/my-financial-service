@@ -54,9 +54,12 @@ export class UserRepositoryData implements UserRepository {
   }
 
   async verifyAccessToken(token: string): Promise<User> {
-    const result: any = await UserSchema.findOne({ token }).catch(err => {
-      throw new UnexpectedError(err)
-    })
+    const result: any = await UserSchema.findOne({ token })
+      .populate("wallets")
+      .populate("currentWallet")
+      .catch(err => {
+        throw new UnexpectedError(err)
+      })
     return result as User
   }
 
