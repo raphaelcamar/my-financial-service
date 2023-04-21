@@ -120,13 +120,13 @@ export class UserController {
 
       const user = await useCase.execute()
 
-      const createToken = new CreateJWToken(user, cryptoRepositoryData)
-      const tokenCreated = await createToken.execute()
-      const result = await userRepositoryData.updateJWToken(user, tokenCreated)
+      // const createToken = new CreateJWToken(user, cryptoRepositoryData)
+      // const tokenCreated = await createToken.execute()
+      // const result = await userRepositoryData.updateJWToken(user, tokenCreated)
 
-      delete result.password
+      delete user.password
 
-      res.status(SuccessStatus.SUCCESS).json(result)
+      res.status(SuccessStatus.SUCCESS).json(user)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 
