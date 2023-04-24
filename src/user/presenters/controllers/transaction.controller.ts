@@ -81,7 +81,7 @@ export class TransactionController {
       const monthlyClosingUseCase = new GetMonthlyClosing(userId, walletId, monthlyClosingRepository, monthToSearch, yearToSearch)
       const previousClosing = await monthlyClosingUseCase.execute()
 
-      if (!previousClosing) throw new MonthlyClosingDoesntExist()
+      // if (!previousClosing) throw new MonthlyClosingDoesntExist()
 
       const useCase = new GetTransactionIndicators(userId, walletId, month, transactionRepositoryData, previousClosing)
       const result = await useCase.execute()

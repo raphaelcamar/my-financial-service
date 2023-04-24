@@ -33,8 +33,11 @@ export class GetTransactionIndicators implements UseCase<Transaction.Indicator> 
     const entranceDifference = this.getDifferenceValue(result.entrance.value, this.previousMonthlyClosing?.totalEntrance || 0)
     const spentDifference = this.getDifferenceValue(result.spent.value, this.previousMonthlyClosing?.totalSpents || 0)
 
-    const entrancePercentage = this.getDifferencePercentage(result.entrance.value, this.previousMonthlyClosing?.totalEntrance || 1)
-    const spentPercentage = this.getDifferencePercentage(result.spent.value, this.previousMonthlyClosing?.totalSpents || 1)
+    const entrancePercentage = this.getDifferencePercentage(
+      result.entrance.value,
+      this.previousMonthlyClosing?.totalEntrance || result.entrance.value
+    )
+    const spentPercentage = this.getDifferencePercentage(result.spent.value, this.previousMonthlyClosing?.totalSpents || result.spent.value)
 
     return {
       entrance: {

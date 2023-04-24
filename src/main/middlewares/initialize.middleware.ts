@@ -1,12 +1,11 @@
 import { App, parseRequest, urlEncoded, cors } from "@main/handlers"
+import { Server } from "http"
 
 export class InitializeMiddlewares {
-  constructor(private app: App, private listenPort: number) {}
+  constructor(private server: Server, private app: App, private listenPort: number) {}
 
   initialize(): void {
-    this.app.listen(this.listenPort, () =>
-      console.log(`Server is Running at http://localhost:${this.listenPort}/`)
-    )
+    this.server.listen(this.listenPort, () => console.log(`Server is Running at http://localhost:${this.listenPort}/`))
     this.app.use(parseRequest({}))
 
     this.app.use(urlEncoded({ extended: true }))
