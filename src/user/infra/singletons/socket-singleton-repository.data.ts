@@ -29,7 +29,6 @@ export class SocketSingletonRepository {
 
     this.io.on("connection", (socket: Socket) => {
       const { userId, walletId } = socket.handshake.query
-
       socket.join(userId)
       socket.join(walletId)
     })

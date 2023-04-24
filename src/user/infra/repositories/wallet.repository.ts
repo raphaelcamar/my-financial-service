@@ -16,7 +16,8 @@ export class WalletRepositoryData implements WalletProtocol {
 
   async getWallets(userId: string): Promise<Wallet[]> {
     const result: any = await WalletSchema.find({ userId })
-    return result as Wallet[]
+
+    return result.map(wallet => new Wallet(wallet))
   }
 
   async update(wallet: Wallet): Promise<any> {
@@ -25,5 +26,13 @@ export class WalletRepositoryData implements WalletProtocol {
     })
 
     return result
+  }
+
+  async getById(walletId: string): Promise<Wallet> {
+    const result: any = await WalletSchema.findById(walletId).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return new Wallet(result)
   }
 }

@@ -5,6 +5,7 @@ export class Wallet {
   public createdAt?: Date
   public updatedAt?: Date
   public color: string
+  public value: number
 
   constructor(data: Wallet.Data) {
     this.id = data.id
@@ -13,6 +14,7 @@ export class Wallet {
     this.createdAt = data.createdAt
     this.updatedAt = data.updatedAt
     this.color = data.color
+    this.value = data.value
   }
 }
 

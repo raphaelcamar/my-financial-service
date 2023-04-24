@@ -29,6 +29,7 @@ export class UserController {
       const wallet = new Wallet({
         color: "primary",
         name: "Minha Carteira",
+        value: 0,
       })
 
       const createWallet = new CreateWallet(wallet, walletRepository)

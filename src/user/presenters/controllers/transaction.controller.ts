@@ -8,6 +8,8 @@ import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletReposito
 import { TransactionValidation } from "@user/presenters/validation"
 import { MissingParamError } from "@core/generic/domain/errors"
 import { GetMonthlyClosing } from "@user/data/use-cases/monthly-closing"
+import { SocketSingletonRepository } from "@user/infra/singletons"
+import { GetWalletById } from "@user/data/use-cases/wallet"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -104,8 +106,14 @@ export class TransactionController {
     try {
       const transactionValidation = new TransactionValidation(transaction)
       const transactionRepositoryData = new TransactionRepositoryData()
+      const walletRepositoryData = new WalletRepositoryData()
 
       const useCase = new UpdateTransaction(transaction, transactionRepositoryData, transactionValidation)
+      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
+      const wallet = await getWalletValue.execute()
+
+      const { io } = SocketSingletonRepository.getInstance()
+      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
 
       await useCase.execute()
 
@@ -132,9 +140,16 @@ export class TransactionController {
       const transactionId = req?.params.id
 
       const transactionRepositoryData = new TransactionRepositoryData()
+      const walletRepositoryData = new WalletRepositoryData()
       const useCase = new DeleteTransaction(transactionRepositoryData, userId, transactionId, walletId)
 
       const deletedTransaction = await useCase.execute()
+
+      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
+      const wallet = await getWalletValue.execute()
+
+      const { io } = SocketSingletonRepository.getInstance()
+      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
 
       res.json(deletedTransaction).status(SuccessStatus.SUCCESS)
     } catch (error) {
