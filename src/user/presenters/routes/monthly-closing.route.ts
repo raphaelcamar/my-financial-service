@@ -8,4 +8,5 @@ const getWalletFromHeaders = new GetWalletFromHeaders()
 
 export const MonthlyClosingRoutes = (app: App) => {
   app.post("/v2/monthly-closing", middlewareToken.verify, getWalletFromHeaders.apply, monthlyClosingController.create)
+  app.get("/v2/monthly-closing/verify", middlewareToken.verify, getWalletFromHeaders.apply, monthlyClosingController.verify)
 }

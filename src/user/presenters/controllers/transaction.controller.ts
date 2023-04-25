@@ -20,6 +20,13 @@ export class TransactionController {
     try {
       const transactionValidation = new TransactionValidation(transaction)
       const transactionRepositoryData = new TransactionRepositoryData()
+      const walletRepositoryData = new WalletRepositoryData()
+
+      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
+      const wallet = await getWalletValue.execute()
+
+      const { io } = SocketSingletonRepository.getInstance()
+      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
 
       const useCase = new CreateTransaction(transaction, transactionRepositoryData, transactionValidation)
 
