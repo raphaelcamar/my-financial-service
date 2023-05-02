@@ -1,7 +1,7 @@
-import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
+import { SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { Request, Response } from "@main/handlers"
-import { MonthlyClosingDoesntExist, ValidationError } from "@user/domain/errors"
+import { ValidationError } from "@user/domain/errors"
 import { CreateTransaction, GetTransactionIndicators, GetTransactions, UpdateTransaction, DeleteTransaction } from "@user/data/use-cases/transaction"
 import { Transaction } from "@user/domain/entities"
 import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
@@ -32,7 +32,7 @@ export class TransactionController {
 
       const result = await useCase.execute()
 
-      res.json(result).status(SuccessStatus.SUCCESS)
+      res.json({ ...result, wallet }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
@@ -124,7 +124,7 @@ export class TransactionController {
 
       await useCase.execute()
 
-      res.json(transaction).status(SuccessStatus.SUCCESS)
+      res.json({ ...transaction, wallet }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
@@ -158,7 +158,7 @@ export class TransactionController {
       const { io } = SocketSingletonRepository.getInstance()
       io.to(walletId).emit("update-wallet-value", { value: wallet.value })
 
-      res.json(deletedTransaction).status(SuccessStatus.SUCCESS)
+      res.json({ wallet }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 

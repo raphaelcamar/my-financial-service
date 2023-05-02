@@ -1,7 +1,7 @@
 /* eslint-disable func-names */
 import mongoose from "mongoose"
 import { UnexpectedError } from "@core/generic/domain/errors"
-import { Transaction, Wallet } from "../schemas"
+import { Wallet } from "../schemas"
 
 export async function updateWalletBeforeAddTransaction(next: mongoose.CallbackWithoutResultAndOptionalError) {
   try {
