@@ -2,6 +2,7 @@ import { EmailServiceRepository } from "@core/generic/data/protocols"
 import { EmailServiceData } from "@core/generic/domain/entities/mail.entity"
 import nodemailer, { Transporter } from "nodemailer"
 import SMTPTransport from "nodemailer/lib/smtp-transport"
+import { UnexpectedError } from "../domain/errors"
 
 export class EmailServiceRepositoryData implements EmailServiceRepository {
   private transporter: Transporter<SMTPTransport.SentMessageInfo>
@@ -12,7 +13,7 @@ export class EmailServiceRepositoryData implements EmailServiceRepository {
 
   private create(): Transporter<SMTPTransport.SentMessageInfo> {
     const transporter = nodemailer.createTransport({
-      host: "smtp-mail.outlook.com",
+      host: process.env.SMTP_SERVICE,
       port: 587,
       secure: false,
       auth: {
@@ -28,13 +29,17 @@ export class EmailServiceRepositoryData implements EmailServiceRepository {
   }
 
   async send(): Promise<void> {
-    await this.transporter.sendMail({
-      from: process.env.SMTP_USER,
-      to: this.data.to,
-      subject: this.data.subject,
-      text: this.data.text,
-      html: this.data?.html,
-      attachments: this.data?.attachment,
-    })
+    await this.transporter
+      .sendMail({
+        from: process.env.SMTP_USER,
+        to: this.data.to,
+        subject: this.data.subject,
+        text: this.data.text,
+        html: this.data?.html,
+        attachments: this.data?.attachment,
+      })
+      .catch(err => {
+        throw new UnexpectedError(err)
+      })
   }
 }
