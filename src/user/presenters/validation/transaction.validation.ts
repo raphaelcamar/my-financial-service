@@ -37,7 +37,11 @@ export class TransactionValidation implements ValidateFields {
       "number.base": "Valor deve ser numérico",
       "any.required": "Valor deve ser informado",
     }),
-    topic: Joi.string().valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "SALARY").required().messages({
+    topic: Joi.string().valid("FOOD", "TRANSPORT", "HEALTH", "OTHER", "LEISURE", "SALARY").required().messages({
+      "any.only": "A opção de tópico não deve ser diferente das opções",
+      "any.required": "Deve informar o tópico",
+    }),
+    paymentType: Joi.string().valid("CREDIT", "DEBIT", "MONEY", "PIX", "TRANSFER", "CRYPTO", "BANK_SLIP", "OTHER").required().messages({
       "any.only": "A opção de tópico não deve ser diferente das opções",
       "any.required": "Deve informar o tópico",
     }),
