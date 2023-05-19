@@ -1,4 +1,3 @@
-// TODO: para cada path criado, adicionar no alias
 module.exports = {
   presets: [
     [
