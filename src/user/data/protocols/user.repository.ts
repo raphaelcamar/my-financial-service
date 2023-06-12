@@ -1,4 +1,4 @@
-import { User } from "@user/domain/entities"
+import { User, Wallet } from "@user/domain/entities"
 
 export type UserRepository = {
   createUser: (user: User) => Promise<any>
@@ -9,4 +9,5 @@ export type UserRepository = {
   updateOneBy: (by: Partial<User>, update: Partial<User>) => Promise<User>
   findByCodeAndUpdate: (email: string, code: number) => Promise<User>
   updatePicture: (pictureUrl: string, userId: string) => Promise<string>
+  updateUserWallets: (newWallet: Wallet) => Promise<User>
 }

@@ -1,7 +1,8 @@
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { UserRepository } from "@user/data/protocols"
-import { User } from "@user/domain/entities"
+import { User, Wallet } from "@user/domain/entities"
 import { User as UserSchema } from "@user/infra/db/schemas"
+import mongoose from "mongoose"
 
 export class UserRepositoryData implements UserRepository {
   async createUser(user: User): Promise<User> {
@@ -85,5 +86,12 @@ export class UserRepositoryData implements UserRepository {
     })
 
     return result as string
+  }
+
+  async updateUserWallets(newWallet: Wallet): Promise<User> {
+    // @ts-ignore
+    const result: any = await UserSchema.updateOne({ _id: newWallet.userId }, { $push: { wallets: new mongoose.Types.ObjectId(newWallet.id) } })
+
+    return result
   }
 }
