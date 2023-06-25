@@ -20,15 +20,14 @@ export class CloudServiceRepositoryData implements CloudServiceRepository {
 
     const fileContent = await fs.promises.readFile(originalPath)
 
+    await fs.promises.unlink(originalPath)
+
     await this.s3Client.putObject({
-      Bucket: process.env.BUCKET_NAME,
-      ACL: "public-read",
+      Bucket: "my-financial-service",
       Body: fileContent,
       Key: userId,
       ContentType,
     })
-
-    await fs.promises.unlink(originalPath)
 
     return `${process.env.BUCKET_URL}/${userId}`
   }
