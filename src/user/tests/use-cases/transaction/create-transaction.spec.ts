@@ -37,7 +37,7 @@ describe("Create Transaction", () => {
     const validator = new TransactionValidation({} as Transaction)
 
     const result = validator.validate()
-    expect(result.stack.length).toEqual(7)
+    expect(result.stack.length).toEqual(8)
   })
 
   it("Should not be able create transaction and throw ValidationError", async () => {

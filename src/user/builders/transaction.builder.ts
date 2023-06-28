@@ -24,6 +24,7 @@ export class TransactionBuilder implements Builder<Transaction> {
       walletId: faker.datatype.uuid(),
       coin: faker.random.arrayElement(["USD", "BRL", "EUR", "ARS", "GBP", "JPY", "CNY", "AUD", "CAD", "CHF", "NZD"]),
       status: faker.random.arrayElement(["FINISHED", "PENDING"]),
+      paymentType: faker.random.arrayElement(["CREDIT", "DEBIT", "MONEY", "PIX", "TRANSFER", "CRYPTO", "BANK_SLIP", "OTHER"]),
     })
 
     return data

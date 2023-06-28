@@ -1,7 +1,11 @@
 import { Transaction } from "@user/domain/entities"
-import { TransactionProtocol, TransactionsSplittedByTypeProps } from "@user/data/protocols"
+import { GetPendingTransactionsGroupedByUserProps, TransactionProtocol, TransactionsSplittedByTypeProps } from "@user/data/protocols"
 
 export class TransactionRepositorySpy implements TransactionProtocol {
+  getPendingTransactionsGroupedByUser: (filter: object) => Promise<GetPendingTransactionsGroupedByUserProps[]>
+
+  getTransactionById: (transactionId: string) => Promise<Transaction>
+
   getSpents: (userId: string, query: object, justValue?: boolean) => Promise<Transaction[]>
 
   private transactions: Transaction[] = []
@@ -28,11 +32,11 @@ export class TransactionRepositorySpy implements TransactionProtocol {
     return this.transactions
   }
 
-  async deleteTransaction(transactionId: string): Promise<number> {
-    const founded = this.transactions.filter(transaction => transaction._id !== transactionId)
+  async deleteTransaction(transactionToDelete: string, userId: string, walletId: string): Promise<Transaction> {
+    const founded = this.transactions.filter(transaction => transaction._id !== transactionToDelete)
 
-    if (!founded) return 0
-    return 1
+    if (!founded) return null
+    return founded?.[0]
   }
 
   updateTransaction: (transaction: Transaction.Data) => Promise<void>

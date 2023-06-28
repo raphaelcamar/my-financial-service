@@ -19,11 +19,7 @@ describe("Get transactions", () => {
     const { transactionRepositorySpy, transaction } = makeSut()
 
     const transactionValidation = new TransactionValidation(transaction)
-    const createTransactionUseCase = new CreateTransaction(
-      transaction,
-      transactionRepositorySpy,
-      transactionValidation
-    )
+    const createTransactionUseCase = new CreateTransaction(transaction, transactionRepositorySpy, transactionValidation)
 
     const createTransactionUseCaseWithOtherId = new CreateTransaction(
       new Transaction({ ...transaction, userId: "12346" }),
@@ -79,11 +75,7 @@ describe("Get transactions", () => {
     const { transactionRepositorySpy, transaction } = makeSut()
 
     const transactionValidation = new TransactionValidation(transaction)
-    const createTransactionUseCase = new CreateTransaction(
-      transaction,
-      transactionRepositorySpy,
-      transactionValidation
-    )
+    const createTransactionUseCase = new CreateTransaction(transaction, transactionRepositorySpy, transactionValidation)
 
     await createTransactionUseCase.execute()
     await createTransactionUseCase.execute()
