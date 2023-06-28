@@ -35,4 +35,12 @@ export class WalletRepositoryData implements WalletProtocol {
 
     return new Wallet(result)
   }
+
+  async updateWalletValue(walletId: string, newValue: number): Promise<Wallet> {
+    const result: any = await WalletSchema.findOneAndUpdate({ _id: walletId }, { $inc: { value: newValue } }, { new: true }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return result
+  }
 }

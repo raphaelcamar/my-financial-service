@@ -8,8 +8,7 @@ import { MonthlyClosingRepositoryData, TransactionRepositoryData, WalletReposito
 import { TransactionValidation } from "@user/presenters/validation"
 import { MissingParamError } from "@core/generic/domain/errors"
 import { GetMonthlyClosing } from "@user/data/use-cases/monthly-closing"
-import { SocketSingletonRepository } from "@user/infra/singletons"
-import { GetWalletById } from "@user/data/use-cases/wallet"
+import { UpdateWalletValue } from "@user/data/use-cases/wallet"
 
 export class TransactionController {
   async create(req: Request, res: Response): Promise<void> {
@@ -22,17 +21,18 @@ export class TransactionController {
       const transactionRepositoryData = new TransactionRepositoryData()
       const walletRepositoryData = new WalletRepositoryData()
 
-      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
-      const wallet = await getWalletValue.execute()
-
-      const { io } = SocketSingletonRepository.getInstance()
-      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
+      const newValue = transaction?.type === "SPENT" ? transaction.value - transaction.value * 2 : transaction.value
 
       const useCase = new CreateTransaction(transaction, transactionRepositoryData, transactionValidation)
+      const updateWalletValue = new UpdateWalletValue(walletRepositoryData, walletId, newValue)
 
       const result = await useCase.execute()
+      const wallet = await updateWalletValue.execute()
 
-      res.json({ ...result, wallet }).status(SuccessStatus.SUCCESS)
+      // const { io } = SocketSingletonRepository.getInstance()
+      // io.to(walletId).emit("update-wallet-value", { value: wallet.value })
+
+      res.json({ transaction: { ...result }, newWalletValue: wallet.value }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
@@ -116,15 +116,17 @@ export class TransactionController {
       const walletRepositoryData = new WalletRepositoryData()
 
       const useCase = new UpdateTransaction(transaction, transactionRepositoryData, transactionValidation)
-      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
-      const wallet = await getWalletValue.execute()
+      const previousValue = await useCase.execute()
 
-      const { io } = SocketSingletonRepository.getInstance()
-      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
+      const newValue = transaction?.type === "SPENT" ? transaction.value + previousValue - transaction.value * 2 : transaction.value - previousValue
 
-      await useCase.execute()
+      const updateWalletValue = new UpdateWalletValue(walletRepositoryData, walletId, newValue)
+      const wallet = await updateWalletValue.execute()
 
-      res.json({ ...transaction, wallet }).status(SuccessStatus.SUCCESS)
+      // const { io } = SocketSingletonRepository.getInstance()
+      // io.to(walletId).emit("update-wallet-value", { value: wallet.value })
+
+      res.json({ transaction: { ...transaction }, newWalletValue: wallet.value }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       if (error instanceof ValidationError) {
         res.status(error?.status).json(error?.stackTrace)
@@ -145,20 +147,23 @@ export class TransactionController {
       const userId = req?.userId
       const walletId = req?.walletId
       const transactionId = req?.params.id
+      const transaction = req.body
 
       const transactionRepositoryData = new TransactionRepositoryData()
       const walletRepositoryData = new WalletRepositoryData()
+
       const useCase = new DeleteTransaction(transactionRepositoryData, userId, transactionId, walletId)
+      await useCase.execute()
 
-      const deletedTransaction = await useCase.execute()
+      const newValue = transaction?.type === "SPENT" ? transaction.value : transaction.value - transaction.value * 2
 
-      const getWalletValue = new GetWalletById(walletRepositoryData, walletId)
-      const wallet = await getWalletValue.execute()
+      const updateWalletValue = new UpdateWalletValue(walletRepositoryData, walletId, newValue)
+      const wallet = await updateWalletValue.execute()
 
-      const { io } = SocketSingletonRepository.getInstance()
-      io.to(walletId).emit("update-wallet-value", { value: wallet.value })
+      // const { io } = SocketSingletonRepository.getInstance()
+      // io.to(walletId).emit("update-wallet-value", { value: wallet.value })
 
-      res.json({ wallet }).status(SuccessStatus.SUCCESS)
+      res.json({ newWalletValue: wallet.value }).status(SuccessStatus.SUCCESS)
     } catch (error) {
       const httpException = new HttpExceptionHandler(error)
 

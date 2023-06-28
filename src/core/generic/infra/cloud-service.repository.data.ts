@@ -23,7 +23,7 @@ export class CloudServiceRepositoryData implements CloudServiceRepository {
     await fs.promises.unlink(originalPath)
 
     await this.s3Client.putObject({
-      Bucket: "my-financial-service",
+      Bucket: process.env.BUCKET_NAME,
       Body: fileContent,
       Key: userId,
       ContentType,

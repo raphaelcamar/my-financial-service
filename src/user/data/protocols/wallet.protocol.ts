@@ -5,4 +5,5 @@ export type WalletProtocol = {
   getWallets: (userId: string) => Promise<Wallet[]>
   update: (wallet: Wallet.Data) => Promise<any>
   getById: (walletId: string) => Promise<Wallet>
+  updateWalletValue: (walletId: string, newValue: number) => Promise<Wallet>
 }

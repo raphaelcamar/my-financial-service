@@ -13,11 +13,11 @@ export class TransactionRepositoryData implements TransactionProtocol {
   async create(transaction: Transaction): Promise<Transaction> {
     const transactionSchema = new TransactionSchema(transaction)
 
-    const result: any = await transactionSchema.save().catch(() => {
+    const result: any = await transactionSchema.save({ safe: true, checkKeys: true }).catch(() => {
       throw new UnexpectedError()
     })
 
-    return result as Transaction
+    return new Transaction(result)
   }
 
   async getTransactionIndicators(userId: string, walletId: string, query: object): Promise<Transaction.Indicator> {
@@ -236,5 +236,11 @@ export class TransactionRepositoryData implements TransactionProtocol {
       throw new UnexpectedError(error)
     })
     return result as GetPendingTransactionsGroupedByUserProps[]
+  }
+
+  async getTransactionById(transactionId: string): Promise<Transaction> {
+    const transaction: any = await TransactionSchema.findOne({ _id: transactionId })
+
+    return transaction
   }
 }

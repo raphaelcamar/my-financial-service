@@ -24,4 +24,5 @@ export type TransactionProtocol = {
   updateTransaction: (transaction: Transaction.Data) => Promise<void>
   deleteTransaction: (transactionId: string, userId: string, walletId: string) => Promise<Transaction>
   getPendingTransactionsGroupedByUser: (filter: object) => Promise<GetPendingTransactionsGroupedByUserProps[]>
+  getTransactionById: (transactionId: string) => Promise<Transaction>
 }
