@@ -43,8 +43,10 @@ describe("Create Transaction", () => {
   it("Should not be able create transaction and throw ValidationError", async () => {
     const { transactionRepository } = makeTransactionSut()
     const transaction = {} as Transaction
+
     const transactionValidation = new TransactionValidation(transaction)
     const { error, stack } = transactionValidation.validate()
+
     const useCase = new CreateTransaction(transaction, transactionRepository, transactionValidation)
 
     await expect(useCase.execute()).rejects.toThrow(new ValidationError(error, stack))

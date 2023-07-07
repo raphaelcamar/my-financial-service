@@ -1,7 +1,7 @@
 import { TagRoutes } from "@tag/presenters/routes/tag.route"
 import { App } from "@main/handlers"
 import { MonthlyCloseRoutes, TransactionRoutes } from "@transaction/presenters/routes"
-import { TransactionV2Routes, UserRoutes, WalletRoutes } from "@user/presenters/routes"
+import { TransactionV2Routes, UserRoutes, WalletRoutes, TagRoutes as TagV2Routes } from "@user/presenters/routes"
 import { MonthlyClosingRoutes } from "@user/presenters/routes/monthly-closing.route"
 
 export class InitializeRoutes {
@@ -21,6 +21,8 @@ export class InitializeRoutes {
     TransactionV2Routes(this.app)
 
     MonthlyClosingRoutes(this.app)
+
+    TagV2Routes(this.app)
 
     this.getSingularRoutes()
   }
