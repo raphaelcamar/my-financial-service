@@ -8,4 +8,5 @@ const getWalletFromHeaders = new GetWalletFromHeaders()
 
 export const TagRoutes = (app: App) => {
   app.post("/v2/tag", middlewareToken.verify, getWalletFromHeaders.apply, tagController.create)
+  app.get("/v2/tag", middlewareToken.verify, getWalletFromHeaders.apply, tagController.get)
 }
