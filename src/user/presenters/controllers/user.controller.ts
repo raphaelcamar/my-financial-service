@@ -1,7 +1,7 @@
 import { History } from "@history/domain/entities"
-import { UserRepositoryData, CryptoRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
+import { UserRepositoryData, CryptoRepositoryData, WalletRepositoryData, TagRepositoryData } from "@user/infra/repositories"
 import { Request, Response } from "@main/handlers"
-import { User, Wallet } from "@user/domain/entities"
+import { Tag, User, Wallet } from "@user/domain/entities"
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { CloudServiceRepositoryData, EmailServiceRepositoryData } from "@core/generic/infra"
@@ -25,6 +25,7 @@ export class UserController {
       const userRepositoryData = new UserRepositoryData()
       const cryptoRepositoryData = new CryptoRepositoryData()
       const walletRepository = new WalletRepositoryData()
+      const tagRepository = new TagRepositoryData()
 
       const wallet = new Wallet({
         color: "primary",
@@ -49,7 +50,30 @@ export class UserController {
 
       await updateWallet.execute()
 
+      const streamingTag = new Tag({
+        color: "info",
+        title: "Streaming",
+        description: "Tag para mapeamento em serviços de streaming.",
+        userId: user._id,
+      })
+
+      const houseBillingTag = new Tag({
+        color: "primary",
+        title: "Contas de casa",
+        description: "Tag para mapeamento em contas de luz, internet, etc.",
+        userId: user._id,
+      })
+
+      const taxesBillingTag = new Tag({
+        color: "grey",
+        title: "Impostos",
+        description: "Tag para mapeamento para impostos (IPTU, IPVA, MEI, etc)",
+        userId: user._id,
+      })
+
       const result = await userRepositoryData.updateJWToken(user, token)
+
+      await Promise.all([(tagRepository.create(streamingTag), tagRepository.create(houseBillingTag), tagRepository.create(taxesBillingTag))])
 
       delete result.password
 

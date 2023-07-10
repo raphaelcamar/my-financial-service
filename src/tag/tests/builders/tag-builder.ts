@@ -14,14 +14,7 @@ export class TagBuilder implements Builder<Tag> {
 
   build(): Tag {
     const data = new Tag({
-      color: faker.random.arrayElement([
-        "primary",
-        "secondary",
-        "error",
-        "success",
-        "grey",
-        "purple",
-      ]),
+      color: faker.random.arrayElement(["primary", "error", "warning", "grey", "success", "info", "default", "secondary", "white"]),
       description: faker.random.words(),
       title: faker.random.word(),
       userId: faker.datatype.uuid(),

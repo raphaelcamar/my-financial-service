@@ -13,12 +13,12 @@ export class TagController {
     const tag = req.body
 
     try {
-      const entityTag = new Tag(tag)
+      const entityTag = new Tag({ ...tag, userId })
 
       const tagValidation = new TagValidation(entityTag)
       const tagRepository = new TagRepositoryData()
 
-      const useCase = new CreateTag(tagRepository, entityTag, tagValidation, userId)
+      const useCase = new CreateTag(tagRepository, entityTag, tagValidation)
 
       const result = await useCase.execute()
 
@@ -36,4 +36,6 @@ export class TagController {
       res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [] })
     }
   }
+
+  async get(req: Request, res: Response) {}
 }

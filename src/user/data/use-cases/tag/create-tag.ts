@@ -5,7 +5,7 @@ import { ValidationError } from "@user/domain/errors"
 import { TagValidation } from "@user/presenters/validation"
 
 export class CreateTag implements UseCase<Tag> {
-  constructor(private tagRepository: TagProtocol, private tag: Tag, private tagValidation: ValidateFields, private userId: string) {}
+  constructor(private tagRepository: TagProtocol, private tag: Tag, private tagValidation: ValidateFields) {}
 
   async execute(): Promise<Tag> {
     const error = this.tagValidation.validate()
@@ -14,7 +14,7 @@ export class CreateTag implements UseCase<Tag> {
       throw new ValidationError(error.error, error.stack)
     }
 
-    const result = await this.tagRepository.create(this.tag, this.userId)
+    const result = await this.tagRepository.create(this.tag)
 
     return result
   }
