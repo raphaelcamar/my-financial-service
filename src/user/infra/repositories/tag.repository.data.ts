@@ -37,12 +37,39 @@ export class TagRepositoryData implements TagProtocol {
           },
         },
       },
-    ])
+    ]).catch(err => {
+      throw new UnexpectedError(err)
+    })
 
     const { total_count, items } = result[0]
 
     const totalPages = Math.ceil(total_count / PAGE_SIZE)
 
-    return { pageSize: PAGE_SIZE, tags: items, totalPages, currentPage: page }
+    const adapteeTags = items.map((tag: Tag) => new Tag(tag))
+
+    return { pageSize: PAGE_SIZE, tags: adapteeTags, totalPages, currentPage: page }
   }
+
+  async getById(tagId: string): Promise<Tag> {
+    const tag: any = await TagSchema.findById(tagId).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return new Tag(tag)
+  }
+
+  async update(tag: Tag): Promise<Tag> {
+    const updatedTag: any = await TagSchema.updateOne({ _id: tag.id, userId: tag.userId }, { ...tag }, { new: true }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+    return new Tag(updatedTag)
+  }
+
+  // async getLinkedTags(tagId: string): Promise<Tag[]> {
+  //   const updatedTag = await TagSchema.updateOne({ _id: tagId }, {}, { new: true }).catch(err => {
+  //     throw new UnexpectedError(err)
+  //   })
+
+  //   return updatedTag
+  // }
 }
