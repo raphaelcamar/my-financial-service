@@ -7,11 +7,7 @@ const controller = new TagController()
 
 export const TagRoutes = (app: App) => {
   app.post("/tag", middlewareToken.verify, controller.create)
-  app.patch(
-    "/tag/type/:type(active|inactive)/:id",
-    middlewareToken.verify,
-    controller.activeOrInactiveTag
-  )
+  app.patch("/tag/type/:type(active|inactive)/:id", middlewareToken.verify, controller.activeOrInactiveTag)
   app.delete("/tag/:id", middlewareToken.verify, controller.delete)
   app.get("/tag/:type(active|inactive)", middlewareToken.verify, controller.getByStatus)
   app.get("/tag", middlewareToken.verify, controller.get)

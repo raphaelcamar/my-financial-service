@@ -8,6 +8,8 @@ import { TagStatus } from "@tag/domain/entities"
 import { GetAllTags } from "@tag/data/use-cases/get-all-tags"
 
 export class TagController {
+  // TODO criar validação para os campos
+  // TODO passar para o layer de user
   async create(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
@@ -28,6 +30,7 @@ export class TagController {
     }
   }
 
+  // TODO criar validação para verificar se possui tag vinculada à alguma recorrência
   async activeOrInactiveTag(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
@@ -49,6 +52,7 @@ export class TagController {
     }
   }
 
+  // TODO criar validação para verificar se possui tag vinculada à alguma recorrência
   async delete(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
@@ -70,6 +74,7 @@ export class TagController {
     }
   }
 
+  // TODO Talvez não seja tão necessário
   async getByStatus(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
@@ -90,6 +95,8 @@ export class TagController {
     }
   }
 
+  // TODO paginar
+  // TODO trazer os itens vinculados à tag dentro do payload
   async get(req: Request, res: Response): Promise<void> {
     try {
       const userId = req?.userId
