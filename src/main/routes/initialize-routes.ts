@@ -3,6 +3,7 @@ import { App } from "@main/handlers"
 import { MonthlyCloseRoutes, TransactionRoutes } from "@transaction/presenters/routes"
 import { TransactionV2Routes, UserRoutes, WalletRoutes, TagRoutes as TagV2Routes } from "@user/presenters/routes"
 import { MonthlyClosingRoutes } from "@user/presenters/routes/monthly-closing.route"
+import { MonthlyRecurrenceRoutes } from "@user/presenters/routes/monthly-recurrence.route"
 
 export class InitializeRoutes {
   constructor(private app: App) {}
@@ -23,6 +24,8 @@ export class InitializeRoutes {
     MonthlyClosingRoutes(this.app)
 
     TagV2Routes(this.app)
+
+    MonthlyRecurrenceRoutes(this.app)
 
     this.getSingularRoutes()
   }

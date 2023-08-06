@@ -13,7 +13,8 @@
     "start": "node dist/server.js",
     "generate": "node scripts/index.js",
     "prepare": "husky install",
-    "populate": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules src/populate.ts"
+    "populate": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules scripts/populate.ts",
+    "delete": "ts-node-dev -r tsconfig-paths/register --respawn --transpile-only --ignore-watch node_modules scripts/delete.ts"
   },
   "author": "",
   "license": "ISC",

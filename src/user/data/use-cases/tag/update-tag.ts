@@ -13,8 +13,6 @@ export class UpdateTag implements UseCase<Tag> {
       throw new ValidationError(error.error, error.stack)
     }
 
-    console.log(this.tag.userId)
-
     const result = await this.tagRepository.update(this.tag)
 
     return result

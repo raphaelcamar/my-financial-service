@@ -11,13 +11,9 @@ function getModuleToCreate() {
 
 async function generateModuleFiles(folder) {
   const module = getModuleToCreate()
-  await fs.promises.writeFile(
-    path.join(__dirname, `../src/${module}/${folder}/index.ts`),
-    "",
-    () => {
-      console.log(`Creating files for ${module}`)
-    }
-  )
+  await fs.promises.writeFile(path.join(__dirname, `../src/${module}/${folder}/index.ts`), "", () => {
+    console.log(`Creating files for ${module}`)
+  })
 
   await fs.promises.writeFile(path.join(__dirname, `../src/${module}/index.ts`), () => {
     console.log(`Creating files for ${module}`)

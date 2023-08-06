@@ -1,4 +1,4 @@
-import { CronRepository, TransactionRepositoryData } from "@user/infra/repositories"
+import { CronRepository, TransactionRepositoryData, MonthlyRecurrenceRepositoryData } from "@user/infra/repositories"
 import { VerifyIfCanClose, VerifyIfHasPendingTransactions } from "@user/data/use-cases/monthly-closing"
 
 export class SchedulerController {
@@ -28,5 +28,13 @@ export class SchedulerController {
         })
       }
     }
+  }
+
+  // TODO finish this
+  async verifyMonthlyRecurrences() {
+    const month = new Date().getMonth() + 1
+    const monthlyRecurrence = new MonthlyRecurrenceRepositoryData()
+
+    // await monthlyRecurrence.getBy({})
   }
 }

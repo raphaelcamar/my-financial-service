@@ -59,7 +59,7 @@ export class TagRepositoryData implements TagProtocol {
   }
 
   async update(tag: Tag): Promise<Tag> {
-    const updatedTag: any = await TagSchema.updateOne({ _id: tag.id, userId: tag.userId }, { ...tag }, { new: true }).catch(err => {
+    const updatedTag: any = await TagSchema.updateOne({ _id: tag._id, userId: tag.userId }, { ...tag }, { new: true }).catch(err => {
       throw new UnexpectedError(err)
     })
     return new Tag(updatedTag)
