@@ -13,8 +13,8 @@ export class TransactionRepositoryData implements TransactionProtocol {
   async create(transaction: Transaction): Promise<Transaction> {
     const transactionSchema = new TransactionSchema(transaction)
 
-    const result: any = await transactionSchema.save({ safe: true, checkKeys: true }).catch(() => {
-      throw new UnexpectedError()
+    const result: any = await transactionSchema.save({ safe: true, checkKeys: true }).catch(err => {
+      throw new UnexpectedError(err)
     })
 
     return new Transaction(result)

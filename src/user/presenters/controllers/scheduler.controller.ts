@@ -1,10 +1,12 @@
-import { CronRepository, TransactionRepositoryData, MonthlyRecurrenceRepositoryData } from "@user/infra/repositories"
+import { CronRepository, TransactionRepositoryData, MonthlyRecurrenceRepositoryData, NotificationRepositoryData } from "@user/infra/repositories"
 import { VerifyIfCanClose, VerifyIfHasPendingTransactions } from "@user/data/use-cases/monthly-closing"
+import { CreateTransactionForMonthlyClosing } from "@user/data/use-cases/scheduler"
 
 export class SchedulerController {
   init() {
     const scheduler = new CronRepository()
     scheduler.schedule(this.closeMonth, "EVERY_DAY_AT_MIDNIGHT")
+    scheduler.schedule(this.verifyMonthlyRecurrences, "EVERY_SECOND")
   }
 
   async closeMonth() {
@@ -32,9 +34,14 @@ export class SchedulerController {
 
   // TODO finish this
   async verifyMonthlyRecurrences() {
-    const month = new Date().getMonth() + 1
-    const monthlyRecurrence = new MonthlyRecurrenceRepositoryData()
+    const today = new Date().toLocaleDateString()
 
-    // await monthlyRecurrence.getBy({})
+    const monthlyRecurrence = new MonthlyRecurrenceRepositoryData()
+    const transactionRepository = new TransactionRepositoryData()
+    const notificationRepository = new NotificationRepositoryData()
+
+    const useCase = new CreateTransactionForMonthlyClosing(monthlyRecurrence, transactionRepository, notificationRepository)
+
+    await useCase.execute()
   }
 }

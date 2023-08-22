@@ -24,7 +24,7 @@ export class Transaction {
   value: number
   amount?: number
   walletId: string
-  topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
+  topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER" | "MONTHLY_RECURRENCE"
   coin: CoinType
   status: StatusType
   paymentType: PaymentType
@@ -70,7 +70,7 @@ export namespace Transaction {
     value: number
     walletId: string
     amount?: number
-    topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER"
+    topic: "FOOD" | "TRANSPORT" | "HEALTH" | "OTHER" | "MONTHLY_RECURRENCE"
     coin: CoinType
     status: StatusType
     paymentType: PaymentType

@@ -41,5 +41,14 @@ export class MonthlyRecurrenceValidation implements ValidateFields {
     tags: Joi.array().required().messages({
       "array.required": "deve informar alguma tag",
     }),
+
+    dueDate: Joi.date().required().messages({
+      "date.required": "Deve informar a data de cobrança",
+    }),
+
+    paymentType: Joi.string().valid("CREDIT", "DEBIT", "BANK_SLIP", "OTHER").required().messages({
+      "any.only": "A opção de tipo de pagamento não deve ser diferente das opções",
+      "any.required": "Deve informar o tipo de pagamento",
+    }),
   })
 }

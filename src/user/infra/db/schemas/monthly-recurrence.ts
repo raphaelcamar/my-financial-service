@@ -8,6 +8,9 @@ const MonthlyRecurrenceSchema = new Schema(
     walletId: { type: Schema.Types.ObjectId, ref: "Wallet", required: true, default: null },
     expirationDate: { type: Date, default: null },
     tags: [{ type: Schema.Types.ObjectId, ref: "Tag", required: true }],
+    dueDate: { type: Date, required: true },
+    value: { type: Number, required: true },
+    paymentType: { type: String, required: true },
   },
   { timestamps: true }
 )

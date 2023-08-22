@@ -8,6 +8,9 @@ export class MonthlyRecurrence {
   public value: number
   public expirationDate: Date
   public userId: string
+  public dueDate: Date
+  public paymentType: "CREDIT" | "DEBIT" | "BANK_SLIP" | "OTHER"
+  public walletId: string
 
   constructor(data: MonthlyRecurrence.Data) {
     this._id = data._id
@@ -17,6 +20,9 @@ export class MonthlyRecurrence {
     this.value = data.value
     this.expirationDate = data.expirationDate
     this.userId = data.userId
+    this.dueDate = data.dueDate
+    this.walletId = data.walletId
+    this.paymentType = data.paymentType
   }
 }
 
@@ -29,5 +35,8 @@ export namespace MonthlyRecurrence {
     value: number
     expirationDate: Date
     userId: string
+    dueDate: Date
+    paymentType: "CREDIT" | "DEBIT" | "BANK_SLIP" | "OTHER"
+    walletId: string
   }
 }

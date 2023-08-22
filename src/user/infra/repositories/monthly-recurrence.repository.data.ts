@@ -6,7 +6,6 @@ import { MonthlyRecurrence as MonthlyRecurrenceSchema } from "../db/schemas"
 export class MonthlyRecurrenceRepositoryData implements MonthlyRecurrenceProtocol {
   async create(monthlyRecurrence: MonthlyRecurrence, userId: string, walletId: string): Promise<MonthlyRecurrence> {
     const monthlyRecurrenceSchema = new MonthlyRecurrenceSchema({ ...monthlyRecurrence, walletId, userId })
-
     const monthlyRecurrenceCreated: any = await monthlyRecurrenceSchema.save({ safe: true, checkKeys: true }).catch(err => {
       throw new UnexpectedError(err)
     })
@@ -15,12 +14,12 @@ export class MonthlyRecurrenceRepositoryData implements MonthlyRecurrenceProtoco
   }
 
   async getBy(query: object): Promise<MonthlyRecurrence[]> {
-    const montlhyRecurrences: any = await MonthlyRecurrenceSchema.find(query).catch(err => {
+    const monthlyRecurrences: any = await MonthlyRecurrenceSchema.find(query).catch(err => {
       throw new UnexpectedError(err)
     })
 
-    if (montlhyRecurrences.length > 0) {
-      return montlhyRecurrences.map(monthlyRecurrence => new MonthlyRecurrence(monthlyRecurrence))
+    if (monthlyRecurrences.length > 0) {
+      return monthlyRecurrences.map(monthlyRecurrence => new MonthlyRecurrence(monthlyRecurrence))
     }
 
     return []
