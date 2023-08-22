@@ -8,4 +8,5 @@ const getWalletFromHeaders = new GetWalletFromHeaders()
 
 export const MonthlyRecurrenceRoutes = (app: App) => {
   app.post("/v2/monthly-recurrence/create", middlewareToken.verify, getWalletFromHeaders.apply, tagController.create)
+  app.get("/v2/monthly-recurrence/create", middlewareToken.verify, getWalletFromHeaders.apply, tagController.get)
 }

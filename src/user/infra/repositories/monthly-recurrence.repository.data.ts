@@ -6,6 +6,7 @@ import { MonthlyRecurrence as MonthlyRecurrenceSchema } from "../db/schemas"
 export class MonthlyRecurrenceRepositoryData implements MonthlyRecurrenceProtocol {
   async create(monthlyRecurrence: MonthlyRecurrence, userId: string, walletId: string): Promise<MonthlyRecurrence> {
     const monthlyRecurrenceSchema = new MonthlyRecurrenceSchema({ ...monthlyRecurrence, walletId, userId })
+
     const monthlyRecurrenceCreated: any = await monthlyRecurrenceSchema.save({ safe: true, checkKeys: true }).catch(err => {
       throw new UnexpectedError(err)
     })

@@ -20,7 +20,7 @@ export class CreateTransactionForMonthlyClosing implements UseCase<void> {
 
     monthlyRecurrences.forEach(recurrence => {
       const negativeValue = recurrence.value - recurrence.value * 2
-      // if(recurrence.expirationDate)
+
       const transaction = new Transaction({
         billedAt: recurrence.dueDate,
         coin: "BRL",
@@ -34,11 +34,11 @@ export class CreateTransactionForMonthlyClosing implements UseCase<void> {
         anotation: recurrence.description,
       })
 
-      notificationPromises.push(
-        this.emitNotification(SocketPayloadType.MONTHLY_RECURRENCE_EMITTED, recurrence, recurrence.walletId, recurrence.userId)
-      )
+      // notificationPromises.push(
+      //   this.emitNotification(SocketPayloadType.MONTHLY_RECURRENCE_EMITTED, recurrence, recurrence.walletId, recurrence.userId)
+      // )
 
-      createTransactionPromises.push(this.createTransactionByMonthlyRecurrence(transaction))
+      // createTransactionPromises.push(this.createTransactionByMonthlyRecurrence(transaction))
     })
 
     await Promise.all(notificationPromises)

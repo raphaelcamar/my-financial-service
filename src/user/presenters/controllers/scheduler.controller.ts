@@ -6,7 +6,7 @@ export class SchedulerController {
   init() {
     const scheduler = new CronRepository()
     scheduler.schedule(this.closeMonth, "EVERY_DAY_AT_MIDNIGHT")
-    scheduler.schedule(this.verifyMonthlyRecurrences, "EVERY_SECOND")
+    // scheduler.schedule(this.verifyMonthlyRecurrences, "EVERY_SECOND")
   }
 
   async closeMonth() {
