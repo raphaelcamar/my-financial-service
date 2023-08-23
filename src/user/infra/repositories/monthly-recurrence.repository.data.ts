@@ -15,14 +15,22 @@ export class MonthlyRecurrenceRepositoryData implements MonthlyRecurrenceProtoco
   }
 
   async getBy(query: object): Promise<MonthlyRecurrence[]> {
-    const monthlyRecurrences: any = await MonthlyRecurrenceSchema.find(query).catch(err => {
-      throw new UnexpectedError(err)
-    })
+    const monthlyRecurrences: any = await MonthlyRecurrenceSchema.find(query)
+      .populate("tags")
+      .catch(err => {
+        throw new UnexpectedError(err)
+      })
 
     if (monthlyRecurrences.length > 0) {
       return monthlyRecurrences.map(monthlyRecurrence => new MonthlyRecurrence(monthlyRecurrence))
     }
 
     return []
+  }
+
+  async updateBy(userId: string, walletId: string, fieldsToUpdate: object): Promise<void> {
+    await MonthlyRecurrenceSchema.findOneAndUpdate({ userId, walletId }, { ...fieldsToUpdate }).catch(err => {
+      throw new UnexpectedError(err)
+    })
   }
 }
