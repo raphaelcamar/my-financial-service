@@ -32,10 +32,7 @@ export class SchedulerController {
     }
   }
 
-  // TODO finish this
   async verifyMonthlyRecurrences() {
-    const today = new Date().toLocaleDateString()
-
     const monthlyRecurrence = new MonthlyRecurrenceRepositoryData()
     const transactionRepository = new TransactionRepositoryData()
     const notificationRepository = new NotificationRepositoryData()
