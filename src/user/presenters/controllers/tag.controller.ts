@@ -38,7 +38,7 @@ export class TagController {
   }
 
   async get(req: Request, res: Response) {
-    const page: number = Number(req.query?.page || 1)
+    const page = Number(req.query?.page || 1)
     const userId = req?.userId
 
     try {

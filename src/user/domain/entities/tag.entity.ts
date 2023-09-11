@@ -8,6 +8,7 @@ export class Tag {
   public inactivatedAt?: Date
   public userId: string
   public shade: string
+  public totalLinked?: number
 
   constructor(data: Tag.Data) {
     this._id = data?._id
@@ -17,6 +18,7 @@ export class Tag {
     this.userId = data.userId
     this.title = data.title
     this.shade = data.shade
+    this.totalLinked = data.totalLinked?.length || 0
   }
 }
 
@@ -29,5 +31,6 @@ export namespace Tag {
     inactivatedAt?: Date
     userId: string
     shade: string
+    totalLinked?: Array<unknown>
   }
 }

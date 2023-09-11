@@ -20,6 +20,14 @@ export class TagRepositoryData implements TagProtocol {
   async get(page: number, userId: string): Promise<Pagination<Tag, "tags">> {
     const result: any = await TagSchema.aggregate([
       {
+        $lookup: {
+          from: "MonthlyRecurrence",
+          localField: "_id",
+          foreignField: "tags",
+          as: "totalLinked",
+        },
+      },
+      {
         $group: {
           _id: userId,
           tags: {
@@ -45,7 +53,7 @@ export class TagRepositoryData implements TagProtocol {
 
     const totalPages = Math.ceil(total_count / PAGE_SIZE)
 
-    const adapteeTags = items.map((tag: Tag) => new Tag(tag))
+    const adapteeTags = items.map((tag: Tag.Data) => new Tag({ ...tag }))
 
     return { pageSize: PAGE_SIZE, tags: adapteeTags, totalPages, currentPage: page }
   }
