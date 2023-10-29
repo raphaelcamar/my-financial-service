@@ -8,4 +8,5 @@ const middlewareToken = new VerifyAccessTokenMiddleware()
 export const WalletRoutes = (app: App) => {
   app.post("/wallet/create", middlewareToken.verify, walletController.create)
   app.get("/wallet", middlewareToken.verify, walletController.get)
+  app.post("/wallet/change", middlewareToken.verify, walletController.change)
 }

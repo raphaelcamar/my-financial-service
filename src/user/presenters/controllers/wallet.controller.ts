@@ -1,7 +1,8 @@
 import { ErrorStatus, SuccessStatus } from "@core/generic/domain/entities"
 import { Request, Response } from "@main/handlers"
-import { UpdateUser, UpdateUserWallets } from "@user/data/use-cases/user"
+import { ChangeCurrentWallet, CreateJWToken, UpdateUser, UpdateUserWallets } from "@user/data/use-cases/user"
 import { CreateWallet, GetWallets } from "@user/data/use-cases/wallet"
+import { User, Wallet } from "@user/domain/entities"
 import { UserRepositoryData, WalletRepositoryData } from "@user/infra/repositories"
 
 export class WalletController {
@@ -31,6 +32,24 @@ export class WalletController {
       const result = await createWallet.execute()
 
       res.status(SuccessStatus.SUCCESS).json(result)
+    } catch (err) {
+      res.status(err?.status || ErrorStatus.INTERNAL).json({ message: err?.message || "Algo deu errado" })
+    }
+  }
+
+  async change(req: Request, res: Response): Promise<void> {
+    try {
+      const { userId } = req
+      const newWalletId = req.body.walletId
+
+      const userRepository = new UserRepositoryData()
+      const walletRepository = new WalletRepositoryData()
+      const wallet = await walletRepository.getById(newWalletId)
+      const changeCurrentWallet = new ChangeCurrentWallet(userId, newWalletId, userRepository)
+
+      await changeCurrentWallet.execute()
+
+      res.status(SuccessStatus.SUCCESS).json({ wallet })
     } catch (err) {
       res.status(err?.status || ErrorStatus.INTERNAL).json({ message: err?.message || "Algo deu errado" })
     }

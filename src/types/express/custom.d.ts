@@ -3,5 +3,6 @@ declare namespace Express {
   export interface Request {
     userId: string
     walletId?: string
+    user?: any
   }
 }

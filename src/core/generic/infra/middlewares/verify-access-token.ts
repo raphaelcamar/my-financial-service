@@ -22,6 +22,7 @@ export class VerifyAccessTokenMiddleware {
         })
       } else {
         req.userId = decoded?.id
+        req.user = decoded
         next()
       }
     })

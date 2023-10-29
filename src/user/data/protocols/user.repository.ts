@@ -10,4 +10,5 @@ export type UserRepository = {
   findByCodeAndUpdate: (email: string, code: number) => Promise<User>
   updatePicture: (pictureUrl: string, userId: string) => Promise<string>
   updateUserWallets: (newWallet: Wallet) => Promise<User>
+  changeCurrentWallet: (userId: string, newWalletId: string) => Promise<void>
 }

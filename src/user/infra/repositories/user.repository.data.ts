@@ -94,4 +94,10 @@ export class UserRepositoryData implements UserRepository {
 
     return result
   }
+
+  async changeCurrentWallet(userId: string, newWalletId: string): Promise<void> {
+    await UserSchema.findOneAndUpdate({ _id: userId }, { currentWallet: newWalletId }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+  }
 }

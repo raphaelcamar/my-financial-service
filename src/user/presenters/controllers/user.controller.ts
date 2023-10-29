@@ -55,6 +55,7 @@ export class UserController {
         title: "Streaming",
         description: "Tag para mapeamento em serviços de streaming.",
         userId: user._id,
+        shade: "500",
       })
 
       const houseBillingTag = new Tag({
@@ -62,6 +63,7 @@ export class UserController {
         title: "Contas de casa",
         description: "Tag para mapeamento em contas de luz, internet, etc.",
         userId: user._id,
+        shade: "500",
       })
 
       const taxesBillingTag = new Tag({
@@ -69,6 +71,7 @@ export class UserController {
         title: "Impostos",
         description: "Tag para mapeamento para impostos (IPTU, IPVA, MEI, etc)",
         userId: user._id,
+        shade: "500",
       })
 
       const result = await userRepositoryData.updateJWToken(user, token)
