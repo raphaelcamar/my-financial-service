@@ -26,7 +26,7 @@ export class TagValidation implements ValidateFields {
       "any.required": "Deve informar a descrição",
       "string.max": "Descrição de no máximo quarenta caracteres",
     }),
-    color: Joi.string().valid("primary", "error", "warning", "grey", "success", "info", "default", "secondary", "white").required().messages({
+    color: Joi.string().valid("primary", "error", "warning", "grey", "success", "info", "green", "brown", "purple", "skin").required().messages({
       "any.only": "A opção deve ser uma cor válida",
       "any.base": "Informe uma cor correta",
       "any.required": "Deve informar uma cor",

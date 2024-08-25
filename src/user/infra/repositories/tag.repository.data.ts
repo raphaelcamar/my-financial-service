@@ -58,6 +58,13 @@ export class TagRepositoryData implements TagProtocol {
     return { pageSize: PAGE_SIZE, tags: adapteeTags, totalPages, currentPage: page }
   }
 
+  async getAll(userId: string) {
+    const tag: any = await TagSchema.find({ userId })
+    const adapteeTags = tag.map(tagItem => new Tag(tagItem))
+
+    return adapteeTags
+  }
+
   async getById(tagId: string): Promise<Tag> {
     const tag: any = await TagSchema.findById(tagId).catch(err => {
       throw new UnexpectedError(err)

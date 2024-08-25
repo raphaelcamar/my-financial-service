@@ -1,3 +1,4 @@
+import { TypeTransaction } from "@transaction/domain/entities"
 import { Tag } from "./tag.entity"
 
 export class MonthlyRecurrence {
@@ -12,6 +13,7 @@ export class MonthlyRecurrence {
   public paymentType: "CREDIT" | "DEBIT" | "BANK_SLIP" | "OTHER"
   public walletId: string
   public inactivatedAt?: Date
+  public type: TypeTransaction
 
   constructor(data: MonthlyRecurrence.Data) {
     this._id = data._id
@@ -24,7 +26,8 @@ export class MonthlyRecurrence {
     this.dueDate = data.dueDate
     this.walletId = data.walletId
     this.paymentType = data.paymentType
-    this.inactivatedAt = new Date(data.inactivatedAt)
+    this.inactivatedAt = data.inactivatedAt && new Date(data.inactivatedAt)
+    this.type = data.type
   }
 }
 
@@ -33,10 +36,11 @@ export namespace MonthlyRecurrence {
     title: string
     _id: string
     description: string
-    tags: Tag[]
+    tags: Tag.Data[]
     value: number
     expirationDate: Date
     userId: string
+    type: TypeTransaction
     dueDate: number
     paymentType: "CREDIT" | "DEBIT" | "BANK_SLIP" | "OTHER"
     walletId: string
