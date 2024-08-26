@@ -4,6 +4,7 @@ import cron from "node-cron"
 enum SCHEDULE_TIMERS {
   EVERY_SECOND = "* * * * * *",
   EVERY_DAY_AT_MIDNIGHT = "0 0 * * *",
+  EVERY_MINUTE = "* * * * *",
 }
 
 export class CronRepository {

@@ -5,7 +5,8 @@ export type TagProtocol = {
   create: (tag: Tag) => Promise<Tag>
   get: (page: number, userId: string) => Promise<Pagination<Tag, "tags">>
   update: (tag: Tag) => Promise<Tag>
-  // TODO create monthly recurrence before
+  getAll: (userId: string) => Promise<Tag>
+  deleteTag: (tagId: string) => Promise<number>
   getLinkedTags?: (tagId: string) => Promise<Tag[]>
   getById: (tagId: string) => Promise<Tag>
 }

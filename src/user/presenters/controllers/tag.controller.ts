@@ -2,7 +2,7 @@ import { Request, Response } from "@main/handlers"
 import { Tag } from "@user/domain/entities"
 import { HttpExceptionHandler } from "@core/generic/utils"
 import { ValidationError } from "@user/domain/errors"
-import { CreateTag, GetAllTags, GetTag, UpdateTag } from "@user/data/use-cases/tag"
+import { CreateTag, DeleteTag, GetAllTags, GetTag, UpdateTag } from "@user/data/use-cases/tag"
 import { TagRepositoryData } from "@user/infra/repositories"
 import { SuccessStatus } from "@core/generic/domain/entities"
 import { TagValidation } from "../validation"
@@ -107,6 +107,24 @@ export class TagController {
 
       const httpException = new HttpExceptionHandler(error)
 
+      httpException.execute()
+
+      res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [] })
+    }
+  }
+
+  async deleteTag(req: Request, res: Response) {
+    const tagId = req?.params.id
+
+    try {
+      const tagRepository = new TagRepositoryData()
+
+      const useCase = new DeleteTag(tagRepository, tagId)
+      const deleted = await useCase.execute()
+
+      res.json({ deleted }).status(SuccessStatus.NO_CONTENT)
+    } catch (error) {
+      const httpException = new HttpExceptionHandler(error)
       httpException.execute()
 
       res.status(httpException.status).json({ message: httpException.message, stack: error?.stackTrace || [] })

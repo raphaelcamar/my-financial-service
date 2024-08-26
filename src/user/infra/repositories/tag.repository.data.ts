@@ -2,6 +2,7 @@ import { Pagination } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { TagProtocol } from "@user/data/protocols"
 import { Tag } from "@user/domain/entities"
+import { NotFoundTagError } from "@user/domain/errors/not-found-tag.error"
 import { Tag as TagSchema } from "@user/infra/db/schemas"
 
 const PAGE_SIZE = 5
@@ -78,6 +79,20 @@ export class TagRepositoryData implements TagProtocol {
       throw new UnexpectedError(err)
     })
     return new Tag(updatedTag)
+  }
+
+  async deleteTag(tagId: string): Promise<number> {
+    const findedTag = await TagSchema.findOne({ _id: tagId }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    if (!findedTag) throw new NotFoundTagError()
+
+    const deletedTag = await TagSchema.deleteOne({ _id: findedTag.id }).catch(err => {
+      throw new UnexpectedError(err)
+    })
+
+    return deletedTag?.deletedCount
   }
 
   // async getLinkedTags(tagId: string): Promise<Tag[]> {
