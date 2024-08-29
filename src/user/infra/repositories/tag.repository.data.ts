@@ -60,9 +60,36 @@ export class TagRepositoryData implements TagProtocol {
   }
 
   async getAll(userId: string) {
-    const tag: any = await TagSchema.find({ userId })
-    const adapteeTags = tag.map(tagItem => new Tag(tagItem))
+    const tag: any = await TagSchema.aggregate([
+      {
+        $lookup: {
+          from: "MonthlyRecurrence",
+          localField: "_id",
+          foreignField: "tags",
+          as: "totalLinked",
+        },
+      },
+      {
+        $group: {
+          _id: userId,
+          tags: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+      {
+        $project: {
+          items: "$tags",
+          total_count: {
+            $size: "$tags",
+          },
+        },
+      },
+    ]).catch(err => {
+      throw new UnexpectedError(err)
+    })
 
+    const adapteeTags = tag[0].items.map(tagItem => new Tag(tagItem))
     return adapteeTags
   }
 
