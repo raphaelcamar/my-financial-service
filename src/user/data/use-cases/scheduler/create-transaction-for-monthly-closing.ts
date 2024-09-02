@@ -18,29 +18,51 @@ export class CreateTransactionForMonthlyClosing implements UseCase<void> {
   ) {}
 
   async execute(): Promise<void> {
-    const today = new Date()
-
     const notificationPromises = []
     const inactivateMonthlyRecurrencesPromises = []
+    const transactionsPromises = []
 
     const monthlyRecurrences = await this.monthlyRecurrenceRepository.getBy({
-      dueDate: today.getDate(),
+      $expr: {
+        $eq: [
+          {
+            $dayOfMonth: "$dueDate",
+          },
+          new Date().getDate(),
+        ],
+      },
       inactivatedAt: null,
       $or: [{ expirationDate: { $gte: this.CURRENT_DATE } }, { expirationDate: null }],
     })
 
     monthlyRecurrences.forEach(recurrence => {
-      if (this.isExpirationClose(recurrence)) {
+      if (recurrence.expirationDate && this.isExpirationClose(recurrence)) {
         notificationPromises.push(this.emitEventForUser(recurrence))
       }
 
       if (recurrence.expirationDate && this.isCurrentMonthExpiration(recurrence)) {
         inactivateMonthlyRecurrencesPromises.push(this.inactivateMonthlyRecurrence(recurrence))
       }
+
+      this.createTransactionByMonthlyRecurrence(
+        new Transaction({
+          billedAt: new Date(),
+          coin: "BRL",
+          paymentType: recurrence.paymentType,
+          status: "FINISHED",
+          topic: "MONTHLY_RECURRENCE",
+          type: recurrence.type,
+          userId: recurrence.userId,
+          value: recurrence.value,
+          walletId: recurrence.walletId,
+          anotation: recurrence.description,
+        })
+      )
     })
 
-    await Promise.all(inactivateMonthlyRecurrencesPromises)
-    await Promise.all(notificationPromises)
+    // await Promise.all(inactivateMonthlyRecurrencesPromises)
+    // await Promise.all(notificationPromises)
+    // await Promise.all(transactionsPromises)
   }
 
   async createTransactionByMonthlyRecurrence(transaction: Transaction) {

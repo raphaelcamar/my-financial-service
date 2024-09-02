@@ -79,6 +79,7 @@ export namespace Transaction {
   export interface Filter {
     start?: string
     limit?: string
+    page?: number
   }
 
   export interface Indicator {

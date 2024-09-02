@@ -1,11 +1,11 @@
 import { Transaction } from "@user/domain/entities"
 import { TransactionProtocol } from "@user/data/protocols"
-import { UseCase } from "@core/generic/data/protocols"
+import { Pagination, UseCase } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { addDays, parse } from "date-fns"
 import { InvalidUserIdError } from "@user/domain/errors"
 
-export class GetTransactions implements UseCase<Transaction[]> {
+export class GetTransactions implements UseCase<Pagination<Transaction[], "transactions">> {
   constructor(
     private userId: string,
     private transactionRepository: TransactionProtocol,
@@ -13,12 +13,12 @@ export class GetTransactions implements UseCase<Transaction[]> {
     private walletId: string
   ) {}
 
-  async execute(): Promise<Transaction[]> {
+  async execute() {
     if (!this.userId) throw new InvalidUserIdError()
 
     const query = this.getFilters(this.filters)
 
-    const transactions = await this.transactionRepository.getTransactions(this.userId, this.walletId, query)
+    const transactions = await this.transactionRepository.getTransactions(this.userId, this.walletId, query, this.filters.page)
 
     if (!transactions) throw new UnexpectedError()
 

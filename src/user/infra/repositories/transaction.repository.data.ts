@@ -1,3 +1,5 @@
+/* eslint-disable prefer-destructuring */
+import { Pagination } from "@core/generic/data/protocols"
 import { UnexpectedError } from "@core/generic/domain/errors"
 import { Transaction as TransactionSchema } from "@user/infra/db/schemas"
 import {
@@ -9,6 +11,7 @@ import { Transaction } from "@user/domain/entities"
 import mongoose from "mongoose"
 import { DeleteTransactionError } from "@user/domain/errors"
 
+const ITEMS_PER_PAGE = 10
 export class TransactionRepositoryData implements TransactionProtocol {
   async create(transaction: Transaction): Promise<Transaction> {
     const transactionSchema = new TransactionSchema(transaction)
@@ -83,17 +86,47 @@ export class TransactionRepositoryData implements TransactionProtocol {
     return transactionIndicators?.[0] as Transaction.Indicator
   }
 
-  async getTransactions(userId: string, walletId: string, query: object): Promise<Transaction[]> {
-    const findBy = query ? { userId, billedAt: query, walletId } : { userId, walletId }
+  async getTransactions(userId: string, walletId: string, query: object, page?: number): Promise<Pagination<Transaction[], "transactions">> {
+    const transactions: any = await TransactionSchema.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+          walletId: new mongoose.Types.ObjectId(walletId),
+          billedAt: query,
+        },
+      },
+      {
+        $group: {
+          _id: userId,
+          transactions: {
+            $push: "$$ROOT",
+          },
+        },
+      },
+      {
+        $project: {
+          transactions: {
+            $slice: ["$transactions", (page - 1) * ITEMS_PER_PAGE, ITEMS_PER_PAGE],
+          },
+          totalItems: {
+            $size: "$transactions",
+          },
+        },
+      },
+    ]).catch(err => {
+      throw new UnexpectedError(err)
+    })
 
-    const transactions: any = await TransactionSchema.find(findBy)
-      .lean()
-      .sort({ $natural: -1 })
-      .catch(() => {
-        throw new UnexpectedError()
-      })
+    const totalItems = transactions[0]?.totalItems || 0
 
-    return transactions as Transaction[]
+    const totalPages = Math.ceil(totalItems / ITEMS_PER_PAGE)
+
+    return {
+      currentPage: Number(page),
+      pageSize: ITEMS_PER_PAGE,
+      totalPages,
+      transactions: transactions[0]?.transactions,
+    }
   }
 
   async getTransactionsSplittedByType(userId: string, walletId: string, query: object): Promise<TransactionsSplittedByTypeProps> {

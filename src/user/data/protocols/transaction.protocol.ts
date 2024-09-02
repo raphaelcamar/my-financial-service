@@ -1,3 +1,4 @@
+import { Pagination } from "@core/generic/data/protocols"
 import { Transaction } from "@user/domain/entities"
 
 export type TransactionsSplittedByTypeProps = {
@@ -18,7 +19,7 @@ export type GetPendingTransactionsGroupedByUserProps = {
 
 export type TransactionProtocol = {
   create: (transaction: Transaction.Data) => Promise<Transaction>
-  getTransactions: (userId: string, walletId: string, query?: object) => Promise<Transaction[]>
+  getTransactions: (userId: string, walletId: string, query?: object, page?: number) => Promise<Pagination<Transaction[], "transactions">>
   getTransactionIndicators: (userId: string, walletId: string, query: object) => Promise<Transaction.Indicator>
   getTransactionsSplittedByType: (userId: string, walletId: string, query?: object) => Promise<TransactionsSplittedByTypeProps>
   updateTransaction: (transaction: Transaction.Data) => Promise<void>
