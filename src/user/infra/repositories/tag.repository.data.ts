@@ -4,6 +4,7 @@ import { TagProtocol } from "@user/data/protocols"
 import { Tag } from "@user/domain/entities"
 import { NotFoundTagError } from "@user/domain/errors/not-found-tag.error"
 import { Tag as TagSchema } from "@user/infra/db/schemas"
+import mongoose from "mongoose"
 
 const PAGE_SIZE = 5
 
@@ -20,6 +21,11 @@ export class TagRepositoryData implements TagProtocol {
 
   async get(page: number, userId: string): Promise<Pagination<Tag, "tags">> {
     const result: any = await TagSchema.aggregate([
+      {
+        $match: {
+          userId: new mongoose.Types.ObjectId(userId),
+        },
+      },
       {
         $lookup: {
           from: "MonthlyRecurrence",

@@ -92,11 +92,10 @@ export class MonthlyRecurrenceRepositoryData implements MonthlyRecurrenceProtoco
     ])
 
     const tagIndicator = result[0]
-
     return {
-      tagCount: tagIndicator.tagCount,
-      tag: new Tag(tagIndicator.tag),
-      totalCount: tagIndicator.totalCount,
+      tagCount: tagIndicator?.tagCount,
+      tag: tagIndicator?.tag ? new Tag(tagIndicator?.tag) : null,
+      totalCount: tagIndicator?.totalCount,
     }
   }
 

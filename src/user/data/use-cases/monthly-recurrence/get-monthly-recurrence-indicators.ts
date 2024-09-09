@@ -19,13 +19,13 @@ export class GetMonthlyRecurrenceIndicators implements UseCase<ReturnType> {
     return {
       ...averageRecurrences,
       mostUsedTag: {
-        percentage: this.getPercentage(mostUsedTag.tagCount, mostUsedTag.totalCount),
-        title: mostUsedTag.tag.title,
+        percentage: this.getPercentage(mostUsedTag?.tagCount, mostUsedTag?.totalCount),
+        title: mostUsedTag?.tag?.title || "",
       },
     }
   }
 
-  getPercentage(tagCount: number, totalCount: number): number {
+  getPercentage(tagCount: number = 0, totalCount: number = 0): number {
     const splitted = tagCount / totalCount
     const convertToNumber = Number((splitted * 100).toFixed(2))
 
